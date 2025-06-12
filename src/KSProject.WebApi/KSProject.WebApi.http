@@ -1,0 +1,6 @@
+@KSProject.WebApi_HostAddress = http://localhost:5291
+
+GET {{KSProject.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

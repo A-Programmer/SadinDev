@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KSProject.Application\KSProject.Application.csproj" />
+    <ProjectReference Include="..\KSProject.Common\KSProject.Common.csproj" />
+    <ProjectReference Include="..\KSProject.Domain\KSProject.Domain.csproj" />
+    <ProjectReference Include="..\KSProject.Infrastructure\KSProject.Infrastructure.csproj" />
+    <ProjectReference Include="..\KSProject.Presentation\KSProject.Presentation.csproj" />
+  </ItemGroup>
+
+</Project>
