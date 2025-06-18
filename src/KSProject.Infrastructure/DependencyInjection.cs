@@ -1,9 +1,12 @@
 ﻿using KSFramework.GenericRepository;
+using KSProject.Infrastructure.BackgroundJobs;
 using KSProject.Infrastructure.Data;
+using KSProject.Infrastructure.Interceptors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Quartz;
 
 namespace KSProject.Infrastructure;
 
@@ -14,10 +17,35 @@ public static class DependencyInjection
     {
         services.AddDbContext<KSProjectDbContext>((sp, options) =>
         {
+            var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
+
             options.UseSqlServer(configuration.GetConnectionString("Default"),
                 x =>
-                    x.MigrationsAssembly("KSProject.Infrastructure"));
+                    x.MigrationsAssembly("KSProject.Infrastructure"))
+                .AddInterceptors(interceptor)
+                .EnableSensitiveDataLogging();
         });
+        
+        services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+        services.AddQuartz(configure =>
+        {
+            var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+
+            configure
+                .AddJob<ProcessOutboxMessagesJob>(jobKey)
+                .AddTrigger(
+                    trigger =>
+                        trigger.ForJob(jobKey)
+                            .WithSimpleSchedule(
+                                schedule =>
+                                    schedule.WithIntervalInSeconds(10)
+                                        .RepeatForever()));
+            
+            configure.UseMicrosoftDependencyInjectionJobFactory();
+        });
+
+        services.AddQuartzHostedService();
+        
         services.AddScoped<DbContext, KSProjectDbContext>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
