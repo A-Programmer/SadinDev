@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KSProject.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a44767a44f3343bfe5a2d10a1ea313ae70a746f1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+df5fd7ad54a22dea88068f7485958d8f69074c73")]
 [assembly: System.Reflection.AssemblyProductAttribute("KSProject.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KSProject.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
