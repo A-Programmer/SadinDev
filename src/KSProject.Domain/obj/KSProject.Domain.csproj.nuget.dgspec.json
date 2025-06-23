@@ -20,7 +20,7 @@
           "net10.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/Packages": {}
+          "/Users/sadin/Microsoft/packages": {}
         },
         "frameworks": {
           "net10.0": {
@@ -358,7 +358,7 @@
           "net10.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/Packages": {}
+          "/Users/sadin/Microsoft/packages": {}
         },
         "frameworks": {
           "net10.0": {
