@@ -1,3 +1,9 @@
+using Newtonsoft.Json;
+
 namespace KSProject.Application.TestAggregate.CreateTestAggregate;
 
-public record CreateTestAggregateResponse(Guid Id);
+public sealed class CreateTestAggregateResponse
+{
+    [property:JsonProperty("id")]
+    public Guid Id { get; init; }
+}

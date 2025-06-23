@@ -11,12 +11,15 @@ public class CreateTestAggregateCommandHandler(IUnitOfWork unitOfWork) : CqrsBas
 
     public async Task<CreateTestAggregateResponse> Handle(CreateTestAggregateCommand request, CancellationToken cancellationToken)
     {
-        Domain.Aggregates.Tes.TestAggregate testAggregate = Domain.Aggregates.Tes.TestAggregate.Create(request.Title, request.Content);
+        Domain.Aggregates.Tes.TestAggregate testAggregate = Domain.Aggregates.Tes.TestAggregate.Create(request.Payload.Title, request.Payload.Content);
         await _unitOfWork.GetRepository<Domain.Aggregates.Tes.TestAggregate>()
             .AddAsync(testAggregate);
 
         await _unitOfWork.SaveChangesAsync();
 
-        return new CreateTestAggregateResponse(testAggregate.Id);
+        return new CreateTestAggregateResponse
+        {
+            Id = testAggregate.Id
+        };
     }
 }

@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v10.0": {
       "KSProject.Common/1.0.0": {
         "dependencies": {
-          "KSFramework": "1.4.18"
+          "KSFramework": "1.4.34"
         },
         "runtime": {
           "KSProject.Common.dll": {}
@@ -60,7 +60,7 @@
           }
         }
       },
-      "KSFramework/1.4.18": {
+      "KSFramework/1.4.34": {
         "dependencies": {
           "FluentValidation": "12.0.0",
           "FluentValidation.DependencyInjectionExtensions": "12.0.0",
@@ -1029,12 +1029,12 @@
       "path": "fluentvalidation.dependencyinjectionextensions/12.0.0",
       "hashPath": "fluentvalidation.dependencyinjectionextensions.12.0.0.nupkg.sha512"
     },
-    "KSFramework/1.4.18": {
+    "KSFramework/1.4.34": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-7R1vAltt92jvh0G1boOCrtdvHPDUZl93+RfnxTFcgiEtLfNk7B71hzVn6+xLPY+r3894/Hae6au2w74vLEUneg==",
-      "path": "ksframework/1.4.18",
-      "hashPath": "ksframework.1.4.18.nupkg.sha512"
+      "sha512": "sha512-Q2+8M9kSb1sQlr+WYVjA3RSUF7kYTnOei4SsXWBtYBWQNKmghK8w4DfTT4CrVFMjQYqaU9nr6wqXqVd+kEYdig==",
+      "path": "ksframework/1.4.34",
+      "hashPath": "ksframework.1.4.34.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Antiforgery/2.2.0": {
       "type": "package",

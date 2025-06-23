@@ -1,3 +1,8 @@
+using Newtonsoft.Json;
+
 namespace KSProject.Application.TestAggregate.DeleteTestAggregate;
 
-public record DeleteTestAggregateResponse(Guid Id);
+public sealed class DeleteTestAggregateResponse
+{
+    [property:JsonProperty("id")] public Guid Id { get; init; }
+}
