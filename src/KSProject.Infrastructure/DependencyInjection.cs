@@ -1,4 +1,5 @@
 ﻿using KSFramework.GenericRepository;
+using KSProject.Domain.Contracts;
 using KSProject.Infrastructure.BackgroundJobs;
 using KSProject.Infrastructure.Data;
 using KSProject.Infrastructure.Interceptors;
@@ -48,6 +49,7 @@ public static class DependencyInjection
         
         services.AddScoped<DbContext, KSProjectDbContext>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IKSProjectUnitOfWork, KSProjectUnitOfWork>();
         return services;
     }
 

@@ -6,11 +6,11 @@ public class CreateTestAggregateCommandValidator : AbstractValidator<CreateTestA
 {
     public CreateTestAggregateCommandValidator()
     {
-        RuleFor(x => x.Title)
+        RuleFor(x => x.Payload.Title)
             .NotEmpty()
             .NotNull();
         
-        RuleFor(x => x.Content)
+        RuleFor(x => x.Payload.Content)
             .NotEmpty()
             .NotNull();
     }

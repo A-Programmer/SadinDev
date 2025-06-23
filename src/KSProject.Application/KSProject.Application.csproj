@@ -11,11 +11,4 @@
     <ProjectReference Include="..\KSProject.Domain\KSProject.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="TestAggregate\GetAllTestAggregates\" />
-    <Folder Include="TestAggregate\GetPagedTestAggregates\" />
-    <Folder Include="TestAggregate\GetTestAggregateById\" />
-    <Folder Include="TestAggregate\UpdateTestAggregate\" />
-  </ItemGroup>
-
 </Project>

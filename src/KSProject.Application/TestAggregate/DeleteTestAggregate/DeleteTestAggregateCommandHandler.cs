@@ -14,13 +14,16 @@ public sealed class DeleteTestAggregateCommandHandler(IUnitOfWork unitOfWork) : 
     {
         Domain.Aggregates.Tes.TestAggregate existingTestAggregate = await _unitOfWork
             .GetRepository<Domain.Aggregates.Tes.TestAggregate>()
-            .GetByIdAsync(request.Id) ?? throw new KSNotFoundException("The TestAggregate could not be found.");
+            .GetByIdAsync(request.Payload.id, cancellationToken) ?? throw new KSNotFoundException("The TestAggregate could not be found.");
 
         _unitOfWork.GetRepository<Domain.Aggregates.Tes.TestAggregate>()
             .Remove(existingTestAggregate);
         
         await _unitOfWork.SaveChangesAsync();
 
-        return new DeleteTestAggregateResponse(request.Id);
+        return new DeleteTestAggregateResponse
+        {
+            Id = request.Payload.id
+        };
     }
 }

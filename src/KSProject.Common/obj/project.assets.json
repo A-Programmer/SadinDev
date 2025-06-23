@@ -68,7 +68,7 @@
           }
         }
       },
-      "KSFramework/1.4.18": {
+      "KSFramework/1.4.34": {
         "type": "package",
         "dependencies": {
           "FluentValidation": "12.0.0",
@@ -2148,14 +2148,14 @@
         "lib/net8.0/FluentValidation.DependencyInjectionExtensions.xml"
       ]
     },
-    "KSFramework/1.4.18": {
-      "sha512": "7R1vAltt92jvh0G1boOCrtdvHPDUZl93+RfnxTFcgiEtLfNk7B71hzVn6+xLPY+r3894/Hae6au2w74vLEUneg==",
+    "KSFramework/1.4.34": {
+      "sha512": "Q2+8M9kSb1sQlr+WYVjA3RSUF7kYTnOei4SsXWBtYBWQNKmghK8w4DfTT4CrVFMjQYqaU9nr6wqXqVd+kEYdig==",
       "type": "package",
-      "path": "ksframework/1.4.18",
+      "path": "ksframework/1.4.34",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "ksframework.1.4.18.nupkg.sha512",
+        "ksframework.1.4.34.nupkg.sha512",
         "ksframework.nuspec",
         "lib/net8.0/KSFramework.dll",
         "lib/net8.0/KSFramework.xml"
@@ -4628,7 +4628,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "KSFramework >= 1.4.18"
+      "KSFramework >= 1.4.34"
     ]
   },
   "packageFolders": {
@@ -4650,7 +4650,7 @@
         "net10.0"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {}
+        "/Users/sadin/Microsoft/Packages": {}
       },
       "frameworks": {
         "net10.0": {
@@ -4676,7 +4676,7 @@
         "dependencies": {
           "KSFramework": {
             "target": "Package",
-            "version": "[1.4.18, )"
+            "version": "[1.4.34, )"
           }
         },
         "imports": [
@@ -4971,67 +4971,5 @@
         }
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Azure.Identity' 1.10.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9",
-      "libraryId": "Azure.Identity",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Azure.Identity' 1.10.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wvxc-855f-jvrv",
-      "libraryId": "Azure.Identity",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Microsoft.Extensions.Caching.Memory' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-qj66-m88j-hmgj",
-      "libraryId": "Microsoft.Extensions.Caching.Memory",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Microsoft.Identity.Client' 4.56.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9",
-      "libraryId": "Microsoft.Identity.Client",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    },
-    {
-      "code": "NU1901",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Microsoft.Identity.Client' 4.56.0 has a known low severity vulnerability, https://github.com/advisories/GHSA-x674-v45j-fwxw",
-      "libraryId": "Microsoft.Identity.Client",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.Security.Cryptography.Xml' 4.5.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-vh55-786g-wjwj",
-      "libraryId": "System.Security.Cryptography.Xml",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  }
 }

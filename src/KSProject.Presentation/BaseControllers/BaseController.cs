@@ -1,8 +1,7 @@
 using KSFramework.KSMessaging.Abstraction;
 using Microsoft.AspNetCore.Mvc;
-using Project.Presentation;
 
-namespace KSProject.Presentation.Controllers;
+namespace KSProject.Presentation.BaseControllers;
 
 [ApiController]
 [Route(Routes.Root)]
