@@ -1,10 +1,11 @@
 using KSFramework.Contracts;
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace KSProject.Application.TestAggregate.DeleteTestAggregate;
 
 public sealed class DeleteTestAggregateRequest : IInjectable
 {
-    [property:JsonProperty("id")]
+    [JsonPropertyName("id")]
     public Guid id { get; init; }
 }

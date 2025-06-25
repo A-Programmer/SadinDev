@@ -4,6 +4,7 @@ using KSProject.Infrastructure.Data;
 using KSProject.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Quartz;
 
 namespace KSProject.Infrastructure.BackgroundJobs;

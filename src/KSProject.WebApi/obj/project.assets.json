@@ -80,7 +80,7 @@
           }
         }
       },
-      "KSFramework/1.4.34": {
+      "KSFramework/1.4.38": {
         "type": "package",
         "dependencies": {
           "FluentValidation": "12.0.0",
@@ -1873,7 +1873,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "KSFramework": "1.4.34"
+          "KSFramework": "1.4.38"
         },
         "compile": {
           "bin/placeholder/KSProject.Common.dll": {}
@@ -2019,14 +2019,14 @@
         "logo.png"
       ]
     },
-    "KSFramework/1.4.34": {
-      "sha512": "Q2+8M9kSb1sQlr+WYVjA3RSUF7kYTnOei4SsXWBtYBWQNKmghK8w4DfTT4CrVFMjQYqaU9nr6wqXqVd+kEYdig==",
+    "KSFramework/1.4.38": {
+      "sha512": "FzodS0iov7dOj+nxreKhiEnrCHjPhoVRZYCBJ7q9q3gmgZ39p5Buo487/66SCgoGngFz38RH9b0Hwvu2lKNHZg==",
       "type": "package",
-      "path": "ksframework/1.4.34",
+      "path": "ksframework/1.4.38",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "ksframework.1.4.34.nupkg.sha512",
+        "ksframework.1.4.38.nupkg.sha512",
         "ksframework.nuspec",
         "lib/net8.0/KSFramework.dll",
         "lib/net8.0/KSFramework.xml"
@@ -4864,7 +4864,8 @@
         "net8.0"
       ],
       "sources": {
-        "/Users/sadin/Microsoft/packages": {}
+        "/Users/sadin/Microsoft/packages": {},
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
@@ -5380,13 +5381,5 @@
         }
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file /Users/sadin/Projects/Personal Projects/ProjectTemplates/Test/src/KSProject.WebApi/obj/project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0."
-    }
-  ]
+  }
 }

@@ -1,8 +1,8 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace KSProject.Application.Roles.DeleteRole;
 
 public sealed class DeleteRoleResponse
 {
-    [property:JsonProperty("id")] public required Guid Id { get; init; }
+    [JsonPropertyName("id")] public required Guid Id { get; init; }
 }

@@ -1,5 +1,6 @@
 using KSFramework.Contracts;
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace KSProject.Application.TestAggregate.UpdateTestAggregate;
 

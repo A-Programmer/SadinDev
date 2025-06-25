@@ -3,6 +3,7 @@ using KSProject.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace KSProject.Infrastructure.Interceptors;
 

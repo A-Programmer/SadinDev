@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace KSProject.Application.TestAggregate.GetTestAggregateById;
 
@@ -7,18 +8,18 @@ public sealed class GetTestAggregateByIdResponse
     /// <summary>
     /// TestAggregate Id
     /// </summary
-    [property:JsonProperty("id")]
+    [JsonPropertyName("id")]
     public required Guid Id { get; init; }
     
     /// <summary>
     /// TestAggregate Title
     /// </summary
-    [property:JsonProperty("title")]
+    [JsonPropertyName("title")]
     public required string Title { get; init; }
     
     /// <summary>
     /// TestAggregate Content
     /// </summary
-    [property:JsonProperty("content")]
+    [JsonPropertyName("content")]
     public required string Content { get; init; }
 }

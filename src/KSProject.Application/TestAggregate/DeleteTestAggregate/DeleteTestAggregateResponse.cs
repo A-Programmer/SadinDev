@@ -1,8 +1,9 @@
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace KSProject.Application.TestAggregate.DeleteTestAggregate;
 
 public sealed class DeleteTestAggregateResponse
 {
-    [property:JsonProperty("id")] public Guid Id { get; init; }
+    [JsonPropertyName("id")] public Guid Id { get; init; }
 }

@@ -20,7 +20,8 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {}
+          "/Users/sadin/Microsoft/packages": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -383,7 +384,8 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {}
+          "/Users/sadin/Microsoft/packages": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -409,7 +411,7 @@
           "dependencies": {
             "KSFramework": {
               "target": "Package",
-              "version": "[1.4.34, )"
+              "version": "[1.4.38, )"
             }
           },
           "imports": [
@@ -745,7 +747,8 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {}
+          "/Users/sadin/Microsoft/packages": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -1105,7 +1108,8 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {}
+          "/Users/sadin/Microsoft/packages": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -1478,7 +1482,8 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {}
+          "/Users/sadin/Microsoft/packages": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -1847,7 +1852,8 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {}
+          "/Users/sadin/Microsoft/packages": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {

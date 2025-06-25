@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "qNV4XI8PzFA=",
+  "dgSpecHash": "GakzPRx/xXc=",
   "success": true,
   "projectFilePath": "/Users/sadin/Projects/Personal Projects/ProjectTemplates/Test/src/KSProject.Application/KSProject.Application.csproj",
   "expectedPackageFiles": [
@@ -8,7 +8,7 @@
     "/Users/sadin/.nuget/packages/azure.identity/1.10.3/azure.identity.1.10.3.nupkg.sha512",
     "/Users/sadin/.nuget/packages/fluentvalidation/12.0.0/fluentvalidation.12.0.0.nupkg.sha512",
     "/Users/sadin/.nuget/packages/fluentvalidation.dependencyinjectionextensions/12.0.0/fluentvalidation.dependencyinjectionextensions.12.0.0.nupkg.sha512",
-    "/Users/sadin/.nuget/packages/ksframework/1.4.34/ksframework.1.4.34.nupkg.sha512",
+    "/Users/sadin/.nuget/packages/ksframework/1.4.38/ksframework.1.4.38.nupkg.sha512",
     "/Users/sadin/.nuget/packages/microsoft.aspnetcore.antiforgery/2.2.0/microsoft.aspnetcore.antiforgery.2.2.0.nupkg.sha512",
     "/Users/sadin/.nuget/packages/microsoft.aspnetcore.authentication.abstractions/2.2.0/microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "/Users/sadin/.nuget/packages/microsoft.aspnetcore.authentication.core/2.2.0/microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
@@ -124,15 +124,5 @@
     "/Users/sadin/.nuget/packages/microsoft.netcore.app.ref/8.0.15/microsoft.netcore.app.ref.8.0.15.nupkg.sha512",
     "/Users/sadin/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.15/microsoft.aspnetcore.app.ref.8.0.15.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "message": "Problem reading the cache file /Users/sadin/Projects/Personal Projects/ProjectTemplates/Test/src/KSProject.Application/obj/project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0.",
-      "projectPath": "/Users/sadin/Projects/Personal Projects/ProjectTemplates/Test/src/KSProject.Application/KSProject.Application.csproj",
-      "warningLevel": 1,
-      "filePath": "/Users/sadin/Projects/Personal Projects/ProjectTemplates/Test/src/KSProject.Application/KSProject.Application.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }

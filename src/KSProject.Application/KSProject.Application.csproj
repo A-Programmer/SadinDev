@@ -11,4 +11,8 @@
     <ProjectReference Include="..\KSProject.Domain\KSProject.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Users\" />
+  </ItemGroup>
+
 </Project>

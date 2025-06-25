@@ -16,7 +16,7 @@ namespace KSProject.Presentation.Controllers.AdminControllers;
 public sealed class RolesController(ISender sender) : BaseController(sender)
 {
     [HttpGet]
-    [Route(Routes.Roles.GetPagedRoles)]
+    [Route(Routes.Roles_Admin.GetPagedRoles)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Produces("application/json")]
@@ -33,7 +33,7 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
     }
     
     [HttpGet]
-    [Route(Routes.Roles.GetAllRoles)]
+    [Route(Routes.Roles_Admin.GetAllRoles)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Produces("application/json")]
@@ -50,7 +50,7 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
     }
 
     [HttpGet]
-    [Route(Routes.Roles.GetRoleById)]
+    [Route(Routes.Roles_Admin.GetRoleById)]
     [Produces(typeof(RoleItemResponse))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -66,7 +66,7 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
     }
 
     [HttpPut]
-    [Route(Routes.Roles.UpdateRole)]
+    [Route(Routes.Roles_Admin.UpdateRole)]
     [Produces(typeof(RoleUpdateResponse))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -87,7 +87,7 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
     }
     
     [HttpPost]
-    [Route(Routes.Roles.CreateRole)]
+    [Route(Routes.Roles_Admin.CreateRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(CreateRoleResponse),
@@ -105,7 +105,7 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
     }
     
     [HttpDelete]
-    [Route(Routes.Roles.DeleteRole)]
+    [Route(Routes.Roles_Admin.DeleteRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(DeleteRoleResponse),

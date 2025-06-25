@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using KSFramework.KSMessaging.Extensions;
+using KSProject.Application.Services;
+using KSProject.Domain.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +11,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection RegisterApplication(this IServiceCollection services)
     {
+        services.AddScoped<IJwtService, JwtService>();
         services.AddKSFramework(AssemblyReference.Assembly);
         return services;
     }
