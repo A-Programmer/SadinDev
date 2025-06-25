@@ -4,12 +4,13 @@ using KSFramework.KSDomain.AggregatesHelper;
 using KSFramework.Utilities;
 using KSProject.Common.Exceptions;
 using KSProject.Domain.Aggregates.Roles;
-using KSProject.Domain.Aggregates.Users.Events;
+// using KSProject.Domain.Aggregates.Users.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace KSProject.Domain.Aggregates.Users;
 
+// TODO: Add tokens table and relation (Take a look at the BaseProjectWithDetails)
 public sealed class User : BaseEntity, IAggregateRoot, ISerializable
 {
     private User(Guid id,
@@ -60,6 +61,12 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
         
         if (!phoneNumber.HasValue())
             PhoneNumber = phoneNumber;
+        
+        // AddDomainEvent(new UserUpdatedDomainEvent
+        // {
+        //     Id = Id,
+        //     Email = email
+        // });
     }
 
     public void UpdatePassword(string hashedPassword)
@@ -91,10 +98,13 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
     {
         User user = new(id, userName, hashedPassword, email, phoneNumber);
         
-        user.AddDomainEvent(new UserCreatedDomainEvent(user.Id)
-        {
-            OccurredOn = DateTime.UtcNow
-        });
+        // user.AddDomainEvent(new UserCreatedDomainEvent
+        // {
+        //     Id = id,
+        //     UserName = userName,
+        //     Email = email,
+        //     OccurredOn = DateTime.UtcNow
+        // });
 
         return user;
     }

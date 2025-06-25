@@ -1,9 +1,10 @@
 using KSFramework.Contracts;
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace KSProject.Application.Roles.DeleteRole;
 
 public sealed class DeleteRoleRequest : IInjectable
 {
-    [property:JsonProperty("id")] public required Guid id { get; init; }
+    [JsonPropertyName("id")] public required Guid id { get; init; }
 }
