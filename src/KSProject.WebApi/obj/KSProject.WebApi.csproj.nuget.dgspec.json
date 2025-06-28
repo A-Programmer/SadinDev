@@ -20,7 +20,6 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -384,7 +383,6 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -747,7 +745,6 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -1108,7 +1105,6 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -1482,7 +1478,6 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -1852,7 +1847,6 @@
           "net8.0"
         ],
         "sources": {
-          "/Users/sadin/Microsoft/packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
