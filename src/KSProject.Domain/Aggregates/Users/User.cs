@@ -4,6 +4,7 @@ using KSFramework.KSDomain.AggregatesHelper;
 using KSFramework.Utilities;
 using KSProject.Common.Exceptions;
 using KSProject.Domain.Aggregates.Roles;
+using KSProject.Domain.Aggregates.Users.Events;
 // using KSProject.Domain.Aggregates.Users.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -98,13 +99,13 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
     {
         User user = new(id, userName, hashedPassword, email, phoneNumber);
         
-        // user.AddDomainEvent(new UserCreatedDomainEvent
-        // {
-        //     Id = id,
-        //     UserName = userName,
-        //     Email = email,
-        //     OccurredOn = DateTime.UtcNow
-        // });
+        user.AddDomainEvent(new UserCreatedDomainEvent
+        {
+            Id = id,
+            UserName = userName,
+            Email = email,
+            OccurredOn = DateTime.UtcNow
+        });
 
         return user;
     }

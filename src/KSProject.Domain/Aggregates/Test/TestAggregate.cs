@@ -4,7 +4,7 @@ using KSFramework.KSDomain.AggregatesHelper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace KSProject.Domain.Aggregates.Tes;
+namespace KSProject.Domain.Aggregates.Test;
 
 public class TestAggregate : BaseEntity, IAggregateRoot, ISerializable
 {

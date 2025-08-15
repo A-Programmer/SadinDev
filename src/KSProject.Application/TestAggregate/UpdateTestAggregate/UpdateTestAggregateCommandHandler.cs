@@ -15,8 +15,8 @@ public sealed class UpdateTestAggregateCommandHandler : CqrsBase, ICommandHandle
 
     public async Task<UpdateTestAggregateResponse> Handle(UpdateTestAggregateCommand request, CancellationToken cancellationToken)
     {
-        Domain.Aggregates.Tes.TestAggregate? testAggregate = await _unitOfWork
-            .GetRepository<Domain.Aggregates.Tes.TestAggregate>()
+        Domain.Aggregates.Test.TestAggregate? testAggregate = await _unitOfWork
+            .GetRepository<Domain.Aggregates.Test.TestAggregate>()
             .GetByIdAsync(request.Payload.Id);
 
         if (testAggregate == null)

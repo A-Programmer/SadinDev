@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "n0coWPA1Jlo=",
+  "dgSpecHash": "9lnqNW3rMdo=",
   "success": true,
   "projectFilePath": "/Users/sadin/Projects/Personal Projects/ProjectTemplates/Test/src/KSProject.WebApi/KSProject.WebApi.csproj",
   "expectedPackageFiles": [
@@ -9,7 +9,7 @@
     "/Users/sadin/.nuget/packages/fluentvalidation/12.0.0/fluentvalidation.12.0.0.nupkg.sha512",
     "/Users/sadin/.nuget/packages/fluentvalidation.dependencyinjectionextensions/12.0.0/fluentvalidation.dependencyinjectionextensions.12.0.0.nupkg.sha512",
     "/Users/sadin/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
-    "/Users/sadin/.nuget/packages/ksframework/1.4.38/ksframework.1.4.38.nupkg.sha512",
+    "/Users/sadin/.nuget/packages/ksframework/1.4.42/ksframework.1.4.42.nupkg.sha512",
     "/Users/sadin/.nuget/packages/microsoft.aspnetcore.openapi/8.0.5/microsoft.aspnetcore.openapi.8.0.5.nupkg.sha512",
     "/Users/sadin/.nuget/packages/microsoft.bcl.asyncinterfaces/6.0.0/microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "/Users/sadin/.nuget/packages/microsoft.codeanalysis.analyzers/3.3.3/microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",

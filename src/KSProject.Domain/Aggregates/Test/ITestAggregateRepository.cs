@@ -1,6 +1,6 @@
 using KSFramework.GenericRepository;
 
-namespace KSProject.Domain.Aggregates.Tes;
+namespace KSProject.Domain.Aggregates.Test;
 
 public interface ITestAggregateRepository : IGenericRepository<TestAggregate>
 {

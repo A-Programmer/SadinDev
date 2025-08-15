@@ -12,11 +12,11 @@ public sealed class DeleteTestAggregateCommandHandler(IUnitOfWork unitOfWork) : 
 
     public async Task<DeleteTestAggregateResponse> Handle(DeleteTestAggregateCommand request, CancellationToken cancellationToken)
     {
-        Domain.Aggregates.Tes.TestAggregate existingTestAggregate = await _unitOfWork
-            .GetRepository<Domain.Aggregates.Tes.TestAggregate>()
+        Domain.Aggregates.Test.TestAggregate existingTestAggregate = await _unitOfWork
+            .GetRepository<Domain.Aggregates.Test.TestAggregate>()
             .GetByIdAsync(request.Payload.id, cancellationToken) ?? throw new KSNotFoundException("The TestAggregate could not be found.");
 
-        _unitOfWork.GetRepository<Domain.Aggregates.Tes.TestAggregate>()
+        _unitOfWork.GetRepository<Domain.Aggregates.Test.TestAggregate>()
             .Remove(existingTestAggregate);
         
         await _unitOfWork.SaveChangesAsync();

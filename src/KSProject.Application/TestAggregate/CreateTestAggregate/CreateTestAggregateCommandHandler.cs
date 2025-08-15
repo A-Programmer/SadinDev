@@ -11,8 +11,8 @@ public class CreateTestAggregateCommandHandler(IUnitOfWork unitOfWork) : CqrsBas
 
     public async Task<CreateTestAggregateResponse> Handle(CreateTestAggregateCommand request, CancellationToken cancellationToken)
     {
-        Domain.Aggregates.Tes.TestAggregate testAggregate = Domain.Aggregates.Tes.TestAggregate.Create(request.Payload.Title, request.Payload.Content);
-        await _unitOfWork.GetRepository<Domain.Aggregates.Tes.TestAggregate>()
+        Domain.Aggregates.Test.TestAggregate testAggregate = Domain.Aggregates.Test.TestAggregate.Create(request.Payload.Title, request.Payload.Content);
+        await _unitOfWork.GetRepository<Domain.Aggregates.Test.TestAggregate>()
             .AddAsync(testAggregate);
 
         await _unitOfWork.SaveChangesAsync();

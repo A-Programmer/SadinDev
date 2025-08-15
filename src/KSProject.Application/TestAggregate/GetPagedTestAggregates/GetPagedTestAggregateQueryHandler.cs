@@ -15,7 +15,7 @@ public sealed class GetPagedTestAggregateQueryHandler : CqrsBase, IQueryHandler<
 
     public async Task<PaginatedList<GetPagedTestAggregateResponse>> Handle(GetPagedTestAggregateQuery request, CancellationToken cancellationToken)
     {
-        PaginatedList<Domain.Aggregates.Tes.TestAggregate> res = await _unitOfWork.GetRepository<Domain.Aggregates.Tes.TestAggregate>()
+        PaginatedList<Domain.Aggregates.Test.TestAggregate> res = await _unitOfWork.GetRepository<Domain.Aggregates.Test.TestAggregate>()
             .GetPagedAsync(request.PageIndex,
                 request.PageSize,
                 request.Where,

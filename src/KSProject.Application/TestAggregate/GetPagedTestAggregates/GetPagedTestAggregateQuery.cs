@@ -27,7 +27,7 @@ public record GetPagedTestAggregateQuery : IQuery<PaginatedList<GetPagedTestAggr
 
     public int PageIndex { get; private set; }
     public int PageSize { get; private set; }
-    public Expression<Func<Domain.Aggregates.Tes.TestAggregate, bool>>? Where { get; private set; }
+    public Expression<Func<Domain.Aggregates.Test.TestAggregate, bool>>? Where { get; private set; }
     public string OrderByPropertyName { get; private set; }
     public bool Desc { get; private set; }
 }
