@@ -6,11 +6,6 @@ docs/
 .vscode/
 .idea/
 .qodo/
-Samples/BlogApp/.idea/
-Samples/BlogApp/.qodo/
-Samples/BlogApp/.vs/
-Samples/BlogApp/.code/
-Samples/BlogApp/.vscode/
 src/.vs/
 **/.DS_Store
 **/.DS_Store?
