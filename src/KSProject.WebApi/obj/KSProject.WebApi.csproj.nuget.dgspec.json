@@ -413,7 +413,7 @@
           "dependencies": {
             "KSFramework": {
               "target": "Package",
-              "version": "[1.4.38, )"
+              "version": "[1.4.42, )"
             }
           },
           "imports": [

@@ -15,7 +15,7 @@ public sealed class GetAllTestAggregatesQueryHandler : CqrsBase, IQueryHandler<G
 
     public async Task<List<GetAllTestAggregatesResponse>> Handle(GetAllTestAggregatesQuery request, CancellationToken cancellationToken)
     {
-        var testAggregates = await _unitOfWork.GetRepository<Domain.Aggregates.Tes.TestAggregate>()
+        var testAggregates = await _unitOfWork.GetRepository<Domain.Aggregates.Test.TestAggregate>()
             .GetAllAsync();
         
         return testAggregates.Select(x => new GetAllTestAggregatesResponse

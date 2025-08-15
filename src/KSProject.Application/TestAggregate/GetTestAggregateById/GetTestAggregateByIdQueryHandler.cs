@@ -15,7 +15,7 @@ public sealed class GetTestAggregateByIdQueryHandler : CqrsBase, IQueryHandler<G
 
     public async Task<GetTestAggregateByIdResponse> Handle(GetTestAggregateByIdQuery request, CancellationToken cancellationToken)
     {
-        Domain.Aggregates.Tes.TestAggregate? testAggregate = await _unitOfWork.GetRepository<Domain.Aggregates.Tes.TestAggregate>()
+        Domain.Aggregates.Test.TestAggregate? testAggregate = await _unitOfWork.GetRepository<Domain.Aggregates.Test.TestAggregate>()
             .GetByIdAsync(request.Payload.id);
 
         if (testAggregate == null)

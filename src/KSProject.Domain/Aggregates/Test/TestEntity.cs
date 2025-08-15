@@ -3,7 +3,7 @@ using KSFramework.KSDomain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace KSProject.Domain.Aggregates.Tes;
+namespace KSProject.Domain.Aggregates.Test;
 
 public class TestEntity : BaseEntity, ISerializable
 {
