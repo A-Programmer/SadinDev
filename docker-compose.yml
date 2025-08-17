@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  api:
+    image: mrsadin/kstemplate
+    container_name: ks-api
+    ports:
+      - "5001:6000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ./src:/app/src:ro
+      - /Users/sadin/.nuget/packages:/root/.nuget/packages:ro
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - ks-network
+
+  db:
+    #image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/azure-sql-edge
+    container_name: ks-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SqlPassword123!
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    restart: always
+    networks:
+      - ks-network
+
+volumes:
+  sqlserver-data:
+    name: sqlserver-data
+
+networks:
+  ks-network:
+    name: ks-network
+    driver: bridge
