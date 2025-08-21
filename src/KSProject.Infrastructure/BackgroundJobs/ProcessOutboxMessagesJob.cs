@@ -4,7 +4,6 @@ using KSProject.Infrastructure.Data;
 using KSProject.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System.Text.Json.Serialization;
 using Quartz;
 
 namespace KSProject.Infrastructure.BackgroundJobs;
@@ -12,43 +11,43 @@ namespace KSProject.Infrastructure.BackgroundJobs;
 [DisallowConcurrentExecution]
 public class ProcessOutboxMessagesJob : IJob
 {
-    private readonly KSProjectDbContext _dbContext;
-    private readonly IMediator _publisher;
+	private readonly KSProjectDbContext _dbContext;
+	private readonly IMediator _publisher;
 
-    public ProcessOutboxMessagesJob(KSProjectDbContext dbContext, IMediator publisher)
-    {
-        _dbContext = dbContext;
-        _publisher = publisher;
-    }
+	public ProcessOutboxMessagesJob(KSProjectDbContext dbContext, IMediator publisher)
+	{
+		_dbContext = dbContext;
+		_publisher = publisher;
+	}
 
-    public async Task Execute(IJobExecutionContext context)
-    {
-        List<OutboxMessage> messages = await _dbContext
-            .Set<OutboxMessage>()
-            .Where(m => m.ProcessedOnUtc == null)
-            .Take(20)
-            .ToListAsync(context.CancellationToken);
+	public async Task Execute(IJobExecutionContext context)
+	{
+		List<OutboxMessage> messages = await _dbContext
+			.Set<OutboxMessage>()
+			.Where(m => m.ProcessedOnUtc == null)
+			.Take(20)
+			.ToListAsync(context.CancellationToken);
 
-        foreach (OutboxMessage outboxMessage in messages)
-        {
-            IDomainEvent? domainEvent = JsonConvert
-                .DeserializeObject<IDomainEvent>(
-                    outboxMessage.Content,
-                    new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.All
-                    });
+		foreach (OutboxMessage outboxMessage in messages)
+		{
+			IDomainEvent? domainEvent = JsonConvert
+				.DeserializeObject<IDomainEvent>(
+					outboxMessage.Content,
+					new JsonSerializerSettings
+					{
+						TypeNameHandling = TypeNameHandling.All
+					});
 
-            if (domainEvent is null)
-            {
-                continue;
-            }
+			if (domainEvent is null)
+			{
+				continue;
+			}
 
-            await _publisher.Publish(domainEvent, context.CancellationToken);
+			await _publisher.Publish(domainEvent, context.CancellationToken);
 
-            outboxMessage.ProcessedOnUtc = DateTime.UtcNow;
-        }
+			outboxMessage.ProcessedOnUtc = DateTime.UtcNow;
+		}
 
-        await _dbContext.SaveChangesAsync();
-    }
+		await _dbContext.SaveChangesAsync();
+	}
 }
