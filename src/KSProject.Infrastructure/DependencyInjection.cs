@@ -13,52 +13,53 @@ namespace KSProject.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection RegisterInfrastructure(this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        services.AddDbContext<KSProjectDbContext>((sp, options) =>
-        {
-            var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
+	public static IServiceCollection RegisterInfrastructure(this IServiceCollection services,
+		IConfiguration configuration)
+	{
+		services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
-            options.UseSqlServer(configuration.GetConnectionString("Default"),
-                x =>
-                    x.MigrationsAssembly("KSProject.Infrastructure"))
-                .AddInterceptors(interceptor)
-                .EnableSensitiveDataLogging();
-        });
-        
-        services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
-        services.AddQuartz(configure =>
-        {
-            var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+		services.AddDbContext<KSProjectDbContext>((sp, options) =>
+		{
+			var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
-            configure
-                .AddJob<ProcessOutboxMessagesJob>(jobKey)
-                .AddTrigger(
-                    trigger =>
-                        trigger.ForJob(jobKey)
-                            .WithSimpleSchedule(
-                                schedule =>
-                                    schedule.WithIntervalInSeconds(10)
-                                        .RepeatForever()));
-            
-            configure.UseMicrosoftDependencyInjectionJobFactory();
-        });
+			options.UseSqlServer(configuration.GetConnectionString("Default"),
+				x =>
+					x.MigrationsAssembly("KSProject.Infrastructure"))
+				.AddInterceptors(interceptor)
+				.EnableSensitiveDataLogging();
+		});
 
-        services.AddQuartzHostedService();
-        
-        services.AddScoped<DbContext, KSProjectDbContext>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IKSProjectUnitOfWork, KSProjectUnitOfWork>();
-        return services;
-    }
+		services.AddQuartz(configure =>
+		{
+			var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
 
-    public static WebApplication UseInfrastructure(this WebApplication app)
-    {
-        using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-        var context = serviceScope.ServiceProvider.GetRequiredService<KSProjectDbContext>();
-        context.Database.Migrate();
-        
-        return app;
-    }
+			configure
+				.AddJob<ProcessOutboxMessagesJob>(jobKey)
+				.AddTrigger(
+					trigger =>
+						trigger.ForJob(jobKey)
+							.WithSimpleSchedule(
+								schedule =>
+									schedule.WithIntervalInMinutes(10)
+										.RepeatForever()));
+
+			configure.UseMicrosoftDependencyInjectionJobFactory();
+		});
+
+		services.AddQuartzHostedService();
+
+		services.AddScoped<DbContext, KSProjectDbContext>();
+		services.AddScoped<IUnitOfWork, UnitOfWork>();
+		services.AddScoped<IKSProjectUnitOfWork, KSProjectUnitOfWork>();
+		return services;
+	}
+
+	public static WebApplication UseInfrastructure(this WebApplication app)
+	{
+		using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+		var context = serviceScope.ServiceProvider.GetRequiredService<KSProjectDbContext>();
+		context.Database.Migrate();
+
+		return app;
+	}
 }
