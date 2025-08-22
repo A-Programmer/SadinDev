@@ -1,37 +1,83 @@
-﻿using KSProject.Presentation.ExtensionMethods;
+﻿using KSProject.Domain;
+using KSProject.Presentation.ExtensionMethods;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Project.Presentation.ExtensionMethods;
 
 namespace KSProject.Presentation;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection RegisterPresentation(this IServiceCollection services)
-    {
-        services.AddEndpointsApiExplorer();
-        services.AddGlobalExceptionHandling();
-        services.AddCustomControllers();
-        services.AddSwaggerGen();
+	const string corePolicyName = "ALLOWALL";
+	public static IServiceCollection RegisterPresentation(this IServiceCollection services,
+		PublicSettings settings)
+	{
 
-        return services;
-    }
+		services.AddCors(options =>
+		{
+			options.AddPolicy(corePolicyName, builder =>
+			{
+				builder
+				.AllowAnyHeader()
+				.AllowAnyOrigin()
+				.AllowAnyMethod();
+			});
+		});
 
-    public static WebApplication UsePresentation(this WebApplication app)
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+		services.AddEndpointsApiExplorer();
+		services.AddGlobalExceptionHandling();
+		services.AddCustomControllers();
+		services.AddCustomAuthentication(settings.JwtOptions);
+		services.AddSwaggerGen(options =>
+		{
+			options.SwaggerDoc("v1", new OpenApiInfo { Title = "KSTemplate", Version = "v1" });
 
-        app.UseStatusCodePages();
-        app.UseExceptionHandler();
+			// Add JWT Authentication support in Swagger
+			options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+			{
+				Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+				Name = "Authorization",
+				In = ParameterLocation.Header,
+				Type = SecuritySchemeType.ApiKey,
+				Scheme = "Bearer"
+			});
 
-        app.UseHttpsRedirection();
+			options.AddSecurityRequirement(new OpenApiSecurityRequirement
+			{
+				{
+					new OpenApiSecurityScheme
+					{
+						Reference = new OpenApiReference
+						{
+							Type = ReferenceType.SecurityScheme,
+							Id = "Bearer"
+						}
+					},
+					Array.Empty<string>()
+				}
+			});
 
-        app.UseAuthentication();
-        app.UseAuthorization();
+		});
 
-        app.MapControllers();
+		return services;
+	}
 
-        return app;
-    }
+	public static WebApplication UsePresentation(this WebApplication app)
+	{
+		app.UseSwagger();
+		app.UseSwaggerUI();
+		app.UseCors(corePolicyName);
+		app.UseStatusCodePages();
+		app.UseExceptionHandler();
+
+		// app.UseHttpsRedirection();
+
+		app.UseAuthentication();
+		app.UseAuthorization();
+
+		app.MapControllers();
+
+		return app;
+	}
 }
