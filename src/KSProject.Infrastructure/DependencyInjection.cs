@@ -40,7 +40,7 @@ public static class DependencyInjection
 						trigger.ForJob(jobKey)
 							.WithSimpleSchedule(
 								schedule =>
-									schedule.WithIntervalInMinutes(10)
+									schedule.WithIntervalInSeconds(10)
 										.RepeatForever()));
 
 			configure.UseMicrosoftDependencyInjectionJobFactory();
