@@ -7,45 +7,45 @@ namespace KSProject.Infrastructure.Data;
 
 public class KSProjectDbContext : DbContext
 {
-    public KSProjectDbContext(DbContextOptions<KSProjectDbContext> options)
-        : base(options)
-    {
-    }
+	public KSProjectDbContext(DbContextOptions<KSProjectDbContext> options)
+		: base(options)
+	{
+	}
 
-    public DbSet<OutboxMessage> OutboxMessages { get; set; }
-    
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
+	public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
-        var entitiesAssembly = Domain.AssemblyReference.Assembly;
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
+	{
+		base.OnModelCreating(modelBuilder);
 
-        #region Register All Entities
-        modelBuilder.RegisterAllEntities<BaseEntity>(entitiesAssembly);
-        #endregion
-        
-        // TODO: Fix this by using modelBuilder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
+		var entitiesAssembly = Domain.AssemblyReference.Assembly;
 
-        #region Apply Entities Configuration
-        modelBuilder.RegisterEntityTypeConfiguration(entitiesAssembly);
-        #endregion
+		#region Register All Entities
+		modelBuilder.RegisterAllEntities<BaseEntity>(entitiesAssembly);
+		#endregion
 
-        #region Config Delete Behevior for not Cascade Delete
-        modelBuilder.AddRestrictDeleteBehaviorConvention();
-        #endregion
+		// TODO: Fix this by using modelBuilder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
 
-        #region Add Sequential GUID for Id properties
-        modelBuilder.AddSequentialGuidForIdConvention();
-        #endregion
+		#region Apply Entities Configuration
+		modelBuilder.RegisterEntityTypeConfiguration(entitiesAssembly);
+		#endregion
 
-        #region Pluralize Table Names
-        modelBuilder.AddPluralizingTableNameConvention();
-        #endregion
+		#region Config Delete Behevior for not Cascade Delete
+		modelBuilder.AddRestrictDeleteBehaviorConvention();
+		#endregion
 
-        #region Data Seeder
+		#region Add Sequential GUID for Id properties
+		modelBuilder.AddSequentialGuidForIdConvention();
+		#endregion
 
-        // modelBuilder.Seed();
+		#region Pluralize Table Names
+		modelBuilder.AddPluralizingTableNameConvention();
+		#endregion
 
-        #endregion
-    }
+		#region Data Seeder
+
+		modelBuilder.SeedData();
+
+		#endregion
+	}
 }

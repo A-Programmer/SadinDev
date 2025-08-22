@@ -1,14 +1,20 @@
-﻿namespace KSProject.WebApi;
+﻿using KSProject.Domain;
+
+namespace KSProject.WebApi;
 
 public static class DependencyInjection
 {
-    public static WebApplicationBuilder RegisterWebApi(this WebApplicationBuilder builder)
-    {
-        return builder;
-    }
+	public static WebApplicationBuilder RegisterWebApi(this WebApplicationBuilder builder,
+		IConfiguration configuration)
+	{
+		builder.Services.Configure<PublicSettings>(
+			configuration.GetSection(nameof(PublicSettings)));
 
-    public static WebApplication UseWebApi(this WebApplication app)
-    {
-        return app;
-    }
+		return builder;
+	}
+
+	public static WebApplication UseWebApi(this WebApplication app)
+	{
+		return app;
+	}
 }
