@@ -1,5 +1,6 @@
 using KSFramework.KSDomain;
 using KSFramework.KSMessaging.Abstraction;
+using KSProject.Domain.Aggregates.Users.Events;
 using KSProject.Infrastructure.Data;
 using KSProject.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,22 @@ public class ProcessOutboxMessagesJob : IJob
 	{
 		_logger.LogInformation("ProcessOutboxMessagesJob started at {Time}", DateTime.UtcNow);
 
+		if (context.CancellationToken.IsCancellationRequested)
+		{
+			_logger.LogWarning("Cancellation requested for ProcessOutboxMessagesJob");
+			return;
+		}
+
+		//// Test manual event
+		var testEvent = new UserUpdatedDomainEvent
+		{
+			Id = Guid.NewGuid(),
+			Email = "test@example.com",
+			OccurredOn = DateTime.UtcNow
+		};
+		//_logger.LogInformation("Publishing test UserUpdatedDomainEvent");
+		//await _publisher.Publish(testEvent, context.CancellationToken);
+
 		List<OutboxMessage> messages = await _dbContext
 			.Set<OutboxMessage>()
 			.Where(m => m.ProcessedOnUtc == null)
@@ -37,7 +54,7 @@ public class ProcessOutboxMessagesJob : IJob
 
 		foreach (OutboxMessage outboxMessage in messages)
 		{
-			_logger.LogDebug("Processing OutboxMessage Id: {Id}, Content: {Content}", outboxMessage.Id, outboxMessage.Content);
+			_logger.LogInformation("\n\n\n\n\nProcessing OutboxMessage Id: {Id}, Content: {Content}", outboxMessage.Id, outboxMessage.Content);
 
 			try
 			{
@@ -54,8 +71,6 @@ public class ProcessOutboxMessagesJob : IJob
 					continue;
 				}
 
-				_logger.LogInformation("Deserialized DomainEvent: {Type}", domainEvent.GetType().Name);
-
 				await _publisher.Publish(domainEvent, context.CancellationToken);
 
 				outboxMessage.ProcessedOnUtc = DateTime.UtcNow;
@@ -67,6 +82,6 @@ public class ProcessOutboxMessagesJob : IJob
 			}
 		}
 
-		await _dbContext.SaveChangesAsync();
+		await _dbContext.SaveChangesAsync(context.CancellationToken);
 	}
 }
