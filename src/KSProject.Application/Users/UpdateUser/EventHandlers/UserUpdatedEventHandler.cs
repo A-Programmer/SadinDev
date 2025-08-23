@@ -11,6 +11,7 @@ public class UserUpdatedEventHandler : INotificationHandler<UserUpdatedDomainEve
 	public UserUpdatedEventHandler(ILogger<UserUpdatedEventHandler> logger)
 	{
 		_logger = logger;
+		Console.WriteLine("UserUpdatedEventHandler initialized.");
 	}
 
 	public async Task Handle(UserUpdatedDomainEvent notification, CancellationToken cancellationToken)

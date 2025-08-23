@@ -32,7 +32,6 @@ public static class DependencyInjection
 		services.AddQuartz(configure =>
 		{
 			var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
-
 			configure
 				.AddJob<ProcessOutboxMessagesJob>(jobKey)
 				.AddTrigger(
@@ -42,11 +41,9 @@ public static class DependencyInjection
 								schedule =>
 									schedule.WithIntervalInSeconds(10)
 										.RepeatForever()));
-
-			configure.UseMicrosoftDependencyInjectionJobFactory();
 		});
 
-		services.AddQuartzHostedService();
+		services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 		services.AddScoped<DbContext, KSProjectDbContext>();
 		services.AddScoped<IUnitOfWork, UnitOfWork>();
