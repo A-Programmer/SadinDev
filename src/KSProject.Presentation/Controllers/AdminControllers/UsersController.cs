@@ -12,111 +12,111 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KSProject.Presentation.Controllers.AdminControllers;
 
-public sealed class UsersController(ISender sender) : BaseController(sender)
+public sealed class UsersController(ISender sender, IMediator _mediator) : BaseController(sender)
 {
-    [HttpGet]
-    [Route(Routes.Users_Admin.GetPagedUsers)]
-    [ProducesResponseType(typeof(PaginatedList<UsersListItemResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PaginatedList<UsersListItemResponse>>> GetAllAsync(
-        [FromQuery] GetPaginatedUsersRequest options,
-        CancellationToken cancellationToken = default)
-    {
-        GetPaginatedUsersQuery query = new(options);
+	[HttpGet]
+	[Route(Routes.Users_Admin.GetPagedUsers)]
+	[ProducesResponseType(typeof(PaginatedList<UsersListItemResponse>), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<ActionResult<PaginatedList<UsersListItemResponse>>> GetAllAsync(
+		[FromQuery] GetPaginatedUsersRequest options,
+		CancellationToken cancellationToken = default)
+	{
+		GetPaginatedUsersQuery query = new(options);
 
-        PaginatedList<UsersListItemResponse> result =
-            await Sender.Send(query, cancellationToken);
+		PaginatedList<UsersListItemResponse> result =
+			await Sender.Send(query, cancellationToken);
 
-        return Ok(result);
-    }
-    
-    [HttpGet]
-    [Route(Routes.Users_Admin.GetUserById)]
-    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<UserResponse>> GetAsync(
-        [FromRoute] GetUserByIdRequest request,
-        CancellationToken cancellationToken)
-    {
-        GetUserByIdQuery query = new(request);
+		return Ok(result);
+	}
 
-        UserResponse result = await Sender.Send(query, cancellationToken);
+	[HttpGet]
+	[Route(Routes.Users_Admin.GetUserById)]
+	[ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<ActionResult<UserResponse>> GetAsync(
+		[FromRoute] GetUserByIdRequest request,
+		CancellationToken cancellationToken)
+	{
+		GetUserByIdQuery query = new(request);
 
-        return Ok(result);
-    }
+		UserResponse result = await Sender.Send(query, cancellationToken);
 
-    [HttpPost]
-    [Route(Routes.Users_Admin.CreateUser)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(CreateUserResponse), StatusCodes.Status200OK)]
-    public async Task<ActionResult<CreateUserResponse>> PostAsync(
-        [FromBody] CreateUserRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        CreateUserCommand command = new(request);
+		return Ok(result);
+	}
 
-        CreateUserResponse result = await Sender.Send(command, cancellationToken);
-        
-        return Ok(result);
-    }
+	[HttpPost]
+	[Route(Routes.Users_Admin.CreateUser)]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(typeof(CreateUserResponse), StatusCodes.Status200OK)]
+	public async Task<ActionResult<CreateUserResponse>> PostAsync(
+		[FromBody] CreateUserRequest request,
+		CancellationToken cancellationToken = default)
+	{
+		CreateUserCommand command = new(request);
 
-    [HttpPut]
-    [Route(Routes.Users_Admin.UpdateUser)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(UpdateUserResponse), StatusCodes.Status200OK)]
-    public async Task<ActionResult<UpdateUserResponse>> PutAsync(
-        Guid id,
-        [FromBody] UpdateUserRequest request,
-        CancellationToken cancellationToken)
-    {
-        if (id != request.Id)
-            return BadRequest("The record could not be found.");
-            
-        UpdateUserCommand command = new(request);
+		CreateUserResponse result = await Sender.Send(command, cancellationToken);
 
-        UpdateUserResponse result = await Sender.Send(command, cancellationToken);
+		return Ok(result);
+	}
 
-        return Ok(result);
-    }
-    
-    // TODO: Change Password should be implemented. Change Password and Reset Password are different actions, ResetPassword should be implemented in AuthController
-    
-    [HttpPut]
-    [Route(Routes.Users_Admin.UpdateUserRoles)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<UpdateUserResponse>> PutAsync(
-        Guid id,
-        [FromBody] UpdateUserRolesRequest request,
-        CancellationToken cancellationToken)
-    {
-        if (id != request.Id)
-            return BadRequest("The record could not be found.");
+	[HttpPut]
+	[Route(Routes.Users_Admin.UpdateUser)]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(typeof(UpdateUserResponse), StatusCodes.Status200OK)]
+	public async Task<ActionResult<UpdateUserResponse>> PutAsync(
+		Guid id,
+		[FromBody] UpdateUserRequest request,
+		CancellationToken cancellationToken)
+	{
+		if (id != request.Id)
+			return BadRequest("The record could not be found.");
 
-        UpdateUserRolesCommand command = new(request);
+		UpdateUserCommand command = new(request);
 
-        await Sender.Send(command, cancellationToken);
+		UpdateUserResponse result = await Sender.Send(command, cancellationToken);
 
-        return NoContent();
-    }
-    
-    [HttpDelete]
-    [Route(Routes.Users_Admin.DeleteUser)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DeleteAsync(
-        [FromRoute] DeleteUserRequest request,
-        CancellationToken cancellationToken)
-    {
-        DeleteUserCommand command = new(request);
+		return Ok(result);
+	}
 
-        await Sender.Send(command, cancellationToken);
+	// TODO: Change Password should be implemented. Change Password and Reset Password are different actions, ResetPassword should be implemented in AuthController
 
-        return NoContent();
-    }
+	[HttpPut]
+	[Route(Routes.Users_Admin.UpdateUserRoles)]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<ActionResult<UpdateUserResponse>> PutAsync(
+		Guid id,
+		[FromBody] UpdateUserRolesRequest request,
+		CancellationToken cancellationToken)
+	{
+		if (id != request.Id)
+			return BadRequest("The record could not be found.");
+
+		UpdateUserRolesCommand command = new(request);
+
+		await Sender.Send(command, cancellationToken);
+
+		return NoContent();
+	}
+
+	[HttpDelete]
+	[Route(Routes.Users_Admin.DeleteUser)]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IActionResult> DeleteAsync(
+		[FromRoute] DeleteUserRequest request,
+		CancellationToken cancellationToken)
+	{
+		DeleteUserCommand command = new(request);
+
+		await Sender.Send(command, cancellationToken);
+
+		return NoContent();
+	}
 }

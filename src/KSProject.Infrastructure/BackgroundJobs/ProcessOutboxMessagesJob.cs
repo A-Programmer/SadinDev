@@ -6,67 +6,97 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Quartz;
+using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using KSProject.Domain.Aggregates.Users.Events;
 
 namespace KSProject.Infrastructure.BackgroundJobs;
 
 [DisallowConcurrentExecution]
 public class ProcessOutboxMessagesJob : IJob
 {
-	private readonly KSProjectDbContext _dbContext;
-	private readonly IMediator _publisher;
-	private readonly ILogger<ProcessOutboxMessagesJob> _logger;
+    private readonly KSProjectDbContext _dbContext;
+    private readonly IMediator _publisher;
+    private readonly ILogger<ProcessOutboxMessagesJob> _logger;
 
-	public ProcessOutboxMessagesJob(KSProjectDbContext dbContext, IMediator publisher, ILogger<ProcessOutboxMessagesJob> logger)
-	{
-		_dbContext = dbContext;
-		_publisher = publisher;
-		_logger = logger;
-	}
+    public ProcessOutboxMessagesJob(KSProjectDbContext dbContext, IMediator publisher, ILogger<ProcessOutboxMessagesJob> logger)
+    {
+        _dbContext = dbContext;
+        _publisher = publisher;
+        _logger = logger;
+    }
 
-	public async Task Execute(IJobExecutionContext context)
-	{
-		_logger.LogInformation("ProcessOutboxMessagesJob started at {Time}", DateTime.UtcNow);
+    public async Task Execute(IJobExecutionContext context)
+    {
+        _logger.LogInformation("ProcessOutboxMessagesJob started at {Time}", DateTime.UtcNow);
 
-		List<OutboxMessage> messages = await _dbContext
-			.Set<OutboxMessage>()
-			.Where(m => m.ProcessedOnUtc == null)
-			.Take(20)
-			.ToListAsync(context.CancellationToken);
+        if (context.CancellationToken.IsCancellationRequested)
+        {
+            _logger.LogWarning("Cancellation requested for ProcessOutboxMessagesJob");
+            return;
+        }
 
-		_logger.LogInformation("Found {Count} unprocessed OutboxMessages", messages.Count);
+        List<OutboxMessage> messages = await _dbContext
+            .Set<OutboxMessage>()
+            .Where(m => m.ProcessedOnUtc == null)
+            .Take(20)
+            .ToListAsync(context.CancellationToken);
 
-		foreach (OutboxMessage outboxMessage in messages)
-		{
-			_logger.LogDebug("Processing OutboxMessage Id: {Id}, Content: {Content}", outboxMessage.Id, outboxMessage.Content);
+        _logger.LogInformation("Found {Count} unprocessed OutboxMessages", messages.Count);
+        _logger.LogInformation("Messages: {Messages}", JsonConvert.SerializeObject(messages));
 
-			try
-			{
-				IDomainEvent? domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(
-					outboxMessage.Content,
-					new JsonSerializerSettings
-					{
-						TypeNameHandling = TypeNameHandling.All
-					});
+        foreach (OutboxMessage outboxMessage in messages)
+        {
+            _logger.LogInformation("Processing OutboxMessage Id: {Id}, Content: {Content}", outboxMessage.Id, outboxMessage.Content);
 
-				if (domainEvent is null)
-				{
-					_logger.LogWarning("Failed to deserialize OutboxMessage Id: {Id}", outboxMessage.Id);
-					continue;
-				}
+            try
+            {
+                IDomainEvent? domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(
+                    outboxMessage.Content,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    });
 
-				_logger.LogInformation("Deserialized DomainEvent: {Type}", domainEvent.GetType().Name);
+                if (domainEvent is null)
+                {
+                    _logger.LogWarning("Failed to deserialize OutboxMessage Id: {Id}", outboxMessage.Id);
+                    continue;
+                }
 
-				await _publisher.Publish(domainEvent, context.CancellationToken);
+                _logger.LogInformation("Deserialized DomainEvent: {Type}, Is UserUpdatedDomainEvent: {IsCorrectType}", 
+                    domainEvent.GetType().Name, domainEvent is UserUpdatedDomainEvent);
 
-				outboxMessage.ProcessedOnUtc = DateTime.UtcNow;
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "Error processing OutboxMessage Id: {Id}", outboxMessage.Id);
-				continue;
-			}
-		}
+                // پیدا کردن متد Publish با امضای دقیق
+                var publishMethod = typeof(IMediator).GetMethods()
+                    .Where(m => m.Name == nameof(IMediator.Publish) && 
+                                m.IsGenericMethod && 
+                                m.GetParameters().Length == 2 &&
+                                m.GetParameters()[0].ParameterType.IsGenericParameter &&
+                                m.GetParameters()[1].ParameterType == typeof(CancellationToken))
+                    .SingleOrDefault()
+                    ?.MakeGenericMethod(domainEvent.GetType());
 
-		await _dbContext.SaveChangesAsync();
-	}
+                if (publishMethod == null)
+                {
+                    _logger.LogError("Publish method not found for type: {Type}", domainEvent.GetType().Name);
+                    continue;
+                }
+
+                await (Task)publishMethod.Invoke(_publisher, new object[] { domainEvent, context.CancellationToken });
+
+                outboxMessage.ProcessedOnUtc = DateTime.UtcNow;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing OutboxMessage Id: {Id}", outboxMessage.Id);
+                continue;
+            }
+        }
+
+        await _dbContext.SaveChangesAsync(context.CancellationToken);
+    }
 }
