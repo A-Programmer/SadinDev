@@ -16,7 +16,6 @@ public class UserUpdatedEventHandler : INotificationHandler<UserUpdatedDomainEve
 
 	public async Task Handle(UserUpdatedDomainEvent notification, CancellationToken cancellationToken)
 	{
-		throw new Exception("This event handler is not implemented yet.");
 		// TODO: This should be change to send email
 		_logger.LogInformation("The user with Id {id} has been updated.", notification.Id);
 	}
