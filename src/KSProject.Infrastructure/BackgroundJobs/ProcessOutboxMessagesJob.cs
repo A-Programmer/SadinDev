@@ -31,11 +31,8 @@ public class ProcessOutboxMessagesJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        _logger.LogInformation("ProcessOutboxMessagesJob started at {Time}", DateTime.UtcNow);
-
         if (context.CancellationToken.IsCancellationRequested)
         {
-            _logger.LogWarning("Cancellation requested for ProcessOutboxMessagesJob");
             return;
         }
 
@@ -45,13 +42,8 @@ public class ProcessOutboxMessagesJob : IJob
             .Take(20)
             .ToListAsync(context.CancellationToken);
 
-        _logger.LogInformation("Found {Count} unprocessed OutboxMessages", messages.Count);
-        _logger.LogInformation("Messages: {Messages}", JsonConvert.SerializeObject(messages));
-
         foreach (OutboxMessage outboxMessage in messages)
         {
-            _logger.LogInformation("Processing OutboxMessage Id: {Id}, Content: {Content}", outboxMessage.Id, outboxMessage.Content);
-
             try
             {
                 IDomainEvent? domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(
@@ -66,11 +58,7 @@ public class ProcessOutboxMessagesJob : IJob
                     _logger.LogWarning("Failed to deserialize OutboxMessage Id: {Id}", outboxMessage.Id);
                     continue;
                 }
-
-                _logger.LogInformation("Deserialized DomainEvent: {Type}, Is UserUpdatedDomainEvent: {IsCorrectType}", 
-                    domainEvent.GetType().Name, domainEvent is UserUpdatedDomainEvent);
-
-                // پیدا کردن متد Publish با امضای دقیق
+                
                 var publishMethod = typeof(IMediator).GetMethods()
                     .Where(m => m.Name == nameof(IMediator.Publish) && 
                                 m.IsGenericMethod && 
@@ -82,7 +70,6 @@ public class ProcessOutboxMessagesJob : IJob
 
                 if (publishMethod == null)
                 {
-                    _logger.LogError("Publish method not found for type: {Type}", domainEvent.GetType().Name);
                     continue;
                 }
 
