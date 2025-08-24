@@ -33,7 +33,7 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 
 	[HttpGet]
 	[Permission("GetUserById")]
-	[Route(Routes.Roles_Admin.GetRoleById)]
+	[Route(Routes.Users_Admin.GetUserById)]
 	[Produces(typeof(UserResponse))]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
