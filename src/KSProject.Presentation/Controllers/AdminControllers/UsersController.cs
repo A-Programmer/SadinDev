@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KSProject.Presentation.Controllers.AdminControllers;
 
-public sealed class UsersController(ISender sender, IMediator _mediator) : BaseController(sender)
+public sealed class UsersController(ISender sender) : BaseController(sender)
 {
 	[HttpGet]
 	[Route(Routes.Users_Admin.GetPagedUsers)]
@@ -33,9 +33,10 @@ public sealed class UsersController(ISender sender, IMediator _mediator) : BaseC
 
 	[HttpGet]
 	[Permission("GetUserById")]
-	[Route(Routes.Users_Admin.GetUserById)]
-	[ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[Route(Routes.Roles_Admin.GetRoleById)]
+	[Produces(typeof(UserResponse))]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 	public async Task<ActionResult<UserResponse>> GetAsync(
 		[FromRoute] GetUserByIdRequest request,
 		CancellationToken cancellationToken)

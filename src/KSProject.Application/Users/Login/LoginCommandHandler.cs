@@ -49,7 +49,7 @@ public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, LoginRes
 		if (user.HashedPassword != hashedPassword)
 			throw new AuthenticationException(GeneralMessages.WrongUserNameOrPassword);
 
-		user = await _uow.Users.FindUserWithRolesAsync(user.Id, cancellationToken)
+		user = await _uow.Users.FindUserIncludingRolesAndPermissionsAsync(user.Id, cancellationToken)
 			?? throw new KSNotFoundException(request.Payload.UserName);
 
 		List<string> permissions = user.Permissions.Select(x => x.Name).ToList() ?? new List<string>();

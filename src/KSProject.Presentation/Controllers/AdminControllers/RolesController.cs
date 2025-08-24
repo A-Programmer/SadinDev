@@ -6,6 +6,7 @@ using KSProject.Application.Roles.GetAllRoles;
 using KSProject.Application.Roles.GetPaginatedRoles;
 using KSProject.Application.Roles.GetRoleById;
 using KSProject.Application.Roles.UpdateRole;
+using KSProject.Presentation.Attributes;
 using KSProject.Presentation.BaseControllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +51,7 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
     }
 
     [HttpGet]
+    [Permission("GetRoleById")]
     [Route(Routes.Roles_Admin.GetRoleById)]
     [Produces(typeof(RoleItemResponse))]
     [ProducesResponseType(StatusCodes.Status200OK)]

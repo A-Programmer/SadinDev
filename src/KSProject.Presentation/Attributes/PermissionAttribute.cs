@@ -21,7 +21,7 @@ public class PermissionAttribute : Attribute, IAuthorizationFilter
 		}
 
 		var userPermissions = context.HttpContext.User.Claims
-			.Where(c => c.Type == "Permission")
+			.Where(c => c.Type.ToLower() == "permission")
 			.Select(c => c.Value)
 			.ToList();
 
