@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Project.Presentation.Handlers;
+namespace KSProject.Presentation.Handlers;
 
 public class GlobalExceptionHandler(
     IProblemDetailsService problemDetailsService,

@@ -1,9 +1,10 @@
-﻿using KSProject.Domain;
+﻿using KSProject.Application.Contracts;
+using KSProject.Domain;
 using KSProject.Presentation.ExtensionMethods;
+using KSProject.Presentation.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Project.Presentation.ExtensionMethods;
 
 namespace KSProject.Presentation;
 
@@ -24,7 +25,7 @@ public static class DependencyInjection
 				.AllowAnyMethod();
 			});
 		});
-
+		services.AddScoped<IPermissionDiscoveryService, PermissionDiscoveryService>();
 		services.AddEndpointsApiExplorer();
 		services.AddGlobalExceptionHandling();
 		services.AddCustomControllers();

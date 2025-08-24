@@ -6,6 +6,7 @@ using KSProject.Application.Users.GetPaginatedUsers;
 using KSProject.Application.Users.GetUserById;
 using KSProject.Application.Users.UpdateUser;
 using KSProject.Application.Users.UpdateUserRoles;
+using KSProject.Presentation.Attributes;
 using KSProject.Presentation.BaseControllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,7 @@ public sealed class UsersController(ISender sender, IMediator _mediator) : BaseC
 	}
 
 	[HttpGet]
+	[Permission("GetUserById")]
 	[Route(Routes.Users_Admin.GetUserById)]
 	[ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

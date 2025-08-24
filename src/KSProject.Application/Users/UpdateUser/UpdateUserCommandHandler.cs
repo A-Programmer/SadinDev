@@ -34,11 +34,14 @@ public sealed class UpdateUserCommandHandler
 		if (await AreInformationInUse(request, cancellationToken))
 			throw new KsDuplicatedUserException("A user with the same information exist.");
 
-		List<string> permissions = (await _uow.Permissions.GetByUserIdAsync(user.Id, cancellationToken))?.Select(x => x.Name).ToList() ?? new List<string>();
+		user = await _uow.Users.FindUserWithRolesAsync(user.Id, cancellationToken)
+	?? throw new KSNotFoundException(request.Payload.UserName);
+
+		List<string> permissions = user.Permissions.Select(x => x.Name).ToList() ?? new List<string>();
 
 		foreach (var role in user.Roles)
 		{
-			permissions.AddRange((await _uow.Permissions.GetByRoleIdAsync(role.Id, cancellationToken)).Select(x => x.Name));
+			permissions.AddRange(role.Permissions.Select(x => x.Name).ToList());
 		}
 		permissions = permissions.Distinct().ToList();
 

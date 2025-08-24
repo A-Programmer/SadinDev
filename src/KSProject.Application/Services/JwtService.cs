@@ -3,7 +3,6 @@ using KSProject.Domain.Aggregates.Users;
 using KSProject.Domain.Contracts;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -60,14 +59,14 @@ public sealed class JwtService : IJwtService
 			new Claim("security_stamp", securityStamp)
 		};
 
-		if (user.Roles.Any())
+		foreach (var role in user.Roles)
 		{
-			claims.Add(new Claim("roles", JsonConvert.SerializeObject(user.Roles.Select(r => r.Name.ToLower()))));
+			claims.Add(new Claim("role", role.Name));
 		}
 
-		if (permissions.Any())
+		foreach (var permission in permissions)
 		{
-			claims.Add(new Claim("permissions", JsonConvert.SerializeObject(permissions)));
+			claims.Add(new Claim("permission", permission));
 		}
 
 		return claims;

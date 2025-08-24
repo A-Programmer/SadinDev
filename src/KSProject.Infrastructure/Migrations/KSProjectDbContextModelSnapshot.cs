@@ -22,7 +22,7 @@ namespace KSProject.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("KSProject.Domain.Aggregates.Permissions.Permission", b =>
+            modelBuilder.Entity("KSProject.Domain.Aggregates.Permissions.OldPermission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -788,7 +788,7 @@ namespace KSProject.Infrastructure.Migrations
 
             modelBuilder.Entity("RolesPermissions", b =>
                 {
-                    b.HasOne("KSProject.Domain.Aggregates.Permissions.Permission", null)
+                    b.HasOne("KSProject.Domain.Aggregates.Permissions.OldPermission", null)
                         .WithMany()
                         .HasForeignKey("PermissionsId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -803,7 +803,7 @@ namespace KSProject.Infrastructure.Migrations
 
             modelBuilder.Entity("UsersPermissions", b =>
                 {
-                    b.HasOne("KSProject.Domain.Aggregates.Permissions.Permission", null)
+                    b.HasOne("KSProject.Domain.Aggregates.Permissions.OldPermission", null)
                         .WithMany()
                         .HasForeignKey("PermissionsId")
                         .OnDelete(DeleteBehavior.Restrict)

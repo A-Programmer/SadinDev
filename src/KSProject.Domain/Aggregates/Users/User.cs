@@ -3,7 +3,6 @@ using KSFramework.KSDomain.AggregatesHelper;
 using KSFramework.Utilities;
 using KSProject.Common.Constants.Enums;
 using KSProject.Common.Exceptions;
-using KSProject.Domain.Aggregates.Permissions;
 using KSProject.Domain.Aggregates.Roles;
 using KSProject.Domain.Aggregates.Users.Events;
 using KSProject.Domain.Aggregates.Users.ValueObjects;
@@ -59,8 +58,8 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
 	public Guid? UserProfileId { get; private set; }
 	public UserProfile? Profile { get; private set; }
 
-	private List<Permission> _permissions = new();
-	public IReadOnlyCollection<Permission> Permissions => _permissions;
+	private List<UserPermission> _permissions = new();
+	public IReadOnlyCollection<UserPermission> Permissions => _permissions;
 
 
 	private List<Role> _roles = new();
@@ -291,7 +290,7 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
 
 	#region User Permissions
 
-	public void AddPermission(Permission permission,
+	public void AddPermission(UserPermission permission,
 		UserSecurityStamp? securityStamp = null)
 	{
 		if (!_permissions.Any(x => x.Name.ToLower() == permission.Name.ToLower()))
@@ -304,7 +303,7 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
 			}
 		}
 	}
-	public void AddPermissions(List<Permission> permissions,
+	public void AddPermissions(List<UserPermission> permissions,
 		UserSecurityStamp? securityStamp = null)
 	{
 		foreach (var permission in permissions)
@@ -368,8 +367,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
 		builder
 			.HasMany(r => r.Permissions)
-			.WithMany(p => p.Users)
-			.UsingEntity("UsersPermissions");
+			.WithOne(p => p.User)
+			.HasForeignKey(x => x.UserId)
+			.OnDelete(DeleteBehavior.Cascade);
 
 		builder.HasOne(u => u.Profile)
 		   .WithOne(up => up.User)
