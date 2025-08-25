@@ -1,5 +1,4 @@
 using KSFramework.GenericRepository;
-using KSProject.Domain.Aggregates.Permissions;
 using KSProject.Domain.Aggregates.Roles;
 using KSProject.Domain.Aggregates.Users;
 using KSProject.Domain.Contracts;
@@ -29,9 +28,6 @@ public class KSProjectUnitOfWork : IKSProjectUnitOfWork
 
 	private UsersRepository? _users;
 	public IUsersRepository Users => _users ??= new UsersRepository(_context);
-
-	private PermissionsRepository? _permissions;
-	public IPermissionsRepository Permissions => _permissions ??= new PermissionsRepository(_context);
 
 	/// <summary>
 	/// Saves all changes made in this unit of work to the underlying data store asynchronously.

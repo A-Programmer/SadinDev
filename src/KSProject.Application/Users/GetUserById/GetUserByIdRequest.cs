@@ -6,5 +6,6 @@ namespace KSProject.Application.Users.GetUserById;
 
 public sealed class GetUserByIdRequest : IInjectable
 {
-    [JsonPropertyName("id")] public Guid Id { get; init; }
+    [property :JsonProperty(nameof(id))]
+    public required Guid id { get; set; }
 }

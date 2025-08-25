@@ -4,15 +4,17 @@ using KSProject.Application.Users.CreateUser;
 using KSProject.Application.Users.DeleteUser;
 using KSProject.Application.Users.GetPaginatedUsers;
 using KSProject.Application.Users.GetUserById;
+using KSProject.Application.Users.GetUserPermissionsByUserId;
 using KSProject.Application.Users.UpdateUser;
 using KSProject.Application.Users.UpdateUserRoles;
+using KSProject.Presentation.Attributes;
 using KSProject.Presentation.BaseControllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KSProject.Presentation.Controllers.AdminControllers;
 
-public sealed class UsersController(ISender sender, IMediator _mediator) : BaseController(sender)
+public sealed class UsersController(ISender sender) : BaseController(sender)
 {
 	[HttpGet]
 	[Route(Routes.Users_Admin.GetPagedUsers)]
@@ -31,9 +33,11 @@ public sealed class UsersController(ISender sender, IMediator _mediator) : BaseC
 	}
 
 	[HttpGet]
+	[Permission("GetUserById")]
 	[Route(Routes.Users_Admin.GetUserById)]
-	[ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[Produces(typeof(UserResponse))]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 	public async Task<ActionResult<UserResponse>> GetAsync(
 		[FromRoute] GetUserByIdRequest request,
 		CancellationToken cancellationToken)
@@ -41,6 +45,24 @@ public sealed class UsersController(ISender sender, IMediator _mediator) : BaseC
 		GetUserByIdQuery query = new(request);
 
 		UserResponse result = await Sender.Send(query, cancellationToken);
+
+		return Ok(result);
+	}
+
+
+	[HttpGet]
+	[Permission("GetUserPermissions")]
+	[Route(Routes.Users_Admin.User_Permissions.GetUserPermissions)]
+	[Produces(typeof(UserPermissionsResponse))]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+	public async Task<ActionResult<UserPermissionsResponse>> GetPermissionsAsync(
+		[FromRoute] GetUserPermissionsByIdRequest request,
+		CancellationToken cancellationToken)
+	{
+		GetUserPermissionsByIdQuery query = new(request);
+
+		UserPermissionsResponse result = await Sender.Send(query, cancellationToken);
 
 		return Ok(result);
 	}
