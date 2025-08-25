@@ -31,6 +31,12 @@ public static class Routes
 		public const string GetPagedRoles = "paged";
 		public const string GetRoleById = "{id}";
 		public const string DeleteRole = "{id}";
+
+		public static class Role_Permissions
+		{
+			public const string GetRolePermissions = "{id}/permissions";
+			public const string UpdateRolePermissions = "{id}/permissions";
+		}
 	}
 
 	public static class Users_Admin
@@ -42,5 +48,11 @@ public static class Routes
 		public const string GetUserById = "{id}";
 		public const string DeleteUser = "{id}";
 		public const string UpdateUserRoles = "{id}/roles";
+
+		public static class User_Permissions
+		{
+			public const string GetUserPermissions = "{id}/permissions";
+			public const string UpdateUserPermissions = "{id}/permissions";
+		}
 	}
 }

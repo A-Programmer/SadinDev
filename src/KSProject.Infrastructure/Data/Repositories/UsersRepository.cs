@@ -111,12 +111,21 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 			.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 	}
 
-	public async Task<User?> FindUserIncludingRolesAndPermissionsAsync(Guid id, CancellationToken cancellationToken = default)
+	public async Task<User?> FindUserIncludingRolesAndPermissionsAsync(Guid id,
+		CancellationToken cancellationToken = default)
 	{
 		return await _users
 			.Include(u => u.Permissions)
 			.Include(u => u.Roles)
 			.ThenInclude(u => u.Permissions)
+			.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+	}
+
+	public async Task<User?> GetUserAndPermissionsAsync(Guid id,
+		CancellationToken cancellationToken = default)
+	{
+		return await _users
+			.Include(u => u.Permissions)
 			.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 	}
 }
