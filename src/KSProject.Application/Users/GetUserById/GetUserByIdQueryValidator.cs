@@ -7,7 +7,7 @@ public sealed class GetUserByIdQueryValidator : AbstractValidator<GetUserByIdQue
 {
     public GetUserByIdQueryValidator()
     {
-        RuleFor(x => x.Payload.Id)
+        RuleFor(x => x.Payload.id)
             .NotNull()
             .WithMessage(ValidationMessages.ShouldNotBeNull)
             .NotEmpty()

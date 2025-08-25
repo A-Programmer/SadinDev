@@ -1,7 +1,7 @@
+using KSProject.Presentation.Handlers;
 using Microsoft.Extensions.DependencyInjection;
-using Project.Presentation.Handlers;
 
-namespace Project.Presentation.ExtensionMethods;
+namespace KSProject.Presentation.ExtensionMethods;
 
 public static class AddGlobalExceptionHandlingExtensionMethod
 {

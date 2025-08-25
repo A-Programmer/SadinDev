@@ -1,7 +1,6 @@
 using KSFramework.KSDomain;
 using KSFramework.KSDomain.AggregatesHelper;
 using KSFramework.Utilities;
-using KSProject.Domain.Aggregates.Permissions;
 using KSProject.Domain.Aggregates.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -46,12 +45,12 @@ public sealed class Role : BaseEntity, IAggregateRoot, ISerializable
 	/// </summary>
 	public IReadOnlyCollection<User> Users => _users;
 
-	private List<Permission> _permissions = new();
+	private List<RolePermission> _permissions = new();
 
 	/// <summary>
 	/// Gets the permissions assigned to this role.
 	/// </summary>
-	public IReadOnlyCollection<Permission> Permissions => _permissions;
+	public IReadOnlyCollection<RolePermission> Permissions => _permissions;
 
 	/// <summary>
 	/// Updates the name and description of the role.
@@ -90,7 +89,7 @@ public sealed class Role : BaseEntity, IAggregateRoot, ISerializable
 	/// </summary>
 	/// <param name="permission">The permission to add.</param>
 	/// <exception cref="ArgumentNullException">Thrown when the permission is null.</exception>
-	public void AddPermission(Permission permission)
+	public void AddPermission(RolePermission permission)
 	{
 		if (permission == null)
 			throw new ArgumentNullException(nameof(permission));
@@ -104,7 +103,7 @@ public sealed class Role : BaseEntity, IAggregateRoot, ISerializable
 	/// </summary>
 	/// <param name="permission">The permission to remove.</param>
 	/// <exception cref="ArgumentNullException">Thrown when the permission is null.</exception>
-	public void RemovePermission(Permission permission)
+	public void RemovePermission(RolePermission permission)
 	{
 		if (permission == null)
 			throw new ArgumentNullException(nameof(permission));
@@ -197,7 +196,8 @@ public class UserConfiguration : IEntityTypeConfiguration<Role>
 
 		builder
 			.HasMany(r => r.Permissions)
-			.WithMany(p => p.Roles)
-			.UsingEntity("RolesPermissions");
+			.WithOne(p => p.Role)
+			.HasForeignKey(x => x.RoleId)
+			.OnDelete(DeleteBehavior.Cascade);
 	}
 }

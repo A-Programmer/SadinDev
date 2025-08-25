@@ -20,10 +20,10 @@ public sealed class GetUserByIdQueryHandler
     public async Task<UserResponse> Handle(GetUserByIdQuery request,
         CancellationToken cancellationToken)
     {
-        User? user = await _uow.Users.FindUserWithRolesAsync(request.Payload.Id, cancellationToken);
+        User? user = await _uow.Users.FindUserWithRolesAsync(request.Payload.id, cancellationToken);
 
         if (user is null)
-            throw new KSNotFoundException(request.Payload.Id.ToString());
+            throw new KSNotFoundException(request.Payload.id.ToString());
 
         return new UserResponse
         {
