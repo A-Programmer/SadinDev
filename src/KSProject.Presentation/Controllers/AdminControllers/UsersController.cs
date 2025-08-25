@@ -4,6 +4,7 @@ using KSProject.Application.Users.CreateUser;
 using KSProject.Application.Users.DeleteUser;
 using KSProject.Application.Users.GetPaginatedUsers;
 using KSProject.Application.Users.GetUserById;
+using KSProject.Application.Users.GetUserPermissionsByUserId;
 using KSProject.Application.Users.UpdateUser;
 using KSProject.Application.Users.UpdateUserRoles;
 using KSProject.Presentation.Attributes;
@@ -44,6 +45,24 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 		GetUserByIdQuery query = new(request);
 
 		UserResponse result = await Sender.Send(query, cancellationToken);
+
+		return Ok(result);
+	}
+
+
+	[HttpGet]
+	[Permission("GetUserPermissions")]
+	[Route(Routes.Users_Admin.User_Permissions.GetUserPermissions)]
+	[Produces(typeof(UserPermissionsResponse))]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+	public async Task<ActionResult<UserPermissionsResponse>> GetPermissionsAsync(
+		[FromRoute] GetUserPermissionsByIdRequest request,
+		CancellationToken cancellationToken)
+	{
+		GetUserPermissionsByIdQuery query = new(request);
+
+		UserPermissionsResponse result = await Sender.Send(query, cancellationToken);
 
 		return Ok(result);
 	}
