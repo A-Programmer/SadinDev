@@ -18,6 +18,7 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 {
 	[HttpGet]
 	[Route(Routes.Users_Admin.GetPagedUsers)]
+	[Permission("GetPagedUsers")]
 	[ProducesResponseType(typeof(PaginatedList<UsersListItemResponse>), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<PaginatedList<UsersListItemResponse>>> GetAllAsync(
@@ -68,6 +69,7 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpPost]
+	[Permission("CreateUser")]
 	[Route(Routes.Users_Admin.CreateUser)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -84,6 +86,7 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpPut]
+	[Permission("UpdateUser")]
 	[Route(Routes.Users_Admin.UpdateUser)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -107,6 +110,7 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 	// TODO: Change Password should be implemented. Change Password and Reset Password are different actions, ResetPassword should be implemented in AuthController
 
 	[HttpPut]
+	[Permission("UpdateUserRoles")]
 	[Route(Routes.Users_Admin.UpdateUserRoles)]
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -127,6 +131,7 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpDelete]
+	[Permission("DeleteUser")]
 	[Route(Routes.Users_Admin.DeleteUser)]
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
