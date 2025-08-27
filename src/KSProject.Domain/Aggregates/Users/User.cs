@@ -202,6 +202,113 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
 
 		return user;
 	}
+
+	#region Permissions
+	public void AddPermission(UserPermission permission,
+		UserSecurityStamp? securityStamp = null)
+	{
+		if (!_permissions.Any(x => x.Name.ToLower() == permission.Name.ToLower()))
+		{
+			_permissions.Add(permission);
+			if (securityStamp != null)
+			{
+				AddSecurityStamp(securityStamp);
+			}
+		}
+	}
+	public void AddPermissions(List<UserPermission> permissions,
+		UserSecurityStamp? securityStamp = null)
+	{
+		foreach (var permission in permissions)
+		{
+			if (!_permissions.Any(x => x.Name.ToLower() == permission.Name.ToLower()))
+			{
+				_permissions.Add(permission);
+			}
+		}
+	}
+	public void AddPermission(string permission,
+		UserSecurityStamp? securityStamp = null)
+	{
+		UserPermission userPermission = UserPermission.Create(Id, permission);
+		if (!_permissions.Any(x => x.Name.ToLower() == permission.ToLower()))
+		{
+			_permissions.Add(userPermission);
+			if (securityStamp != null)
+			{
+				AddSecurityStamp(securityStamp);
+			}
+		}
+	}
+
+	public void RemovePermission(UserPermission permission,
+		UserSecurityStamp? securityStamp = null)
+	{
+		if (_permissions.Any(x => x.Name.ToLower() == permission.Name.ToLower()))
+		{
+			_permissions.Remove(permission);
+			if (securityStamp != null)
+			{
+				AddSecurityStamp(securityStamp);
+			}
+		}
+	}
+
+	public void RemovePermission(string permission,
+		UserSecurityStamp? securityStamp = null)
+	{
+		UserPermission? userPermission = _permissions.FirstOrDefault(x => x.Name.ToLower() == permission.ToLower());
+		if (userPermission != null)
+		{
+			_permissions.Remove(userPermission);
+			if (securityStamp != null)
+			{
+				AddSecurityStamp(securityStamp);
+			}
+		}
+	}
+
+	public void ClearPermissions(UserSecurityStamp? securityStamp = null)
+	{
+		_permissions.Clear();
+		if (securityStamp != null)
+		{
+			AddSecurityStamp(securityStamp);
+		}
+	}
+
+	public void UpdatePermissions(List<UserPermission> permissions,
+		UserSecurityStamp? securityStamp = null)
+	{
+		if (permissions != null)
+		{
+			_permissions.Clear();
+			_permissions.AddRange(permissions);
+
+			if (securityStamp != null)
+			{
+				AddSecurityStamp(securityStamp);
+			}
+		}
+	}
+
+	public void UpdatePermissions(Guid userId, List<string> permissions,
+		UserSecurityStamp? securityStamp = null)
+	{
+		foreach (var permission in permissions)
+		{
+			if (!_permissions.Any(x => x.Name.ToLower() == permission.ToLower()))
+			{
+				_permissions.Add(UserPermission.Create(userId, permission));
+			}
+		}
+		if (securityStamp != null)
+		{
+			AddSecurityStamp(securityStamp);
+		}
+	}
+	#endregion
+
 	#region Secrity Stamps and Tokens
 
 	public void AddSecurityStamp(UserSecurityStamp securityStamp)
@@ -288,44 +395,6 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
 
 	#endregion
 
-	#region User Permissions
-
-	public void AddPermission(UserPermission permission,
-		UserSecurityStamp? securityStamp = null)
-	{
-		if (!_permissions.Any(x => x.Name.ToLower() == permission.Name.ToLower()))
-		{
-			_permissions.Add(permission);
-
-			if (securityStamp != null)
-			{
-				AddSecurityStamp(securityStamp);
-			}
-		}
-	}
-	public void AddPermissions(List<UserPermission> permissions,
-		UserSecurityStamp? securityStamp = null)
-	{
-		foreach (var permission in permissions)
-		{
-			if (!_permissions.Any(x => x.Name.ToLower() == permission.Name.ToLower()))
-			{
-				_permissions.Add(permission);
-			}
-		}
-	}
-	public void ClearPermissions(UserSecurityStamp? securityStamp = null)
-	{
-		_permissions.Clear();
-
-		if (securityStamp != null)
-		{
-			AddSecurityStamp(securityStamp);
-		}
-	}
-	#endregion
-
-
 	public void GetObjectData(SerializationInfo info, StreamingContext context)
 	{
 		info.AddValue(nameof(Id), Id);
@@ -369,7 +438,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 			.HasMany(r => r.Permissions)
 			.WithOne(p => p.User)
 			.HasForeignKey(x => x.UserId)
-			.OnDelete(DeleteBehavior.Cascade);
+			.OnDelete(DeleteBehavior.SetNull);
 
 		builder.HasOne(u => u.Profile)
 		   .WithOne(up => up.User)

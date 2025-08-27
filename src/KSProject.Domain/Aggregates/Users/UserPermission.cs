@@ -17,15 +17,15 @@ public sealed class UserPermission : BaseEntity, ISerializable
 			throw new KSArgumentNullException(nameof(name));
 		Name = name;
 	}
-	public Guid UserId { get; private set; }
-	public User User { get; private set; }
+	public Guid? UserId { get; private set; }
+	public User? User { get; private set; }
 	public string Name { get; private set; } = string.Empty;
 
-	public static UserPermission Create(Guid id,
+	public static UserPermission Create(
 		Guid userId,
 		string name)
 	{
-		UserPermission userPermission = new(id, userId, name);
+		UserPermission userPermission = new(Guid.NewGuid(), userId, name);
 		return userPermission;
 	}
 
@@ -48,5 +48,7 @@ public sealed class UserPermissionsConfiguration : IEntityTypeConfiguration<User
 	public void Configure(EntityTypeBuilder<UserPermission> builder)
 	{
 		builder.HasKey(x => x.Id);
+
+		builder.Property(x => x.UserId).IsRequired(false);
 	}
 }
