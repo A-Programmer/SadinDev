@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KSProject.Infrastructure.Migrations
 {
     [DbContext(typeof(KSProjectDbContext))]
-    [Migration("20250824192956_RemovePermissions")]
-    partial class RemovePermissions
+    [Migration("20250828194805_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -231,30 +231,6 @@ namespace KSProject.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("KSProject.Domain.Aggregates.Users.UserPermission", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWSEQUENTIALID()");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserPermissions");
-                });
-
             modelBuilder.Entity("KSProject.Domain.Aggregates.Users.UserProfile", b =>
                 {
                     b.Property<Guid>("Id")
@@ -292,7 +268,7 @@ namespace KSProject.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UsersProfiles", (string)null);
+                    b.ToTable("UserProfiles");
                 });
 
             modelBuilder.Entity("KSProject.Infrastructure.Outbox.OutboxMessage", b =>
@@ -366,7 +342,7 @@ namespace KSProject.Infrastructure.Migrations
                     b.HasOne("KSProject.Domain.Aggregates.Roles.Role", "Role")
                         .WithMany("Permissions")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Role");
@@ -377,7 +353,7 @@ namespace KSProject.Infrastructure.Migrations
                     b.HasOne("KSProject.Domain.Aggregates.Test.TestAggregate", "TestAggregate")
                         .WithMany("Entities")
                         .HasForeignKey("TestAggregateId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("TestAggregate");
@@ -407,6 +383,30 @@ namespace KSProject.Infrastructure.Migrations
                             b1.HasIndex("UserId");
 
                             b1.ToTable("UserLoginDates", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.OwnsMany("KSProject.Domain.Aggregates.Users.ValueObjects.UserPermission", "Permissions", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier")
+                                .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("UserId");
+
+                            b1.ToTable("UserPermissions", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
@@ -472,6 +472,8 @@ namespace KSProject.Infrastructure.Migrations
                                 .HasForeignKey("UserId");
                         });
 
+                    b.Navigation("Permissions");
+
                     b.Navigation("UserLoginDates");
 
                     b.Navigation("UserSecurityStamps");
@@ -479,23 +481,12 @@ namespace KSProject.Infrastructure.Migrations
                     b.Navigation("UserTokens");
                 });
 
-            modelBuilder.Entity("KSProject.Domain.Aggregates.Users.UserPermission", b =>
-                {
-                    b.HasOne("KSProject.Domain.Aggregates.Users.User", "User")
-                        .WithMany("Permissions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("KSProject.Domain.Aggregates.Users.UserProfile", b =>
                 {
                     b.HasOne("KSProject.Domain.Aggregates.Users.User", "User")
                         .WithOne("Profile")
                         .HasForeignKey("KSProject.Domain.Aggregates.Users.UserProfile", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });
@@ -505,13 +496,13 @@ namespace KSProject.Infrastructure.Migrations
                     b.HasOne("KSProject.Domain.Aggregates.Roles.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("KSProject.Domain.Aggregates.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -527,8 +518,6 @@ namespace KSProject.Infrastructure.Migrations
 
             modelBuilder.Entity("KSProject.Domain.Aggregates.Users.User", b =>
                 {
-                    b.Navigation("Permissions");
-
                     b.Navigation("Profile");
                 });
 #pragma warning restore 612, 618

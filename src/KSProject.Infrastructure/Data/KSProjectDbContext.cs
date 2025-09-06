@@ -31,7 +31,7 @@ public class KSProjectDbContext : DbContext
 		#endregion
 
 		#region Config Delete Behevior for not Cascade Delete
-		modelBuilder.AddRestrictDeleteBehaviorConvention();
+		//modelBuilder.AddRestrictDeleteBehaviorConvention();
 		#endregion
 
 		#region Add Sequential GUID for Id properties

@@ -14,7 +14,7 @@ public sealed class GetUserPermissionsByIdQueryHandler
 
 	public async Task<UserPermissionsResponse> Handle(GetUserPermissionsByIdQuery request, CancellationToken cancellationToken)
 	{
-		User user = await _uow.Users.GetUserAndPermissionsAsync(request.Payload.id, cancellationToken)
+		User user = await _uow.Users.GetUserAndPermissionsAsNoTrackingAsync(request.Payload.id, cancellationToken)
 			?? throw new Exception("User not found");
 
 		return new UserPermissionsResponse

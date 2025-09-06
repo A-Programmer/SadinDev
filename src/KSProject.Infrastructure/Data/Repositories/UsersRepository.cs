@@ -121,6 +121,15 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 			.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 	}
 
+	public async Task<User?> GetUserAndPermissionsAsNoTrackingAsync(Guid id,
+		CancellationToken cancellationToken = default)
+	{
+		return await _users
+			.Include(u => u.Permissions)
+			.AsNoTracking()
+			.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+	}
+
 	public async Task<User?> GetUserAndPermissionsAsync(Guid id,
 		CancellationToken cancellationToken = default)
 	{

@@ -43,6 +43,9 @@ public interface IUsersRepository : IRepository<User>
 	Task<User?> GetByIdIncludingRolesAndPermissionsAsync(Guid id,
 		CancellationToken cancellationToken = default);
 
+	Task<User?> GetUserAndPermissionsAsNoTrackingAsync(Guid id,
+		CancellationToken cancellationToken = default);
+
 	Task<User?> GetUserAndPermissionsAsync(Guid id,
 		CancellationToken cancellationToken = default);
 }
