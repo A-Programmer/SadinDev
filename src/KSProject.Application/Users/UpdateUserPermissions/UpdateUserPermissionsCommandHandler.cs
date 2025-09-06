@@ -17,15 +17,14 @@ public sealed class UpdateUserPermissionsCommandHandler : ICommandHandler<Update
 		_jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
 	}
 
+	// TODO: Update user security tables like Security Stamp, JWT, and whatever I am doing in UpdateUserProfileCommandHandler
 	public async Task<Unit> Handle(UpdateUserPermissionsCommand request, CancellationToken cancellationToken)
 	{
-		User user = (await _uow.Users.GetUserAndPermissionsAsync(request.Payload.Id,
-			cancellationToken)) ??
-			 throw new KSNotFoundException(request.Payload.Id.ToString());
+		User user = (await _uow.Users.GetUserAndPermissionsAsync(request.Payload.Id, cancellationToken)) ??
+					throw new KSNotFoundException(request.Payload.Id.ToString());
+		user.ClearPermissions();
 
 		user.UpdatePermissions(request.Payload.Id, request.Payload.Permissions);
-
-		_uow.Users.Update(user);
 
 		await _uow.SaveChangesAsync();
 		return Unit.Value;

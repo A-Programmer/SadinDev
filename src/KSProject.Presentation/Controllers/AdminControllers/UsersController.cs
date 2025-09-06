@@ -132,7 +132,6 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpPut]
-	[Permission("UpdateUserPermissions")]
 	[Route(Routes.Users_Admin.User_Permissions.UpdateUserPermissions)]
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]

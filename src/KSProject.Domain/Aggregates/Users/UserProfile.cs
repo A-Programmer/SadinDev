@@ -1,6 +1,4 @@
 ﻿using KSFramework.KSDomain;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace KSProject.Domain.Aggregates.Users;
 
@@ -86,17 +84,5 @@ public sealed class UserProfile : BaseEntity
 
 	protected UserProfile()
 	{
-	}
-}
-
-
-
-public class UserProfileConfigurations : IEntityTypeConfiguration<UserProfile>
-{
-	public void Configure(EntityTypeBuilder<UserProfile> builder)
-	{
-		builder.ToTable("UsersProfile");
-
-		builder.HasKey(x => x.Id);
 	}
 }

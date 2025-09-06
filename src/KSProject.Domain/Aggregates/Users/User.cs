@@ -219,6 +219,7 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
 	public void AddPermissions(List<UserPermission> permissions,
 		UserSecurityStamp? securityStamp = null)
 	{
+		ClearPermissions();
 		foreach (var permission in permissions)
 		{
 			if (!_permissions.Any(x => x.Name.ToLower() == permission.Name.ToLower()))
@@ -230,7 +231,7 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
 	public void AddPermission(string permission,
 		UserSecurityStamp? securityStamp = null)
 	{
-		UserPermission userPermission = UserPermission.Create(Id, permission);
+		UserPermission userPermission = new(permission);
 		if (!_permissions.Any(x => x.Name.ToLower() == permission.ToLower()))
 		{
 			_permissions.Add(userPermission);
@@ -280,28 +281,24 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
 	public void UpdatePermissions(List<UserPermission> permissions,
 		UserSecurityStamp? securityStamp = null)
 	{
-		if (permissions != null)
-		{
-			_permissions.Clear();
-			_permissions.AddRange(permissions);
+		_permissions.Clear();
+		_permissions.AddRange(permissions);
 
-			if (securityStamp != null)
-			{
-				AddSecurityStamp(securityStamp);
-			}
+		if (securityStamp != null)
+		{
+			AddSecurityStamp(securityStamp);
 		}
 	}
 
 	public void UpdatePermissions(Guid userId, List<string> permissions,
 		UserSecurityStamp? securityStamp = null)
 	{
+		_permissions.Clear();
 		foreach (var permission in permissions)
 		{
-			if (!_permissions.Any(x => x.Name.ToLower() == permission.ToLower()))
-			{
-				_permissions.Add(UserPermission.Create(userId, permission));
-			}
+			_permissions.Add(new UserPermission(permission));
 		}
+
 		if (securityStamp != null)
 		{
 			AddSecurityStamp(securityStamp);
@@ -425,25 +422,24 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 		builder.Property(x => x.SuperAdmin)
 			.HasDefaultValue(false);
 
-		builder.HasOne(x => x.Profile)
-			.WithOne(x => x.User)
-			.HasForeignKey<UserProfile>(x => x.UserId)
-			.IsRequired(false);
-
 		builder.HasMany(u => u.Roles)
 			.WithMany(r => r.Users)
 			.UsingEntity("UsersRoles");
 
-		builder
-			.HasMany(r => r.Permissions)
-			.WithOne(p => p.User)
-			.HasForeignKey(x => x.UserId)
-			.OnDelete(DeleteBehavior.SetNull);
+		builder.OwnsMany(u => u.Permissions, c =>
+		{
+			c.ToTable("UserPermissions");
+			c.WithOwner()
+			.HasForeignKey(x => x.UserId);
+			c.Property<Guid>("Id");
+			c.HasKey("Id");
+		});
 
 		builder.HasOne(u => u.Profile)
-		   .WithOne(up => up.User)
-		   .IsRequired(false)
-		   .OnDelete(DeleteBehavior.Cascade);
+			.WithOne(up => up.User)
+			.HasForeignKey<UserProfile>(up => up.UserId)
+			.IsRequired(false)
+			.OnDelete(DeleteBehavior.Cascade);
 
 		builder.OwnsMany(u => u.UserTokens, c =>
 		{
