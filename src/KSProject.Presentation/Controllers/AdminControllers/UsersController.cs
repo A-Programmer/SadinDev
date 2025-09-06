@@ -6,6 +6,7 @@ using KSProject.Application.Users.GetPaginatedUsers;
 using KSProject.Application.Users.GetUserById;
 using KSProject.Application.Users.GetUserPermissionsByUserId;
 using KSProject.Application.Users.UpdateUser;
+using KSProject.Application.Users.UpdateUserPermissions;
 using KSProject.Application.Users.UpdateUserRoles;
 using KSProject.Presentation.Attributes;
 using KSProject.Presentation.BaseControllers;
@@ -124,6 +125,26 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 			return BadRequest("The record could not be found.");
 
 		UpdateUserRolesCommand command = new(request);
+
+		await Sender.Send(command, cancellationToken);
+
+		return NoContent();
+	}
+
+	[HttpPut]
+	[Route(Routes.Users_Admin.User_Permissions.UpdateUserPermissions)]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<ActionResult<UpdateUserResponse>> PutUserPermissionsAsync(
+		Guid id,
+		[FromBody] UpdateUserPermissionsRequest request,
+		CancellationToken cancellationToken)
+	{
+		if (id != request.Id)
+			return BadRequest("The record could not be found.");
+
+		UpdateUserPermissionsCommand command = new(request);
 
 		await Sender.Send(command, cancellationToken);
 
