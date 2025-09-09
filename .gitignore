@@ -13,6 +13,8 @@ src/.vs/
 **/.code/
 **/.vscode/
 **/.idea/
+**/.idea/**
+**/.idea/**/
 **/Logs/
 **/Resources/
 
