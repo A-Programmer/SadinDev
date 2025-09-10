@@ -18,8 +18,8 @@ namespace KSProject.Presentation.Controllers.AdminControllers;
 public sealed class RolesController(ISender sender) : BaseController(sender)
 {
 	[HttpGet]
-	[Permission("GetPagedRoles")]
-	[Route(Routes.Roles_Admin.GetPagedRoles)]
+	[Permission("GET_PAGED")]
+	[Route(Routes.Roles_Admin.GET_PAGED)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[Produces("application/json")]
@@ -36,8 +36,8 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpGet]
-	[Permission("GetAllRoles")]
-	[Route(Routes.Roles_Admin.GetAllRoles)]
+	[Permission("GET_ALL")]
+	[Route(Routes.Roles_Admin.GET_ALL)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[Produces("application/json")]
@@ -54,8 +54,8 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpGet]
-	[Permission("GetRoleById")]
-	[Route(Routes.Roles_Admin.GetRoleById)]
+	[Permission("CREATE")]
+	[Route(Routes.Roles_Admin.GET_BY_ID)]
 	[Produces(typeof(RoleItemResponse))]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -71,8 +71,8 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpGet]
-	[Permission("GetRolePermissions")]
-	[Route(Routes.Roles_Admin.Role_Permissions.GetRolePermissions)]
+	[Permission("GET_ALL")]
+	[Route(Routes.Roles_Admin.Role_Permissions.GET_ALL)]
 	[Produces(typeof(RolePermissionsResponse))]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -88,8 +88,8 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpPut]
-	[Permission("UpdateRole")]
-	[Route(Routes.Roles_Admin.UpdateRole)]
+	[Permission("CREATE")]
+	[Route(Routes.Roles_Admin.UPDATE)]
 	[Produces(typeof(RoleUpdateResponse))]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -110,8 +110,8 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpPost]
-	[Permission("CreateRole")]
-	[Route(Routes.Roles_Admin.CreateRole)]
+	[Permission("CREATE")]
+	[Route(Routes.Roles_Admin.CREATE)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(typeof(CreateRoleResponse),
@@ -129,8 +129,8 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpDelete]
-	[Permission("DeleteRole")]
-	[Route(Routes.Roles_Admin.DeleteRole)]
+	[Permission("UPDATE_PROFILE_IMAGE")]
+	[Route(Routes.Roles_Admin.DELETE)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(typeof(DeleteRoleResponse),

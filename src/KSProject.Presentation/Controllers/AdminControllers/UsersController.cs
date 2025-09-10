@@ -18,8 +18,8 @@ namespace KSProject.Presentation.Controllers.AdminControllers;
 public sealed class UsersController(ISender sender) : BaseController(sender)
 {
 	[HttpGet]
-	[Route(Routes.Users_Admin.GetPagedUsers)]
-	[Permission("GetPagedUsers")]
+	[Route(Routes.Users_Admin.GET_PAGED)]
+	[Permission("GET_PAGED")]
 	[ProducesResponseType(typeof(PaginatedList<UsersListItemResponse>), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<PaginatedList<UsersListItemResponse>>> GetAllAsync(
@@ -35,8 +35,8 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpGet]
-	[Permission("GetUserById")]
-	[Route(Routes.Users_Admin.GetUserById)]
+	[Permission("CREATE")]
+	[Route(Routes.Users_Admin.GET_BY_ID)]
 	[Produces(typeof(UserResponse))]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -53,8 +53,8 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 
 
 	[HttpGet]
-	[Permission("GetUserPermissions")]
-	[Route(Routes.Users_Admin.User_Permissions.GetUserPermissions)]
+	[Permission("GET_ALL")]
+	[Route(Routes.Users_Admin.User_Permissions.GET_ALL)]
 	[Produces(typeof(UserPermissionsResponse))]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -70,8 +70,8 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpPost]
-	[Permission("CreateUser")]
-	[Route(Routes.Users_Admin.CreateUser)]
+	[Permission("CREATE")]
+	[Route(Routes.Users_Admin.CREATE)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(typeof(CreateUserResponse), StatusCodes.Status200OK)]
@@ -87,8 +87,8 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpPut]
-	[Permission("UpdateUser")]
-	[Route(Routes.Users_Admin.UpdateUser)]
+	[Permission("CREATE")]
+	[Route(Routes.Users_Admin.UPDATE)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -111,7 +111,7 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 	// TODO: Change Password should be implemented. Change Password and Reset Password are different actions, ResetPassword should be implemented in AuthController
 
 	[HttpPut]
-	[Permission("UpdateUserRoles")]
+	[Permission("CREATE")]
 	[Route(Routes.Users_Admin.UpdateUserRoles)]
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -132,7 +132,7 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpPut]
-	[Route(Routes.Users_Admin.User_Permissions.UpdateUserPermissions)]
+	[Route(Routes.Users_Admin.User_Permissions.UPDATE)]
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -152,8 +152,8 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 	}
 
 	[HttpDelete]
-	[Permission("DeleteUser")]
-	[Route(Routes.Users_Admin.DeleteUser)]
+	[Permission("UPDATE_PROFILE_IMAGE")]
+	[Route(Routes.Users_Admin.DELETE)]
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

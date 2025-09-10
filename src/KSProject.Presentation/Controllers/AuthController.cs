@@ -11,59 +11,59 @@ namespace KSProject.Presentation.Controllers;
 
 public class AuthController : BaseController
 {
-	public AuthController(ISender sender) : base(sender)
-	{
-	}
+    public AuthController(ISender sender) : base(sender)
+    {
+    }
 
-	[HttpPost]
-	[Route(Routes.Auth.Login)]
-	[Produces(typeof(LoginResponse))]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<LoginResponse>> PostAsync([FromBody] LoginRequest request,
-		CancellationToken cancellationToken = default)
-	{
-		CheckUserExistenceRequest existenceRequest = new()
-		{
-			UserNameOrEmailOrPhoneNumber = request.UserName
-		};
-		CheckUserExistenceQuery checkUserExistenceQuery = new(existenceRequest);
+    [HttpPost]
+    [Route(Routes.Auth.LOGIN)]
+    [Produces(typeof(LoginResponse))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<LoginResponse>> PostAsync([FromBody] LoginRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        CheckUserExistenceRequest existenceRequest = new()
+        {
+            UserNameOrEmailOrPhoneNumber = request.UserName
+        };
+        CheckUserExistenceQuery checkUserExistenceQuery = new(existenceRequest);
 
-		CheckUserExistenceResponse userExistenceResponse = await Sender.Send(checkUserExistenceQuery, cancellationToken);
-		if (userExistenceResponse?.Id is null)
-		{
-			throw new KsAuthenticationException("Invalid Username or Password");
-		}
+        CheckUserExistenceResponse userExistenceResponse = await Sender.Send(checkUserExistenceQuery, cancellationToken);
+        if (userExistenceResponse?.Id is null)
+        {
+            throw new KsAuthenticationException("Invalid Username or Password");
+        }
 
-		ValidateUserQuery validateUserQuery = new(new ValidateUserQueryRequest()
-		{
-			UserName = request.UserName,
-			Password = request.Password
-		});
+        ValidateUserQuery validateUserQuery = new(new ValidateUserQueryRequest()
+        {
+            UserName = request.UserName,
+            Password = request.Password
+        });
 
-		ValidateUserQueryResponse? validateUserQueryResponse = await Sender.Send(validateUserQuery,
-			cancellationToken);
+        ValidateUserQueryResponse? validateUserQueryResponse = await Sender.Send(validateUserQuery,
+            cancellationToken);
 
-		if (validateUserQueryResponse?.Id is null)
-		{
-			throw new KsAuthenticationException("Username of Password is not correct.");
-		}
+        if (validateUserQueryResponse?.Id is null)
+        {
+            throw new KsAuthenticationException("Username of Password is not correct.");
+        }
 
-		if (!validateUserQueryResponse.IsActive)
-		{
-			throw new KsUserIsNotActiveException("User is not active, please contact with admin.");
-		}
+        if (!validateUserQueryResponse.IsActive)
+        {
+            throw new KsUserIsNotActiveException("User is not active, please contact with admin.");
+        }
 
-		LoginCommand command = new(new()
-		{
-			UserName = request.UserName,
-			Password = request.Password,
-			IpAddress = GetUserIp()
-		});
+        LoginCommand command = new(new()
+        {
+            UserName = request.UserName,
+            Password = request.Password,
+            IpAddress = GetUserIp()
+        });
 
-		LoginResponse token = await Sender.Send(command, cancellationToken);
+        LoginResponse token = await Sender.Send(command, cancellationToken);
 
-		return Ok(token);
-	}
+        return Ok(token);
+    }
 }
