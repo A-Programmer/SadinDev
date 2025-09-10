@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{87FDCD
 		docker-compose.yml = docker-compose.yml
 		Dockerfile = Dockerfile
 		README.md = README.md
+		SadinDEV.drawio = SadinDEV.drawio
 	EndProjectSection
 EndProject
 Global

@@ -1,0 +1,56 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.1.2 Chrome/138.0.7204.243 Electron/37.4.0 Safari/537.36" version="28.1.2" pages="3">
+  <diagram id="77fdOQhJf-JvaFsN2vVB" name="Components">
+    <mxGraphModel dx="1234" dy="883" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ICxV_gqlUwPZZhnZIPc_-1" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="70" y="50" width="400" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="ICxV_gqlUwPZZhnZIPc_-2" value="Form" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="225" y="23" width="50" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="8T-njheiflGoO_boFJ6B" name="Flows">
+    <mxGraphModel dx="1234" dy="883" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="wrN3qmoWlWqyxuUobfAf-1" value="OTP Login/Register" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="30" width="630" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="z871sHAd9aS-14EOS8yi-8" value="" style="shape=ext;double=1;rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="wrN3qmoWlWqyxuUobfAf-1">
+          <mxGeometry x="100" y="30" width="460" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="z871sHAd9aS-14EOS8yi-12" value="Mobile/Email" style="fillColor=none;strokeColor=none;align=left;fontSize=14;" vertex="1" parent="wrN3qmoWlWqyxuUobfAf-1">
+          <mxGeometry width="230" height="40" relative="1" as="geometry">
+            <mxPoint x="200" y="30" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z871sHAd9aS-14EOS8yi-13" value="" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;fillColor=none;strokeColor=#999999;align=left;spacing=15;fontSize=14;fontColor=#6C767D;" vertex="1" parent="wrN3qmoWlWqyxuUobfAf-1">
+          <mxGeometry width="250" height="30" relative="1" as="geometry">
+            <mxPoint x="205" y="68" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z871sHAd9aS-14EOS8yi-15" value="Send OTP Code" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;fillColor=#0085FC;strokeColor=none;align=center;fontSize=14;fontColor=#FFFFFF;" vertex="1" parent="wrN3qmoWlWqyxuUobfAf-1">
+          <mxGeometry width="260" height="40" relative="1" as="geometry">
+            <mxPoint x="200" y="110" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Registration" id="NZiIO9bsHwu5rtwFtZxN">
+    <mxGraphModel dx="1898" dy="1358" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Y-DYA-yz4WeIKSNN-290-1" value="Full Registration" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="50" width="350" height="460" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
