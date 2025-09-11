@@ -23,21 +23,31 @@ public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Re
     public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         string hashedPassword = SecurityHelper.GetSha256Hash(request.Payload.Password);
-        
-        User user = User.Create(Guid.NewGuid(), request.Payload.UserName, hashedPassword, request.Payload.Email, request.Payload.PhoneNumber);
-            
+
+        // TODO: Of course, the active status should be change in the future, at least, it should be activated after email/phone confirmation
+        User user = User.Register(Guid.NewGuid(), request.Payload.UserName, hashedPassword, request.Payload.Email, request.Payload.PhoneNumber, active: true);
+
         Role? role = await _uow.Roles.GetByRoleName("User", cancellationToken);
         if (role == null)
             throw new KSNotFoundException("Role not found");
 
+        UserProfile userProfile = UserProfile.Create(Guid.NewGuid(),
+            request.Payload.FirstName ?? "",
+            request.Payload.LastName ?? "",
+            "/profile_images/default.png",
+            request.Payload.AboutMe ?? "",
+            request.Payload.BirthDateUtc);
+
+        user.AddProfile(userProfile);
+
         try
         {
             user.AssignRoles(new[] { role });
-            
+
             await _uow.Users.AddAsync(user, cancellationToken);
-            
+
             await _uow.SaveChangesAsync();
-            
+
             return new RegisterResponse
             {
                 Id = user.Id

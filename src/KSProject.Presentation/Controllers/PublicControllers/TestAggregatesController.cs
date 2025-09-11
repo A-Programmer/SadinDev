@@ -15,7 +15,7 @@ namespace KSProject.Presentation.Controllers.PublicControllers;
 public sealed class TestAggregatesController(ISender sender) : BaseController(sender)
 {
     [HttpGet]
-    [Route(Routes.TestAggregates.GetAllTestAggregates)]
+    [Route(Routes.TestAggregates.GET_ALL)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(List<GetAllTestAggregatesResponse>),
         StatusCodes.Status200OK)]
@@ -30,7 +30,7 @@ public sealed class TestAggregatesController(ISender sender) : BaseController(se
     }
     
     [HttpGet]
-    [Route(Routes.TestAggregates.GetPagedTestAggregates)]
+    [Route(Routes.TestAggregates.GET_PAGED)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(PaginatedList<GetPagedTestAggregateResponse>),
         StatusCodes.Status200OK)]
@@ -47,7 +47,7 @@ public sealed class TestAggregatesController(ISender sender) : BaseController(se
     
     
     [HttpGet]
-    [Route(Routes.TestAggregates.GetTestAggregateById)]
+    [Route(Routes.TestAggregates.GET_BY_ID)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(GetTestAggregateByIdResponse),
         StatusCodes.Status200OK)]
@@ -62,7 +62,7 @@ public sealed class TestAggregatesController(ISender sender) : BaseController(se
     }
     
     [HttpPost]
-    [Route(Routes.TestAggregates.CreateTestAggregate)]
+    [Route(Routes.TestAggregates.CREATE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(CreateTestAggregateResponse),
@@ -80,7 +80,7 @@ public sealed class TestAggregatesController(ISender sender) : BaseController(se
     }
     
     [HttpPut]
-    [Route(Routes.TestAggregates.UpdateTestAggregate)]
+    [Route(Routes.TestAggregates.UPDATE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(UpdateTestAggregateResponse),
@@ -107,7 +107,7 @@ public sealed class TestAggregatesController(ISender sender) : BaseController(se
     }
     
     [HttpDelete]
-    [Route(Routes.TestAggregates.DeleteTestAggregate)]
+    [Route(Routes.TestAggregates.DELETE)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(DeleteTestAggregateResponse),
