@@ -24,8 +24,6 @@ public sealed class RegisterRequest : IInjectable
 
     public string? LastName { get; set; } = string.Empty;
 
-    public string? ProfileImageUrl { get; set; } = string.Empty;
-
     public string? AboutMe { get; set; } = string.Empty;
 
     public DateTimeOffset? BirthDateUtc { get; set; } = null;
