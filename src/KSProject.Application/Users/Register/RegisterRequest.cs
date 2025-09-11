@@ -10,13 +10,21 @@ public sealed class RegisterRequest : IInjectable
 
     [Required]
     public required string Email { get; init; }
-    
+
     [Required]
     public required string PhoneNumber { get; init; }
 
     [Required]
     public required string Password { get; init; }
-    
+
     [Compare(nameof(Password))]
     public required string ConfirmPassword { get; init; }
+
+    public string? FirstName { get; set; } = string.Empty;
+
+    public string? LastName { get; set; } = string.Empty;
+
+    public string? AboutMe { get; set; } = string.Empty;
+
+    public DateTimeOffset? BirthDateUtc { get; set; } = null;
 }

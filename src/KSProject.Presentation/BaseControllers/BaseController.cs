@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace KSProject.Presentation.BaseControllers;
 
 [ApiController]
-[Route(Routes.Root)]
+[Route(Routes.ROOT)]
 [Produces("application/json")]
 public abstract class BaseController : ControllerBase
 {
