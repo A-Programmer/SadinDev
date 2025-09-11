@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AspireProjects\KSProject.ServiceDefaults\KSProject.ServiceDefaults.csproj" />
     <ProjectReference Include="..\KSProject.Application\KSProject.Application.csproj" />
     <ProjectReference Include="..\KSProject.Common\KSProject.Common.csproj" />
     <ProjectReference Include="..\KSProject.Domain\KSProject.Domain.csproj" />
