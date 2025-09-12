@@ -151,12 +151,6 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bytea");
-
                     b.Property<bool>("SuperAdmin")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")

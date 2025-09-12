@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KSProject.Infrastructure.Migrations
 {
     [DbContext(typeof(KSProjectDbContext))]
-    [Migration("20250912084230_Init")]
+    [Migration("20250912084548_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -153,12 +153,6 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bytea");
 
                     b.Property<bool>("SuperAdmin")
                         .ValueGeneratedOnAdd()

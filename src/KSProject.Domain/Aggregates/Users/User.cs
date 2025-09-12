@@ -46,7 +46,6 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
         SuperAdmin = superAdmin;
         Active = active;
     }
-    public byte[] RowVersion { get; private set; }
     public string UserName { get; private set; }
     public string HashedPassword { get; private set; }
     public string Email { get; private set; }
@@ -488,8 +487,5 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             c.HasKey("Id");
         });
 
-        builder.Property(u => u.RowVersion)
-            .IsRowVersion()
-            .IsConcurrencyToken();
     }
 }
