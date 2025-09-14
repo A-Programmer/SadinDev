@@ -53,7 +53,7 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 
 
     [HttpGet]
-    [Permission("GetAllUsers")]
+    [Permission("GetUserPermissions")]
     [Route(Routes.Users_Admin.User_Permissions.GET_ALL)]
     [Produces(typeof(UserPermissionsResponse))]
     [ProducesResponseType(StatusCodes.Status200OK)]
