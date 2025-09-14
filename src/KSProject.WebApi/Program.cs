@@ -11,6 +11,8 @@ var mainBuilder = WebApplication.CreateBuilder(args);
 (WebApplicationBuilder builder,
 	PublicSettings settings) = mainBuilder.AddBasicConfigurations();
 
+builder.AddServiceDefaults();
+
 builder.RegisterWebApi(builder.Configuration);
 builder.Services.RegisterApplication();
 builder.Services.RegisterPresentation(settings);
@@ -18,6 +20,8 @@ builder.Services.RegisterInfrastructure(builder.Configuration);
 builder.Services.RegisterDomain();
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {

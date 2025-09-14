@@ -10,7 +10,7 @@ public static class DependencyInjection
 		builder.Services.Configure<PublicSettings>(
 			configuration.GetSection(nameof(PublicSettings)));
 
-		return builder;
+        return builder;
 	}
 
 	public static WebApplication UseWebApi(this WebApplication app)
