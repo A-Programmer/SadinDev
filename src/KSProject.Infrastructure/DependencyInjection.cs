@@ -13,50 +13,57 @@ namespace KSProject.Infrastructure;
 
 public static class DependencyInjection
 {
-	public static IServiceCollection RegisterInfrastructure(this IServiceCollection services,
-		IConfiguration configuration)
-	{
-		services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+    public static IServiceCollection RegisterInfrastructure(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
-		services.AddDbContext<KSProjectDbContext>((sp, options) =>
-		{
-			var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
+        services.AddDbContext<KSProjectDbContext>((sp, options) =>
+        {
+            var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
-			options.UseSqlServer(configuration.GetConnectionString("Default"),
-				x =>
-					x.MigrationsAssembly("KSProject.Infrastructure"))
-				.AddInterceptors(interceptor)
-				.EnableSensitiveDataLogging();
-		});
+            options.UseNpgsql(configuration.GetConnectionString("Postgres"),
+                x =>
+                    x.MigrationsAssembly("KSProject.Infrastructure")
+                    .EnableRetryOnFailure(3))
+            .AddInterceptors(interceptor)
+            .EnableSensitiveDataLogging();
 
-		services.AddQuartz(configure =>
-		{
-			var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
-			configure
-				.AddJob<ProcessOutboxMessagesJob>(jobKey)
-				.AddTrigger(
-					trigger =>
-						trigger.ForJob(jobKey)
-							.WithSimpleSchedule(
-								schedule =>
-									schedule.WithIntervalInSeconds(10)
-										.RepeatForever()));
-		});
+            //options.UseSqlServer(configuration.GetConnectionString("Default"),
+            //	x =>
+            //		x.MigrationsAssembly("KSProject.Infrastructure"))
+            //	.AddInterceptors(interceptor)
+            //	.EnableSensitiveDataLogging();
+        });
 
-		services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+        services.AddQuartz(configure =>
+        {
+            var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+            configure
+                .AddJob<ProcessOutboxMessagesJob>(jobKey)
+                .AddTrigger(
+                    trigger =>
+                        trigger.ForJob(jobKey)
+                            .WithSimpleSchedule(
+                                schedule =>
+                                    schedule.WithIntervalInSeconds(10)
+                                        .RepeatForever()));
+        });
 
-		services.AddScoped<DbContext, KSProjectDbContext>();
-		services.AddScoped<IUnitOfWork, UnitOfWork>();
-		services.AddScoped<IKSProjectUnitOfWork, KSProjectUnitOfWork>();
-		return services;
-	}
+        services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
-	public static WebApplication UseInfrastructure(this WebApplication app)
-	{
-		using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-		var context = serviceScope.ServiceProvider.GetRequiredService<KSProjectDbContext>();
-		context.Database.Migrate();
+        services.AddScoped<DbContext, KSProjectDbContext>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IKSProjectUnitOfWork, KSProjectUnitOfWork>();
+        return services;
+    }
 
-		return app;
-	}
+    public static WebApplication UseInfrastructure(this WebApplication app)
+    {
+        using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+        var context = serviceScope.ServiceProvider.GetRequiredService<KSProjectDbContext>();
+        context.Database.Migrate();
+
+        return app;
+    }
 }
