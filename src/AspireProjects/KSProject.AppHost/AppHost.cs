@@ -8,7 +8,8 @@ var postgres = builder.AddPostgres("postgres", password: postgresPassword)
     .WithImage("postgres:latest")
     .WithEnvironment("POSTGRES_DB", "KSProjectDb")
     .WithEnvironment("POSTGRES_USER", "postgres")
-    .WithEnvironment("POSTGRES_PASSWORD", postgresPassword.Resource.Value);
+    .WithEnvironment("POSTGRES_PASSWORD", postgresPassword.Resource.Value)
+    .WithDataVolume("db_data");
 
 var adminer = builder.AddContainer("adminer", "adminer:latest")
     .WithHttpEndpoint(port: 8080, targetPort: 8080)
