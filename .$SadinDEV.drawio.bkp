@@ -228,9 +228,6 @@
         <mxCell id="VWLFnT9uYPGCKBT0OLFZ-2" value="Steps" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="158" y="499.9999999999998" width="200" height="200" as="geometry" />
         </mxCell>
-        <mxCell id="VWLFnT9uYPGCKBT0OLFZ-3" value="Text" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="215" y="578" width="50" height="30" as="geometry" />
-        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

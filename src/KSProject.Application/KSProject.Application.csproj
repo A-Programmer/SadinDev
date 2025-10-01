@@ -11,4 +11,9 @@
     <ProjectReference Include="..\KSProject.Domain\KSProject.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Otp\CreateOtpUser\" />
+    <Folder Include="Otp\VerifyOtpCode\" />
+  </ItemGroup>
+
 </Project>
