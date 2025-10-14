@@ -117,4 +117,28 @@ public class AuthController : BaseController
 
         return Ok(token);
     }
+
+    // OTP POST
+    // This Endpoint should get a phone/email/username
+    // Generates an OTP Code and save in the database alongside the email/phone number or user id for registered users
+    // OTP Code should have expiration time
+    // OTP Code length : 6
+    // OTP Code is only digits
+    // ** I need a way to get rid of expired OTP codes
+    // Check for user existence
+    // if exists, send OTP Code to email and phone
+    // if not exist, and the input is email/phone, it should register a user with the given email/phone
+    // Send the OTP code to email/phone
+
+
+
+
+    // OTP Verification POST
+    // This endpoint should get the email/phone and the OTP Code
+    // verify in the DB (Can we remove the used OTP Code???)
+    
+
+
+    // OTP Resend button
+    // This endpoint is the same as the OTP POST endpoint, the only difference is in the name of the Endpoint which will be otp/resend
 }
