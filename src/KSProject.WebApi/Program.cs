@@ -16,7 +16,7 @@ builder.AddServiceDefaults();
 builder.RegisterWebApi(builder.Configuration);
 builder.Services.RegisterApplication();
 builder.Services.RegisterPresentation(settings);
-builder.Services.RegisterInfrastructure(builder.Configuration);
+builder.RegisterInfrastructure(builder.Configuration);
 builder.Services.RegisterDomain();
 
 var app = builder.Build();

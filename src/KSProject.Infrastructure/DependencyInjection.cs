@@ -8,35 +8,33 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
+using Microsoft.Extensions.Hosting;
 
 namespace KSProject.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection RegisterInfrastructure(this IServiceCollection services,
+    public static IServiceCollection RegisterInfrastructure(this IHostApplicationBuilder builder,
         IConfiguration configuration)
     {
-        services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+        builder.Services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
-        services.AddDbContext<KSProjectDbContext>((sp, options) =>
+        builder.Services.AddDbContext<KSProjectDbContext>((sp, options) =>
         {
             var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
-            options.UseNpgsql(configuration.GetConnectionString("Postgres"),
-                x =>
-                    x.MigrationsAssembly("KSProject.Infrastructure")
-                    .EnableRetryOnFailure(3))
-            .AddInterceptors(interceptor)
-            .EnableSensitiveDataLogging();
-
-            //options.UseSqlServer(configuration.GetConnectionString("Default"),
-            //	x =>
-            //		x.MigrationsAssembly("KSProject.Infrastructure"))
-            //	.AddInterceptors(interceptor)
-            //	.EnableSensitiveDataLogging();
+            options.UseNpgsql(builder.Configuration.GetConnectionString("postgres"),
+                    x => x.MigrationsAssembly("KSProject.Infrastructure")
+                        .EnableRetryOnFailure(3))
+                .AddInterceptors(interceptor)
+                .EnableSensitiveDataLogging();
         });
 
-        services.AddQuartz(configure =>
+        builder.EnrichNpgsqlDbContext<KSProjectDbContext>();
+        
+        Console.WriteLine($"\n\n\n\n\nConnection String: {configuration.GetConnectionString("Postgres")}\n\n\n\n\n\n");
+
+        builder.Services.AddQuartz(configure =>
         {
             var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
             configure
@@ -50,12 +48,12 @@ public static class DependencyInjection
                                         .RepeatForever()));
         });
 
-        services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+        builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
-        services.AddScoped<DbContext, KSProjectDbContext>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IKSProjectUnitOfWork, KSProjectUnitOfWork>();
-        return services;
+        builder.Services.AddScoped<DbContext, KSProjectDbContext>();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddScoped<IKSProjectUnitOfWork, KSProjectUnitOfWork>();
+        return builder.Services;
     }
 
     public static WebApplication UseInfrastructure(this WebApplication app)

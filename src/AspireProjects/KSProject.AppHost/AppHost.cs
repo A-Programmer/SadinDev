@@ -11,6 +11,8 @@ var postgres = builder.AddPostgres("postgres", password: postgresPassword)
     .WithEnvironment("POSTGRES_PASSWORD", postgresPassword.Resource.Value)
     .WithDataVolume("db_data");
 
+var ksDb = postgres.AddDatabase("KSProjectDb");
+
 var adminer = builder.AddContainer("adminer", "adminer:latest")
     .WithHttpEndpoint(port: 8080, targetPort: 8080)
     .WaitFor(postgres);
@@ -18,7 +20,7 @@ var adminer = builder.AddContainer("adminer", "adminer:latest")
 adminer.WithReference(postgres);
 
 var webApi = builder.AddProject<KSProject_WebApi>("webapi")
-    .WithReference(postgres)
+    .WithReference(ksDb)
     .WaitFor(postgres);
 
 builder.Build().Run();
