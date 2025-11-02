@@ -24,7 +24,7 @@ public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Re
     {
         string hashedPassword = SecurityHelper.GetSha256Hash(request.Payload.Password);
 
-        // TODO: Of course, the active status should be change in the future, at least, it should be activated after email/phone confirmation
+        // TODO: Of course, the active status should be changed in the future, at least, it should be activated after email/phone confirmation
         User user = User.Register(Guid.NewGuid(), request.Payload.UserName, hashedPassword, request.Payload.Email, request.Payload.PhoneNumber, active: true);
 
         Role? role = await _uow.Roles.GetByRoleName("User", cancellationToken);

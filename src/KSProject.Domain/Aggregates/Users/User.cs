@@ -99,6 +99,21 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
             Email = email
         });
     }
+    
+    public void UpdateUsername(string userName,
+        UserSecurityStamp? securityStamp = null)
+    {
+        if (!userName.HasValue())
+            throw new ArgumentNullException(nameof(userName));
+        UserName = userName;
+        
+        ClearTokens();
+        
+        if (securityStamp != null)
+        {
+            AddSecurityStamp(securityStamp);
+        }
+    }
 
     public void UpdatePassword(string hashedPassword,
         UserSecurityStamp? securityStamp = null)
@@ -106,6 +121,8 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
         if (!hashedPassword.HasValue())
             throw new ArgumentNullException(nameof(hashedPassword));
         HashedPassword = hashedPassword;
+
+        ClearTokens();
 
         if (securityStamp != null)
         {
@@ -117,6 +134,8 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
     {
         SuperAdmin = !SuperAdmin;
 
+        ClearTokens();
+
         if (securityStamp != null && securityStamp is not null)
         {
             AddSecurityStamp(securityStamp);
@@ -127,6 +146,7 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
     {
         Active = !Active;
 
+        ClearTokens();
 
         if (securityStamp is not null && securityStamp != null)
         {
@@ -153,6 +173,8 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
                 _roles.Add(role);
         }
 
+        ClearTokens();
+
         if (securityStamp is not null)
         {
             AddSecurityStamp(securityStamp);
@@ -165,6 +187,8 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
         if (roles?.Count() > 0)
             _roles.RemoveAll(role => roles.Contains(role));
 
+        ClearTokens();
+
         if (securityStamp != null)
         {
             AddSecurityStamp(securityStamp);
@@ -174,6 +198,8 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
     public void ClearRoles(UserSecurityStamp? securityStamp = null)
     {
         _roles.Clear();
+
+        ClearTokens();
 
         if (securityStamp != null)
         {
@@ -220,6 +246,38 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
         });
 
         return user;
+    }
+
+    public static User OtpRegistration(string mobileOrEmail)
+    {
+        if (!mobileOrEmail.HasValue())
+        {
+            throw new ArgumentNullException(nameof(mobileOrEmail));
+        }
+        if (mobileOrEmail.IsValidEmail())
+        {
+            return new User(Guid.NewGuid(),
+                mobileOrEmail,
+                string.Empty,
+                mobileOrEmail,
+                string.Empty,
+                false,
+                false);
+        }
+        else if (mobileOrEmail.IsValidMobile())
+        {
+            return new User(Guid.NewGuid(),
+                mobileOrEmail,
+                string.Empty,
+                string.Empty,
+                mobileOrEmail,
+                false,
+                false);
+        }
+        else
+        {
+            throw new KsInvalidMobileOrEmailException();
+        }
     }
 
     #region Permissions

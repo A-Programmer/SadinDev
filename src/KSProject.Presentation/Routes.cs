@@ -11,6 +11,14 @@ public static class Routes
         public const string CHECK_USER_EXISTENCE = "check-user-existence";
         public const string VALIDATE_USER = "validate-user";
     }
+    
+    public static class Otp
+    {
+        public const string LOGIN = "";
+        public const string VERIFY = "verify";
+        public const string RESEND = "resend";
+        public const string EXPIRE_CODE = "expire";
+    }
 
     public static class TestAggregates
     {

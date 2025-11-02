@@ -16,7 +16,7 @@ public sealed class RolesRepository : GenericRepository<Role>, IRolesRepository
 		CancellationToken cancellationToken = default)
 	{
 		return await _roles
-			.FirstOrDefaultAsync(x => x.Name.ToLower() == roleName,
+			.FirstOrDefaultAsync(x => x.Name.ToLower() == roleName.ToLower(),
 				cancellationToken);
 	}
 
