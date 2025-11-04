@@ -23,7 +23,7 @@ public static class DependencyInjection
         {
             var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
-            options.UseNpgsql(builder.Configuration.GetConnectionString("postgres"),
+            options.UseNpgsql(builder.Configuration.GetConnectionString("KSProjectDbConnection"),
                     x => x.MigrationsAssembly("KSProject.Infrastructure")
                         .EnableRetryOnFailure(3))
                 .AddInterceptors(interceptor)
@@ -32,7 +32,8 @@ public static class DependencyInjection
 
         builder.EnrichNpgsqlDbContext<KSProjectDbContext>();
         
-        Console.WriteLine($"\n\n\n\n\nConnection String: {configuration.GetConnectionString("Postgres")}\n\n\n\n\n\n");
+        Console.WriteLine($"\n\n\n\n\nConnection String: {configuration.GetConnectionString("KSProjectDbConnection")}\n\n\n\n\n\n");
+        Console.WriteLine($"\n\n\n\n\n\nConnection String: {builder.Configuration.GetConnectionString("KSProjectDbConnection")}\n\n\n\n\n\n\n");
 
         builder.Services.AddQuartz(configure =>
         {
