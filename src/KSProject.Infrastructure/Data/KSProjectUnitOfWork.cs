@@ -38,7 +38,27 @@ public class KSProjectUnitOfWork : IKSProjectUnitOfWork
 		return await _context.SaveChangesAsync();
 	}
 
-	/// <summary>
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        return await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+    {
+        return await _context.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+
+    public int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        return _context.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    public int SaveChanges()
+    {
+        return _context.SaveChanges();
+    }
+
+    /// <summary>
 	/// Retrieves a generic repository for the specified entity type.
 	/// </summary>
 	/// <typeparam name="TEntity">The type of the entity.</typeparam>
