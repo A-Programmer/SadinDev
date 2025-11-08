@@ -70,7 +70,14 @@ public static class DataSeederExtensionMethod
 	private static void SeedRoles(this ModelBuilder modelBuilder)
 	{
 		Role adminRole = Role.Create(AdminRoleId, "Admin", "Administrator role with all permissions.");
+        adminRole.CreatedAt = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+        adminRole.CreatedBy = "System";
+        adminRole.ModifiedBy = "System";
+        
 		Role userRole = Role.Create(UserRoleId, "User", "Standard user role with limited permissions.");
+        userRole.CreatedAt = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+        userRole.CreatedBy = "System";
+        userRole.ModifiedBy = "System";
 
 		modelBuilder.Entity<Role>()
 			.HasData(
@@ -83,15 +90,27 @@ public static class DataSeederExtensionMethod
 	{
 		User superAdminUser = User.Create(SuperAdminUserId, "superadmin", SuperAdminHashedPassword, "superadmin@superadmin.com",
 		"09123456780", true, true);
+        superAdminUser.CreatedAt = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+        superAdminUser.CreatedBy = "System";
+        superAdminUser.ModifiedBy = "System";
 
 		User adminUser = User.Create(AdminUserId, "admin", AdminHashedPassword, "admin@admin.com",
 		"09123456789", true, false);
+        adminUser.CreatedAt = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+        adminUser.CreatedBy = "System";
+        adminUser.ModifiedBy = "System";
 
 		User userUser1 = User
 			.Create(UserUserId1, "user1", UserHashedPassword, "user1@user.com", "09123456782", true, false);
+        userUser1.CreatedAt = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+        userUser1.CreatedBy = "System";
+        userUser1.ModifiedBy = "System";
 
 		User userUser2 = User
 			.Create(UserUserId2, "user2", UserHashedPassword, "user2@user.com", "09123456787", true, false);
+        userUser2.CreatedAt = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+        userUser2.CreatedBy = "System";
+        userUser2.ModifiedBy = "System";
 
 		modelBuilder.Entity<User>().HasData(new List<User>()
 		{

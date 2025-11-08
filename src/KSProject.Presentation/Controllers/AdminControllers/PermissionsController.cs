@@ -1,9 +1,11 @@
 ﻿using KSProject.Application.Contracts;
+using KSProject.Presentation.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KSProject.Presentation.Controllers.AdminControllers;
 [ApiController]
 [Route("api/[controller]")]
+[Permission("PermissionsController")]
 public class PermissionsController : ControllerBase
 {
 	private readonly IPermissionDiscoveryService _permissionService;
