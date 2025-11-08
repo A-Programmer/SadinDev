@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace KSProject.Domain.Aggregates.Users;
 
-public sealed class User : BaseEntity, IAggregateRoot, ISerializable
+public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDeletable
 {
     private User(Guid id,
         string userName,
@@ -53,6 +53,8 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable
     public bool SuperAdmin { get; private set; }
     public bool Active { get; private set; }
 
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedOnUtc { get; set; }
 
     public Guid? UserProfileId { get; private set; }
     public UserProfile? Profile { get; private set; }
@@ -492,6 +494,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.HasKey(u => u.Id);
+        
+        builder.Property(u => u.IsDeleted).HasDefaultValue(false);
 
         builder.Property(x => x.Active)
             .HasDefaultValue(true);

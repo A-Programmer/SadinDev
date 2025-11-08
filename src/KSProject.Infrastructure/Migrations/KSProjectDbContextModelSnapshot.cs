@@ -28,8 +28,27 @@ namespace KSProject.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -47,15 +66,37 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("98f4f7df-15bb-4547-8495-f098a753536f"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
                             Description = "Administrator role with all permissions.",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
                             Name = "Admin",
                             Version = 0
                         },
                         new
                         {
                             Id = new Guid("1fd5d547-737a-45d3-b71f-c5e8f692d434"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
                             Description = "Standard user role with limited permissions.",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
                             Name = "User",
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("3fd5d547-737a-45d3-b71f-c5e8f692d434"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            Description = "Test Role to test soft delete",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            Name = "TestRole",
                             Version = 0
                         });
                 });
@@ -65,6 +106,19 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -93,6 +147,19 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("text");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
@@ -110,6 +177,19 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("text");
 
                     b.Property<Guid>("TestAggregateId")
                         .HasColumnType("uuid");
@@ -139,12 +219,33 @@ namespace KSProject.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
 
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("HashedPassword")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTimeOffset?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
@@ -175,8 +276,13 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
                             Active = true,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
                             Email = "superadmin@superadmin.com",
                             HashedPassword = "01cVBRfT5lroSYX3twWtmf3Dg3KiLs6gzsr4qvggokk=",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
                             PhoneNumber = "09123456780",
                             SuperAdmin = true,
                             UserName = "superadmin",
@@ -186,8 +292,13 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
                             Active = true,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
                             Email = "admin@admin.com",
                             HashedPassword = "PrP+ZrMeO00Q+nC1ytSccRIpSvauTkdqHEBRVdRaoSE=",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
                             PhoneNumber = "09123456789",
                             SuperAdmin = false,
                             UserName = "admin",
@@ -197,8 +308,13 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
                             Active = true,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
                             Email = "user1@user.com",
                             HashedPassword = "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
                             PhoneNumber = "09123456782",
                             SuperAdmin = false,
                             UserName = "user1",
@@ -208,11 +324,32 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"),
                             Active = true,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
                             Email = "user2@user.com",
                             HashedPassword = "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
                             PhoneNumber = "09123456787",
                             SuperAdmin = false,
                             UserName = "user2",
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
+                            Active = true,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            Email = "test@user.com",
+                            HashedPassword = "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            PhoneNumber = "09123456783",
+                            SuperAdmin = false,
+                            UserName = "test",
                             Version = 0
                         });
                 });
@@ -230,12 +367,25 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("BirthDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
                         .HasColumnType("text");
 
                     b.Property<string>("ProfileImageUrl")
@@ -318,6 +468,11 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             RolesId = new Guid("1fd5d547-737a-45d3-b71f-c5e8f692d434"),
                             UsersId = new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12")
+                        },
+                        new
+                        {
+                            RolesId = new Guid("3fd5d547-737a-45d3-b71f-c5e8f692d434"),
+                            UsersId = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434")
                         });
                 });
 
