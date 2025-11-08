@@ -12,12 +12,14 @@ public static class DataSeederExtensionMethod
 	#region Users and Roles
 	// Role Ids
 	public static Guid AdminRoleId = Guid.Parse("98f4f7df-15bb-4547-8495-f098a753536f");
-	public static Guid UserRoleId = Guid.Parse("1fd5d547-737a-45d3-b71f-c5e8f692d434");
+    public static Guid UserRoleId = Guid.Parse("1fd5d547-737a-45d3-b71f-c5e8f692d434");
+    public static Guid TestRoleId = Guid.Parse("3fd5d547-737a-45d3-b71f-c5e8f692d434");
 	// User Ids
 	public static Guid SuperAdminUserId = Guid.Parse("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b");
 	public static Guid AdminUserId = Guid.Parse("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120");
 	public static Guid UserUserId1 = Guid.Parse("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f");
 	public static Guid UserUserId2 = Guid.Parse("9650f7f3-333b-4a77-b992-9a55179bfa12");
+    public static Guid TestUserId = Guid.Parse("2fd5d547-737a-45d3-b71f-c5e8f692d434");
 	// Hashed Passwords
 	public static string AdminHashedPassword = SecurityHelper.GetSha256Hash("Admin123!");
 	public static string SuperAdminHashedPassword = SecurityHelper.GetSha256Hash("SuperAdmin123!");
@@ -69,36 +71,78 @@ public static class DataSeederExtensionMethod
 	// Seeders
 	private static void SeedRoles(this ModelBuilder modelBuilder)
 	{
+        var now = DateTime.Parse("2025-11-06T00:00:00Z");
 		Role adminRole = Role.Create(AdminRoleId, "Admin", "Administrator role with all permissions.");
-		Role userRole = Role.Create(UserRoleId, "User", "Standard user role with limited permissions.");
+        adminRole.CreatedAt = now;
+        adminRole.ModifiedAt = now;
+        adminRole.CreatedBy = "System";
+        adminRole.ModifiedBy = "System";
 
+        Role userRole = Role.Create(UserRoleId, "User", "Standard user role with limited permissions.");
+        userRole.CreatedAt = now;
+        userRole.ModifiedAt = now;
+        userRole.CreatedBy = "System";
+        userRole.ModifiedBy = "System";
+        
+        Role testRole = Role.Create(TestRoleId, "TestRole", "Test Role to test soft delete");
+        testRole.CreatedAt = now;
+        testRole.ModifiedAt = now;
+        testRole.CreatedBy = "System";
+        testRole.ModifiedBy = "System";
+        
 		modelBuilder.Entity<Role>()
 			.HasData(
 				adminRole,
-				userRole
+				userRole,
+                testRole
 			);
 	}
 
 	private static void SeedUsers(this ModelBuilder modelBuilder)
 	{
+        var now = DateTime.Parse("2025-11-06T00:00:00Z");
 		User superAdminUser = User.Create(SuperAdminUserId, "superadmin", SuperAdminHashedPassword, "superadmin@superadmin.com",
 		"09123456780", true, true);
+        superAdminUser.CreatedAt = now;
+        superAdminUser.ModifiedAt = now;
+        superAdminUser.CreatedBy = "System";
+        superAdminUser.ModifiedBy = "System";
 
 		User adminUser = User.Create(AdminUserId, "admin", AdminHashedPassword, "admin@admin.com",
 		"09123456789", true, false);
+        adminUser.CreatedAt = now;
+        adminUser.ModifiedAt = now;
+        adminUser.CreatedBy = "System";
+        adminUser.ModifiedBy = "System";
 
 		User userUser1 = User
 			.Create(UserUserId1, "user1", UserHashedPassword, "user1@user.com", "09123456782", true, false);
+        userUser1.CreatedAt = now;
+        userUser1.ModifiedAt = now;
+        userUser1.CreatedBy = "System";
+        userUser1.ModifiedBy = "System";
 
-		User userUser2 = User
-			.Create(UserUserId2, "user2", UserHashedPassword, "user2@user.com", "09123456787", true, false);
+        User userUser2 = User
+            .Create(UserUserId2, "user2", UserHashedPassword, "user2@user.com", "09123456787", true, false);
+        userUser2.CreatedAt = now;
+        userUser2.ModifiedAt = now;
+        userUser2.CreatedBy = "System";
+        userUser2.ModifiedBy = "System";
+
+        User testUser = User
+            .Create(TestUserId, "test", UserHashedPassword, "test@user.com", "09123456783", true, false);
+        testUser.CreatedAt = now;
+        testUser.ModifiedAt = now;
+        testUser.CreatedBy = "System";
+        testUser.ModifiedBy = "System";
 
 		modelBuilder.Entity<User>().HasData(new List<User>()
 		{
 			superAdminUser,
 			adminUser,
 			userUser1,
-			userUser2
+			userUser2,
+            testUser
 		});
 
 		modelBuilder.Entity<User>()
@@ -110,7 +154,8 @@ public static class DataSeederExtensionMethod
 					new { UsersId = SuperAdminUserId, RolesId = UserRoleId },
 					new { UsersId = AdminUserId, RolesId = AdminRoleId },
 					new { UsersId = UserUserId1, RolesId = UserRoleId },
-					new { UsersId = UserUserId2, RolesId = UserRoleId }
+                    new { UsersId = UserUserId2, RolesId = UserRoleId },
+                    new { UsersId = TestUserId, RolesId = TestRoleId }
 				)
 			);
 	}

@@ -35,8 +35,14 @@ namespace KSProject.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false)
+                    Version = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    ModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,7 +56,11 @@ namespace KSProject.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false)
+                    Version = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    ModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -68,8 +78,14 @@ namespace KSProject.Infrastructure.Migrations
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
                     SuperAdmin = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     Active = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     UserProfileId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Version = table.Column<int>(type: "integer", nullable: false)
+                    Version = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    ModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -83,7 +99,11 @@ namespace KSProject.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     RoleId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false)
+                    Version = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    ModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -103,7 +123,11 @@ namespace KSProject.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     TestAggregateId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false)
+                    Version = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    ModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -166,7 +190,11 @@ namespace KSProject.Infrastructure.Migrations
                     AboutMe = table.Column<string>(type: "text", nullable: false),
                     BirthDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false)
+                    Version = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    ModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -247,26 +275,32 @@ namespace KSProject.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "Id", "Description", "Name", "Version" },
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedOnUtc", "Description", "IsDeleted", "ModifiedAt", "ModifiedBy", "Name", "Version" },
                 values: new object[,]
                 {
-                    { new Guid("1fd5d547-737a-45d3-b71f-c5e8f692d434"), "Standard user role with limited permissions.", "User", 0 },
-                    { new Guid("98f4f7df-15bb-4547-8495-f098a753536f"), "Administrator role with all permissions.", "Admin", 0 }
+                    { new Guid("1fd5d547-737a-45d3-b71f-c5e8f692d434"), new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", null, "Standard user role with limited permissions.", false, new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", "User", 0 },
+                    { new Guid("3fd5d547-737a-45d3-b71f-c5e8f692d434"), new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", null, "Test Role to test soft delete", false, new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", "TestRole", 0 },
+                    { new Guid("98f4f7df-15bb-4547-8495-f098a753536f"), new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", null, "Administrator role with all permissions.", false, new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", "Admin", 0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Active", "Email", "HashedPassword", "PhoneNumber", "SuperAdmin", "UserName", "UserProfileId", "Version" },
-                values: new object[] { new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), true, "superadmin@superadmin.com", "01cVBRfT5lroSYX3twWtmf3Dg3KiLs6gzsr4qvggokk=", "09123456780", true, "superadmin", null, 0 });
+                columns: new[] { "Id", "Active", "CreatedAt", "CreatedBy", "DeletedOnUtc", "Email", "HashedPassword", "ModifiedAt", "ModifiedBy", "PhoneNumber", "UserName", "UserProfileId", "Version" },
+                values: new object[] { new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"), true, new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", null, "test@user.com", "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=", new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", "09123456783", "test", null, 0 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Active", "Email", "HashedPassword", "PhoneNumber", "UserName", "UserProfileId", "Version" },
+                columns: new[] { "Id", "Active", "CreatedAt", "CreatedBy", "DeletedOnUtc", "Email", "HashedPassword", "ModifiedAt", "ModifiedBy", "PhoneNumber", "SuperAdmin", "UserName", "UserProfileId", "Version" },
+                values: new object[] { new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), true, new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", null, "superadmin@superadmin.com", "01cVBRfT5lroSYX3twWtmf3Dg3KiLs6gzsr4qvggokk=", new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", "09123456780", true, "superadmin", null, 0 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Active", "CreatedAt", "CreatedBy", "DeletedOnUtc", "Email", "HashedPassword", "ModifiedAt", "ModifiedBy", "PhoneNumber", "UserName", "UserProfileId", "Version" },
                 values: new object[,]
                 {
-                    { new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), true, "admin@admin.com", "PrP+ZrMeO00Q+nC1ytSccRIpSvauTkdqHEBRVdRaoSE=", "09123456789", "admin", null, 0 },
-                    { new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"), true, "user2@user.com", "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=", "09123456787", "user2", null, 0 },
-                    { new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), true, "user1@user.com", "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=", "09123456782", "user1", null, 0 }
+                    { new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), true, new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", null, "admin@admin.com", "PrP+ZrMeO00Q+nC1ytSccRIpSvauTkdqHEBRVdRaoSE=", new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", "09123456789", "admin", null, 0 },
+                    { new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"), true, new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", null, "user2@user.com", "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=", new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", "09123456787", "user2", null, 0 },
+                    { new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), true, new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", null, "user1@user.com", "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=", new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)), "System", "09123456782", "user1", null, 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -277,6 +311,7 @@ namespace KSProject.Infrastructure.Migrations
                     { new Guid("1fd5d547-737a-45d3-b71f-c5e8f692d434"), new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b") },
                     { new Guid("1fd5d547-737a-45d3-b71f-c5e8f692d434"), new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12") },
                     { new Guid("1fd5d547-737a-45d3-b71f-c5e8f692d434"), new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f") },
+                    { new Guid("3fd5d547-737a-45d3-b71f-c5e8f692d434"), new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434") },
                     { new Guid("98f4f7df-15bb-4547-8495-f098a753536f"), new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120") }
                 });
 

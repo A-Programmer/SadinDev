@@ -1,4 +1,5 @@
 ﻿using KSFramework.GenericRepository;
+using KSFramework.Interceptors;
 using KSProject.Domain.Contracts;
 using KSProject.Infrastructure.BackgroundJobs;
 using KSProject.Infrastructure.Data;
@@ -18,6 +19,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         builder.Services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+        builder.Services.AddSingleton<SoftDeleteInterceptor>();
 
         builder.Services.AddDbContext<KSProjectDbContext>((sp, options) =>
         {
@@ -27,14 +29,12 @@ public static class DependencyInjection
                     x => x.MigrationsAssembly("KSProject.Infrastructure")
                         .EnableRetryOnFailure(3))
                 .AddInterceptors(interceptor)
+                .AddInterceptors(sp.GetRequiredService<SoftDeleteInterceptor>())
                 .EnableSensitiveDataLogging();
         });
 
         builder.EnrichNpgsqlDbContext<KSProjectDbContext>();
         
-        Console.WriteLine($"\n\n\n\n\nConnection String: {configuration.GetConnectionString("KSProjectDbConnection")}\n\n\n\n\n\n");
-        Console.WriteLine($"\n\n\n\n\n\nConnection String: {builder.Configuration.GetConnectionString("KSProjectDbConnection")}\n\n\n\n\n\n\n");
-
         builder.Services.AddQuartz(configure =>
         {
             var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
