@@ -35,26 +35,36 @@ public class KSProjectUnitOfWork : IKSProjectUnitOfWork
 	/// <returns>A task that represents the asynchronous save operation. The task result contains the number of state entries written to the database.</returns>
 	public async Task<int> SaveChangesAsync()
 	{
+        _context.FixYeke();
+        _context.SetDetailFields();
 		return await _context.SaveChangesAsync();
 	}
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
+        _context.FixYeke();
+        _context.SetDetailFields();
         return await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
     {
+        _context.FixYeke();
+        _context.SetDetailFields();
         return await _context.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
 
     public int SaveChanges(bool acceptAllChangesOnSuccess)
     {
+        _context.FixYeke();
+        _context.SetDetailFields();
         return _context.SaveChanges(acceptAllChangesOnSuccess);
     }
 
     public int SaveChanges()
     {
+        _context.FixYeke();
+        _context.SetDetailFields();
         return _context.SaveChanges();
     }
 
