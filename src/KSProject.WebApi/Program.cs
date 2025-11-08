@@ -12,7 +12,7 @@ var mainBuilder = WebApplication.CreateBuilder(args);
 	PublicSettings settings) = mainBuilder.AddBasicConfigurations();
 
 builder.AddServiceDefaults();
-
+builder.Services.AddHttpContextAccessor();
 builder.RegisterWebApi(builder.Configuration);
 builder.Services.RegisterApplication();
 builder.Services.RegisterPresentation(settings);
