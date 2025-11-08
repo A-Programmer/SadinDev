@@ -11,7 +11,7 @@ namespace KSProject.Domain.Aggregates.Roles;
 /// <summary>
 /// Represents a role within the system, containing permissions and users.
 /// </summary>
-public sealed class Role : BaseEntity, IAggregateRoot, ISerializable
+public sealed class Role : BaseEntity, IAggregateRoot, ISerializable, ISoftDeletable
 {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Role"/> class with the specified id, name, and description.
@@ -32,6 +32,9 @@ public sealed class Role : BaseEntity, IAggregateRoot, ISerializable
 	/// Gets the name of the role.
 	/// </summary>
 	public string Name { get; private set; }
+
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedOnUtc { get; set; }
 
 	/// <summary>
 	/// Gets the description of the role.

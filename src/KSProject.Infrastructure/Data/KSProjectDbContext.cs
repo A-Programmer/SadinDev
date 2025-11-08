@@ -1,3 +1,4 @@
+using KSFramework.ExtensionMethods;
 using KSFramework.KSDomain;
 using KSFramework.Utilities;
 using KSProject.Infrastructure.Outbox;
@@ -28,6 +29,10 @@ public class KSProjectDbContext : DbContext
 
         #region Apply Entities Configuration
         modelBuilder.RegisterEntityTypeConfiguration(entitiesAssembly);
+        #endregion
+        
+        #region Apply Soft Delete Global Query Filter
+        modelBuilder.ApplyGlobalSoftDeleteFilter();
         #endregion
 
         #region Config Delete Behevior for not Cascade Delete
