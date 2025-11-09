@@ -63,6 +63,10 @@ public sealed class User : BaseEntity, IAggregateRoot, ISoftDeletable
 
     private List<UserPermission> _permissions = new();
     public IReadOnlyCollection<UserPermission> Permissions => _permissions;
+    
+
+    private List<ApiKey> _apiKeys = new();
+    public IReadOnlyCollection<ApiKey> ApiKeys => _apiKeys;
 
 
     private List<Role> _roles = new();
@@ -488,6 +492,29 @@ public sealed class User : BaseEntity, IAggregateRoot, ISoftDeletable
         Wallet.Balance += amount;
     }
     #endregion
+    
+    #region Api Keys
+
+    public void AddApiKey(ApiKey apiKey)
+    {
+        _apiKeys.Add(apiKey);
+    }
+
+    public void AddApiKeys(IEnumerable<ApiKey> apiKeys)
+    {
+        _apiKeys.AddRange(apiKeys);
+    }
+
+    public void RemoveApiKey(ApiKey apiKey)
+    {
+        _apiKeys.Remove(apiKey);
+    }
+
+    public void ClearApiKeys()
+    {
+        _apiKeys.Clear();
+    }
+    #endregion
 
 }
 
@@ -528,6 +555,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne(up => up.User)
             .HasForeignKey<Wallet>(up => up.UserId)
             .IsRequired(false)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasMany(u => u.ApiKeys)
+            .WithOne(k => k.User)
+            .HasForeignKey(k => k.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.OwnsMany(u => u.UserTokens, c =>

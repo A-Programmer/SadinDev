@@ -41,6 +41,14 @@ public static class DataSeederExtensionMethod
     public static Guid User2ProfileId = Guid.Parse("29a0421c-6e4e-4793-bf3d-aad975155381");
     public static Guid TestUserProfileId = Guid.Parse("445819eb-053a-4c13-b8dd-fb736d46739f");
     #endregion
+    
+    #region Api Keys Ids
+    public static Guid SuperAdminApiKeyId = Guid.Parse("c55fb374-3d74-4aa3-b576-d144c49cd184");
+    public static Guid AdminApiKeyId = Guid.Parse("0acc9f75-9201-4ea5-9a16-5be1c30d6f60");
+    public static Guid User1ApiKeyId1 = Guid.Parse("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd");
+    public static Guid User1ApiKeyId2 = Guid.Parse("17f9e83c-b763-4e38-8902-1d0583adab05");
+    public static Guid TestUserApiKeyId = Guid.Parse("2a5018f6-c8db-490a-9707-221469d20bb7");
+    #endregion
 
 	//#region Permissions
 	//// OldPermission Ids
@@ -82,10 +90,53 @@ public static class DataSeederExtensionMethod
 		SeedUsers(modelBuilder);
         SeedWallets(modelBuilder);
         SeedProfiles(modelBuilder);
+        SeedApiKeys(modelBuilder);
 		//SeedPermissions(modelBuilder);
 
 	}
 
+    private static void SeedApiKeys(this ModelBuilder modelBuilder)
+    {
+        var now = DateTime.Parse("2025-11-06T00:00:00Z");
+        ApiKey superAdminApiKey = ApiKey.Create(SuperAdminApiKeyId, SuperAdminUserId, SuperAdminApiKeyId.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete" );
+        superAdminApiKey.CreatedAt = now;
+        superAdminApiKey.ModifiedAt = now;
+        superAdminApiKey.CreatedBy = "System";
+        superAdminApiKey.ModifiedBy = "System";
+        
+        ApiKey adminApiKey = ApiKey.Create(AdminApiKeyId, AdminUserId, AdminApiKeyId.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete" );
+        adminApiKey.CreatedAt = now;
+        adminApiKey.ModifiedAt = now;
+        adminApiKey.CreatedBy = "System";
+        adminApiKey.ModifiedBy = "System";
+        
+        ApiKey user1ApiKey1 = ApiKey.Create(User1ApiKeyId1, UserId1, User1ApiKeyId1.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.show-all" );
+        user1ApiKey1.CreatedAt = now;
+        user1ApiKey1.ModifiedAt = now;
+        user1ApiKey1.CreatedBy = "System";
+        user1ApiKey1.ModifiedBy = "System";
+        
+        ApiKey user1ApiKey2 = ApiKey.Create(User1ApiKeyId2, UserId1, User1ApiKeyId2.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all" );
+        user1ApiKey2.CreatedAt = now;
+        user1ApiKey2.ModifiedAt = now;
+        user1ApiKey2.CreatedBy = "System";
+        user1ApiKey2.ModifiedBy = "System";
+        
+        ApiKey testUserApiKey = ApiKey.Create(TestUserApiKeyId, TestUserId, TestUserApiKeyId.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all" );
+        testUserApiKey.CreatedAt = now;
+        testUserApiKey.ModifiedAt = now;
+        testUserApiKey.CreatedBy = "System";
+        testUserApiKey.ModifiedBy = "System";
+        
+        modelBuilder.Entity<ApiKey>()
+            .HasData(
+                superAdminApiKey,
+                adminApiKey,
+                user1ApiKey1,
+                user1ApiKey2,
+                testUserApiKey
+            );
+    }
     private static void SeedProfiles(ModelBuilder modelBuilder)
     {
         var now = DateTime.Parse("2025-11-06T00:00:00Z");
