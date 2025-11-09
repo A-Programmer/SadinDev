@@ -17,14 +17,30 @@ public static class DataSeederExtensionMethod
 	// User Ids
 	public static Guid SuperAdminUserId = Guid.Parse("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b");
 	public static Guid AdminUserId = Guid.Parse("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120");
-	public static Guid UserUserId1 = Guid.Parse("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f");
-	public static Guid UserUserId2 = Guid.Parse("9650f7f3-333b-4a77-b992-9a55179bfa12");
+	public static Guid UserId1 = Guid.Parse("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f");
+	public static Guid UserId2 = Guid.Parse("9650f7f3-333b-4a77-b992-9a55179bfa12");
     public static Guid TestUserId = Guid.Parse("2fd5d547-737a-45d3-b71f-c5e8f692d434");
 	// Hashed Passwords
 	public static string AdminHashedPassword = SecurityHelper.GetSha256Hash("Admin123!");
 	public static string SuperAdminHashedPassword = SecurityHelper.GetSha256Hash("SuperAdmin123!");
 	public static string UserHashedPassword = SecurityHelper.GetSha256Hash("User123!");
 	#endregion
+    
+    #region Wallet Ids
+    public static Guid SuperAdminWalletId = Guid.Parse("c55fb374-3d74-4aa3-b576-d144c49cd184");
+    public static Guid AdminWalletId = Guid.Parse("0acc9f75-9201-4ea5-9a16-5be1c30d6f60");
+    public static Guid User1WalletId = Guid.Parse("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd");
+    public static Guid User2WalletId = Guid.Parse("17f9e83c-b763-4e38-8902-1d0583adab05");
+    public static Guid TestUserWalletId = Guid.Parse("2a5018f6-c8db-490a-9707-221469d20bb7");
+    #endregion
+    
+    #region User Profile Ids
+    public static Guid SuperAdminProfileId = Guid.Parse("ec7a3150-c202-4895-8b00-232f28e0eb4f");
+    public static Guid AdminProfileId = Guid.Parse("5e46e00a-5162-4417-a240-36dc48793ad5");
+    public static Guid User1ProfileId = Guid.Parse("b21013eb-7182-46ef-b543-b9606bc45c83");
+    public static Guid User2ProfileId = Guid.Parse("29a0421c-6e4e-4793-bf3d-aad975155381");
+    public static Guid TestUserProfileId = Guid.Parse("445819eb-053a-4c13-b8dd-fb736d46739f");
+    #endregion
 
 	//#region Permissions
 	//// OldPermission Ids
@@ -64,11 +80,100 @@ public static class DataSeederExtensionMethod
 	{
 		SeedRoles(modelBuilder);
 		SeedUsers(modelBuilder);
+        SeedWallets(modelBuilder);
+        SeedProfiles(modelBuilder);
 		//SeedPermissions(modelBuilder);
 
 	}
 
-	// Seeders
+    private static void SeedProfiles(ModelBuilder modelBuilder)
+    {
+        var now = DateTime.Parse("2025-11-06T00:00:00Z");
+        UserProfile superAdminProfile = UserProfile.Create(SuperAdminProfileId, SuperAdminUserId, "Super", "Admin", "/image.png", "This is SuperAdmin Profile", now);
+        superAdminProfile.CreatedAt = now;
+        superAdminProfile.ModifiedAt = now;
+        superAdminProfile.CreatedBy = "System";
+        superAdminProfile.ModifiedBy = "System";
+        
+        UserProfile adminProfile = UserProfile.Create(AdminProfileId, AdminUserId, "Admin", "User", "/image.png", "This is Admin Profile", now);
+        adminProfile.CreatedAt = now;
+        adminProfile.ModifiedAt = now;
+        adminProfile.CreatedBy = "System";
+        adminProfile.ModifiedBy = "System";
+        
+        UserProfile user1Profile = UserProfile.Create(User1ProfileId, UserId1, "User", "One", "/image.png", "This is User One Profile", now);
+        user1Profile.CreatedAt = now;
+        user1Profile.ModifiedAt = now;
+        user1Profile.CreatedBy = "System";
+        user1Profile.ModifiedBy = "System";
+        
+        UserProfile user2Profile = UserProfile.Create(User2ProfileId, UserId2, "User", "Two", "/image.png", "This is User Two Profile", now);
+        user2Profile.CreatedAt = now;
+        user2Profile.ModifiedAt = now;
+        user2Profile.CreatedBy = "System";
+        user2Profile.ModifiedBy = "System";
+        
+        UserProfile testUserProfile = UserProfile.Create(TestUserProfileId, TestUserId, "Test", "User", "/image.png", "This is User Test Profile", now);
+        testUserProfile.CreatedAt = now;
+        testUserProfile.ModifiedAt = now;
+        testUserProfile.CreatedBy = "System";
+        testUserProfile.ModifiedBy = "System";
+        
+        modelBuilder.Entity<UserProfile>()
+            .HasData(
+                superAdminProfile,
+                adminProfile,
+                user1Profile,
+                user2Profile,
+                testUserProfile
+            );
+    }
+
+    private static void SeedWallets(ModelBuilder modelBuilder)
+    {
+        var now = DateTime.Parse("2025-11-06T00:00:00Z");
+        Wallet superAdminWallet = Wallet.Create(SuperAdminWalletId, SuperAdminUserId, 0);
+        superAdminWallet.CreatedAt = now;
+        superAdminWallet.ModifiedAt = now;
+        superAdminWallet.CreatedBy = "System";
+        superAdminWallet.ModifiedBy = "System";
+        
+        Wallet adminWallet = Wallet.Create(AdminWalletId, AdminUserId, 0);
+        adminWallet.CreatedAt = now;
+        adminWallet.ModifiedAt = now;
+        adminWallet.CreatedBy = "System";
+        adminWallet.ModifiedBy = "System";
+        
+        Wallet user1Wallet = Wallet.Create(User1WalletId, UserId1, 0);
+        user1Wallet.CreatedAt = now;
+        user1Wallet.ModifiedAt = now;
+        user1Wallet.CreatedBy = "System";
+        user1Wallet.ModifiedBy = "System";
+
+        Wallet user2Wallet = Wallet.Create(User2WalletId, UserId2, 0);
+        user2Wallet.CreatedAt = now;
+        user2Wallet.ModifiedAt = now;
+        user2Wallet.CreatedBy = "System";
+        user2Wallet.ModifiedBy = "System";
+
+        Wallet testUserWallet = Wallet.Create(TestUserWalletId, TestUserId, 0);
+        testUserWallet.CreatedAt = now;
+        testUserWallet.ModifiedAt = now;
+        testUserWallet.CreatedBy = "System";
+        testUserWallet.ModifiedBy = "System";
+        
+        modelBuilder.Entity<Wallet>()
+            .HasData(
+                superAdminWallet,
+                adminWallet,
+                user1Wallet,
+                user2Wallet,
+                testUserWallet
+            );
+
+    }
+
+    // Seeders
 	private static void SeedRoles(this ModelBuilder modelBuilder)
 	{
         var now = DateTime.Parse("2025-11-06T00:00:00Z");
@@ -107,6 +212,8 @@ public static class DataSeederExtensionMethod
         superAdminUser.ModifiedAt = now;
         superAdminUser.CreatedBy = "System";
         superAdminUser.ModifiedBy = "System";
+        // superAdminUser.AddWallet(Wallet.Create(Guid.NewGuid(), SuperAdminUserId, 0));
+        // superAdminUser.AddProfile(UserProfile.Create(Guid.NewGuid(), SuperAdminUserId, "", "", "", "", null));
 
 		User adminUser = User.Create(AdminUserId, "admin", AdminHashedPassword, "admin@admin.com",
 		"09123456789", true, false);
@@ -116,14 +223,14 @@ public static class DataSeederExtensionMethod
         adminUser.ModifiedBy = "System";
 
 		User userUser1 = User
-			.Create(UserUserId1, "user1", UserHashedPassword, "user1@user.com", "09123456782", true, false);
+			.Create(UserId1, "user1", UserHashedPassword, "user1@user.com", "09123456782", true, false);
         userUser1.CreatedAt = now;
         userUser1.ModifiedAt = now;
         userUser1.CreatedBy = "System";
         userUser1.ModifiedBy = "System";
 
         User userUser2 = User
-            .Create(UserUserId2, "user2", UserHashedPassword, "user2@user.com", "09123456787", true, false);
+            .Create(UserId2, "user2", UserHashedPassword, "user2@user.com", "09123456787", true, false);
         userUser2.CreatedAt = now;
         userUser2.ModifiedAt = now;
         userUser2.CreatedBy = "System";
@@ -153,8 +260,8 @@ public static class DataSeederExtensionMethod
 				ur => ur.HasData(
 					new { UsersId = SuperAdminUserId, RolesId = UserRoleId },
 					new { UsersId = AdminUserId, RolesId = AdminRoleId },
-					new { UsersId = UserUserId1, RolesId = UserRoleId },
-                    new { UsersId = UserUserId2, RolesId = UserRoleId },
+					new { UsersId = UserId1, RolesId = UserRoleId },
+                    new { UsersId = UserId2, RolesId = UserRoleId },
                     new { UsersId = TestUserId, RolesId = TestRoleId }
 				)
 			);

@@ -2,7 +2,7 @@
 
 namespace KSProject.Domain.Aggregates.Users;
 
-public sealed class UserProfile : BaseEntity
+public sealed class UserProfile : BaseEntity, ISoftDeletable
 {
 	private UserProfile(Guid id,
 		string firstName,
@@ -44,6 +44,8 @@ public sealed class UserProfile : BaseEntity
 	public string ProfileImageUrl { get; private set; }
 	public string AboutMe { get; private set; }
 	public DateTimeOffset? BirthDate { get; private set; }
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedOnUtc { get; set; }
 
 	public string FullName
 	{
@@ -65,6 +67,7 @@ public sealed class UserProfile : BaseEntity
 	public User User { get; private set; }
 
 	public static UserProfile Create(Guid id,
+        Guid userId,
 		string firstName,
 		string lastName,
 		string profileImageUrl,
@@ -76,7 +79,10 @@ public sealed class UserProfile : BaseEntity
 			lastName,
 			profileImageUrl,
 			aboutMe,
-			birthDate);
+			birthDate)
+        {
+            UserId = userId
+        };
 
 		return profile;
 	}

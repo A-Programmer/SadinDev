@@ -46,15 +46,19 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
 
             roles.Add(role);
         }
+        
+        user.AddWallet(Wallet.Create(Guid.NewGuid(), user.Id, 0));
+        user.AddProfile(UserProfile.Create(Guid.NewGuid(), user.Id, "", "", "/profile_images/default.png", "", null));
 
-        UserProfile userProfile = UserProfile.Create(Guid.NewGuid(),
-            "",
-            "",
-            "/profile_images/default.png",
-            "",
-            null);
-
-        user.AddProfile(userProfile);
+        // UserProfile userProfile = UserProfile.Create(Guid.NewGuid(),
+        //     user.Id,
+        //     "",
+        //     "",
+        //     "/profile_images/default.png",
+        //     "",
+        //     null);
+        //
+        // user.AddProfile(userProfile);
 
         try
         {
@@ -62,7 +66,7 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
 
             await _uow.Users.AddAsync(user, cancellationToken);
 
-            await _uow.SaveChangesAsync();
+            await _uow.SaveChangesAsync(cancellationToken);
 
             return new CreateUserResponse()
             {

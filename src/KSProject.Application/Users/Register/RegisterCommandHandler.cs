@@ -30,15 +30,26 @@ public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Re
         Role? role = await _uow.Roles.GetByRoleName("User", cancellationToken);
         if (role == null)
             throw new KSNotFoundException("Role not found");
-
-        UserProfile userProfile = UserProfile.Create(Guid.NewGuid(),
+        
+        
+        user.AddWallet(Wallet.Create(Guid.NewGuid(), user.Id, 0));
+        user.AddProfile(UserProfile.Create(Guid.NewGuid(),
+            user.Id,
             request.Payload.FirstName ?? "",
             request.Payload.LastName ?? "",
             "/profile_images/default.png",
             request.Payload.AboutMe ?? "",
-            request.Payload.BirthDateUtc);
+            request.Payload.BirthDateUtc));
 
-        user.AddProfile(userProfile);
+        // UserProfile userProfile = UserProfile.Create(Guid.NewGuid(),
+        //     user.Id,
+        //     request.Payload.FirstName ?? "",
+        //     request.Payload.LastName ?? "",
+        //     "/profile_images/default.png",
+        //     request.Payload.AboutMe ?? "",
+        //     request.Payload.BirthDateUtc);
+        //
+        // user.AddProfile(userProfile);
 
         try
         {
@@ -46,7 +57,7 @@ public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Re
 
             await _uow.Users.AddAsync(user, cancellationToken);
 
-            await _uow.SaveChangesAsync();
+            await _uow.SaveChangesAsync(cancellationToken);
 
             return new RegisterResponse
             {

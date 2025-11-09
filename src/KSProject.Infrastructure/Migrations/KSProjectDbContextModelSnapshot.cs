@@ -374,9 +374,15 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -404,6 +410,192 @@ namespace KSProject.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("UserProfiles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ec7a3150-c202-4895-8b00-232f28e0eb4f"),
+                            AboutMe = "This is SuperAdmin Profile",
+                            BirthDate = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            FirstName = "Super",
+                            IsDeleted = false,
+                            LastName = "Admin",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            ProfileImageUrl = "/image.png",
+                            UserId = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("5e46e00a-5162-4417-a240-36dc48793ad5"),
+                            AboutMe = "This is Admin Profile",
+                            BirthDate = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            FirstName = "Admin",
+                            IsDeleted = false,
+                            LastName = "User",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            ProfileImageUrl = "/image.png",
+                            UserId = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("b21013eb-7182-46ef-b543-b9606bc45c83"),
+                            AboutMe = "This is User One Profile",
+                            BirthDate = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            FirstName = "User",
+                            IsDeleted = false,
+                            LastName = "One",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            ProfileImageUrl = "/image.png",
+                            UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("29a0421c-6e4e-4793-bf3d-aad975155381"),
+                            AboutMe = "This is User Two Profile",
+                            BirthDate = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            FirstName = "User",
+                            IsDeleted = false,
+                            LastName = "Two",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            ProfileImageUrl = "/image.png",
+                            UserId = new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("445819eb-053a-4c13-b8dd-fb736d46739f"),
+                            AboutMe = "This is User Test Profile",
+                            BirthDate = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            FirstName = "Test",
+                            IsDeleted = false,
+                            LastName = "User",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            ProfileImageUrl = "/image.png",
+                            UserId = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
+                            Version = 0
+                        });
+                });
+
+            modelBuilder.Entity("KSProject.Domain.Aggregates.Users.Wallet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Wallets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"),
+                            Balance = 0m,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            UserId = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"),
+                            Balance = 0m,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            UserId = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"),
+                            Balance = 0m,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"),
+                            Balance = 0m,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            UserId = new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"),
+                            Balance = 0m,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            UserId = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
+                            Version = 0
+                        });
                 });
 
             modelBuilder.Entity("KSProject.Infrastructure.Outbox.OutboxMessage", b =>
@@ -626,6 +818,16 @@ namespace KSProject.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("KSProject.Domain.Aggregates.Users.Wallet", b =>
+                {
+                    b.HasOne("KSProject.Domain.Aggregates.Users.User", "User")
+                        .WithOne("Wallet")
+                        .HasForeignKey("KSProject.Domain.Aggregates.Users.Wallet", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("UsersRoles", b =>
                 {
                     b.HasOne("KSProject.Domain.Aggregates.Roles.Role", null)
@@ -654,6 +856,9 @@ namespace KSProject.Infrastructure.Migrations
             modelBuilder.Entity("KSProject.Domain.Aggregates.Users.User", b =>
                 {
                     b.Navigation("Profile");
+
+                    b.Navigation("Wallet")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

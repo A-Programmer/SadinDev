@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace KSProject.Domain.Aggregates.Users;
 
-public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDeletable
+public sealed class User : BaseEntity, IAggregateRoot, ISoftDeletable
 {
     private User(Guid id,
         string userName,
@@ -58,6 +58,8 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDelet
 
     public Guid? UserProfileId { get; private set; }
     public UserProfile? Profile { get; private set; }
+    
+    public Wallet Wallet { get; private set; }
 
     private List<UserPermission> _permissions = new();
     public IReadOnlyCollection<UserPermission> Permissions => _permissions;
@@ -166,6 +168,7 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDelet
         return SuperAdmin;
     }
 
+    #region Roles
     public void AssignRoles(IEnumerable<Role> roles,
         UserSecurityStamp? securityStamp = null)
     {
@@ -209,6 +212,7 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDelet
         }
     }
 
+    #endregion
     public static User Create(Guid id,
         string userName,
         string hashedPassword,
@@ -470,23 +474,21 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDelet
     }
 
     #endregion
+    
+    #region Wallet
 
-    public void GetObjectData(SerializationInfo info, StreamingContext context)
+    public void AddWallet(Wallet wallet)
     {
-        info.AddValue(nameof(Id), Id);
-        info.AddValue(nameof(UserName), UserName);
-        info.AddValue(nameof(HashedPassword), HashedPassword);
-        info.AddValue(nameof(Email), Email);
-        info.AddValue(nameof(PhoneNumber), PhoneNumber);
-        info.AddValue(nameof(SuperAdmin), SuperAdmin);
-        info.AddValue(nameof(Active), Active);
-        info.AddValue(nameof(UserProfileId), UserProfileId);
-        info.AddValue(nameof(Profile), Profile);
-        info.AddValue(nameof(Permissions), Permissions);
-        info.AddValue(nameof(UserTokens), UserTokens);
-        info.AddValue(nameof(UserSecurityStamps), UserSecurityStamps);
-        info.AddValue(nameof(UserLoginDates), UserLoginDates);
+        Wallet = wallet;
     }
+
+    public void UpdateWalletBalance(decimal amount)
+    {
+        // TODO: Important => Add Transaction first!!!!!
+        Wallet.Balance += amount;
+    }
+    #endregion
+
 }
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
@@ -519,6 +521,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasOne(u => u.Profile)
             .WithOne(up => up.User)
             .HasForeignKey<UserProfile>(up => up.UserId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(u => u.Wallet)
+            .WithOne(up => up.User)
+            .HasForeignKey<Wallet>(up => up.UserId)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.Cascade);
 
