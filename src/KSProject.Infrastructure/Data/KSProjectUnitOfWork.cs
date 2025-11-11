@@ -1,6 +1,7 @@
 using KSFramework.GenericRepository;
 using KSProject.Domain.Aggregates.Roles;
 using KSProject.Domain.Aggregates.Users;
+using KSProject.Domain.Aggregates.Wallets;
 using KSProject.Domain.Contracts;
 using KSProject.Infrastructure.Data.Repositories;
 
@@ -26,8 +27,11 @@ public class KSProjectUnitOfWork : IKSProjectUnitOfWork
 	private RolesRepository? _roles;
 	public IRolesRepository Roles => _roles ??= new RolesRepository(_context);
 
-	private UsersRepository? _users;
-	public IUsersRepository Users => _users ??= new UsersRepository(_context);
+    private UsersRepository? _users;
+    public IUsersRepository Users => _users ??= new UsersRepository(_context);
+
+    private WalletsRepository? _wallets;
+    public IWalletsRepository Wallets => _wallets ??= new WalletsRepository(_context);
 
 	/// <summary>
 	/// Saves all changes made in this unit of work to the underlying data store asynchronously.
