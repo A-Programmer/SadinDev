@@ -1,10 +1,13 @@
+using System.Text.Json;
 using KSFramework.KSDomain;
-using System.Text.Json; // برای parse RulesJson
 using KSFramework.KSDomain.AggregatesHelper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders; // برای Dictionary در rules
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+// برای parse RulesJson
 
-namespace KSProject.Domain.Aggregates.Billing;
+// برای Dictionary در rules
+
+namespace KSProject.Domain.Aggregates.Billings;
 
 public sealed class ServiceRate : BaseEntity, IAggregateRoot, ISoftDeletable
 {

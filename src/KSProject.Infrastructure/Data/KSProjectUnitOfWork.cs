@@ -1,4 +1,5 @@
 using KSFramework.GenericRepository;
+using KSProject.Domain.Aggregates.Billings;
 using KSProject.Domain.Aggregates.Roles;
 using KSProject.Domain.Aggregates.Users;
 using KSProject.Domain.Aggregates.Wallets;
@@ -32,6 +33,9 @@ public class KSProjectUnitOfWork : IKSProjectUnitOfWork
 
     private WalletsRepository? _wallets;
     public IWalletsRepository Wallets => _wallets ??= new WalletsRepository(_context);
+
+    private ServiceRatesRepository? _serviceRates;
+    public IServiceRatesRepository ServiceRates => _serviceRates ??= new ServiceRatesRepository(_context);
 
 	/// <summary>
 	/// Saves all changes made in this unit of work to the underlying data store asynchronously.

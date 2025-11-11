@@ -12,22 +12,22 @@ public class WalletsRepository : GenericRepository<Wallet>, IWalletsRepository
         _wallets = context.Set<Wallet>();
     }
     
-    public async Task<Wallet> GetByIdAsync(Guid id)
+    public async Task<Wallet> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _wallets
             .Include(w => w.Transactions)
-            .FirstOrDefaultAsync(w => w.Id == id && !w.IsDeleted);
+            .FirstOrDefaultAsync(w => w.Id == id, cancellationToken);
     }
 
-    public async Task<Wallet> GetByUserIdAsync(Guid userId)
+    public async Task<Wallet> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         return await _wallets.Include(w => w.Transactions)
-            .FirstOrDefaultAsync(w => w.UserId == userId);
+            .FirstOrDefaultAsync(w => w.UserId == userId, cancellationToken);
     }
 
-    public async Task AddTransactionAsync(Guid walletId, Transaction transaction)
+    public async Task AddTransactionAsync(Guid walletId, Transaction transaction, CancellationToken cancellationToken = default)
     {
-        Wallet wallet = await GetByIdAsync(walletId);
+        Wallet wallet = await GetByIdAsync(walletId, cancellationToken);
         if (wallet == null)
         {
             throw new InvalidOperationException("Wallet not found.");
@@ -36,9 +36,9 @@ public class WalletsRepository : GenericRepository<Wallet>, IWalletsRepository
         wallet.AddTransaction(transaction);
     }
 
-    public async Task<IEnumerable<Transaction>> GetTransactionsByWalletIdAsync(Guid walletId)
+    public async Task<IEnumerable<Transaction>> GetTransactionsByWalletIdAsync(Guid walletId, CancellationToken cancellationToken = default)
     {
-        Wallet wallet = await GetByIdAsync(walletId);
+        Wallet wallet = await GetByIdAsync(walletId, cancellationToken);
         return wallet?.Transactions ?? new List<Transaction>();
     }
 }
