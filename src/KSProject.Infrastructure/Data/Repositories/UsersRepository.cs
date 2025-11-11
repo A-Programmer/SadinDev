@@ -137,4 +137,67 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 			.Include(u => u.Permissions)
 			.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 	}
+    
+    public async Task<ApiKey?> GetApiKeyByKeyAsync(string key, CancellationToken cancellationToken = default)
+    {
+        return await _users
+            .SelectMany(u => u.ApiKeys)
+            .FirstOrDefaultAsync(ak => ak.Key == key && ak.IsActive, cancellationToken);
+    }
+
+    public async Task<ApiKey> GenerateApiKeyForUserAsync(Guid userId, string scopes = null, CancellationToken cancellationToken = default)
+    {
+        User user = await _users
+            .Include(u => u.ApiKeys)
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found.");
+        }
+
+        var newApiKey = ApiKey.Create(Guid.NewGuid(), userId, Guid.NewGuid().ToString("N"), true, null, scopes ?? "");
+        user.AddApiKey(newApiKey);
+        return newApiKey;
+    }
+
+    public async Task AddApiKeyToUserAsync(Guid userId, ApiKey apiKey, CancellationToken cancellationToken = default)
+    {
+        User user = await _users
+            .Include(u => u.ApiKeys)
+            .FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted, cancellationToken);
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found.");
+        }
+        user.AddApiKey(apiKey);
+    }
+
+    public async Task<IEnumerable<ApiKey>> GetApiKeysByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        User user = await _users
+            .Include(u => u.ApiKeys) // load collection
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found.");
+        }
+        return user.ApiKeys.Where(ak => !ak.IsDeleted);
+    }
+
+    public async Task RevokeApiKeyAsync(Guid userId, Guid apiKeyId, CancellationToken cancellationToken = default)
+    {
+        User user = await _users
+            .Include(u => u.ApiKeys)
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found.");
+        }
+
+        var apiKey = user.ApiKeys.FirstOrDefault(ak => ak.Id == apiKeyId && !ak.IsDeleted);
+        if (apiKey != null)
+        {
+            apiKey.Revoke();
+        }
+    }
 }

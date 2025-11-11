@@ -48,4 +48,11 @@ public interface IUsersRepository : IRepository<User>
 
 	Task<User?> GetUserAndPermissionsAsync(Guid id,
 		CancellationToken cancellationToken = default);
+    
+    
+    Task<ApiKey> GetApiKeyByKeyAsync(string key, CancellationToken cancellationToken = default);
+    Task<ApiKey> GenerateApiKeyForUserAsync(Guid userId, string scopes = null, CancellationToken cancellationToken = default);
+    Task AddApiKeyToUserAsync(Guid userId, ApiKey apiKey, CancellationToken cancellationToken = default);
+    Task<IEnumerable<ApiKey>> GetApiKeysByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
+    Task RevokeApiKeyAsync(Guid userId, Guid apiKeyId, CancellationToken cancellationToken = default);
 }
