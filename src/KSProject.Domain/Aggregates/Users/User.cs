@@ -1,4 +1,3 @@
-using System.Runtime.Serialization;
 using KSFramework.KSDomain;
 using KSFramework.KSDomain.AggregatesHelper;
 using KSFramework.Utilities;
@@ -9,6 +8,7 @@ using KSProject.Domain.Aggregates.Users.Events;
 using KSProject.Domain.Aggregates.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using KSProject.Domain.Aggregates.Wallets;
 
 namespace KSProject.Domain.Aggregates.Users;
 
@@ -58,7 +58,8 @@ public sealed class User : BaseEntity, IAggregateRoot, ISoftDeletable
 
     public Guid? UserProfileId { get; private set; }
     public UserProfile? Profile { get; private set; }
-    
+
+    public Guid? WalletId { get; private set; }
     public Wallet Wallet { get; private set; }
 
     private List<UserPermission> _permissions = new();
@@ -480,16 +481,22 @@ public sealed class User : BaseEntity, IAggregateRoot, ISoftDeletable
     #endregion
     
     #region Wallet
-
     public void AddWallet(Wallet wallet)
     {
+        if (wallet == null)
+            throw new ArgumentNullException(nameof(wallet));
+        if (wallet.UserId != Id)
+            throw new InvalidOperationException("Wallet must belong to this user.");
+
         Wallet = wallet;
+        WalletId = wallet.Id;
     }
 
     public void UpdateWalletBalance(decimal amount)
     {
-        // TODO: Important => Add Transaction first!!!!!
-        Wallet.Balance += amount;
+        if (Wallet == null)
+            throw new InvalidOperationException("No wallet assigned.");
+        Wallet.UpdateBalance(amount, TransactionTypes.Adjustment); // Use Wallet's behavior
     }
     #endregion
     
@@ -550,16 +557,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey<UserProfile>(up => up.UserId)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne(u => u.Wallet)
-            .WithOne(up => up.User)
-            .HasForeignKey<Wallet>(up => up.UserId)
-            .IsRequired(false)
-            .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasMany(u => u.ApiKeys)
             .WithOne(k => k.User)
             .HasForeignKey(k => k.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasOne(u => u.Wallet)
+            .WithOne()
+            .HasForeignKey<User>(u => u.WalletId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.OwnsMany(u => u.UserTokens, c =>

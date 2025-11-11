@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KSProject.Infrastructure.Migrations
 {
     [DbContext(typeof(KSProjectDbContext))]
-    [Migration("20251109161713_Init")]
+    [Migration("20251111122503_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -24,6 +24,122 @@ namespace KSProject.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("KSProject.Domain.Aggregates.Billing.ServiceRate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("MetricType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("RatePerUnit")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("RulesJson")
+                        .HasColumnType("jsonb");
+
+                    b.Property<string>("ServiceType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Variant")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceType", "MetricType", "Variant")
+                        .IsUnique();
+
+                    b.ToTable("ServiceRates");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-2222-3333-4444-555555555555"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "Posts_Count",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            RatePerUnit = 0.01m,
+                            ServiceType = "Blog",
+                            Variant = "Default",
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-3333-4444-5555-666666666666"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "Posts_Count",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            RatePerUnit = 0.005m,
+                            RulesJson = "{\"minQuantity\": 50, \"discountPercent\": 10}",
+                            ServiceType = "Blog",
+                            Variant = "Premium",
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-4444-5555-6666-777777777777"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "SMS_Count",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            RatePerUnit = 0.02m,
+                            ServiceType = "Notification",
+                            Variant = "Default",
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-5555-6666-7777-888888888888"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "Transactions_Count",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            RatePerUnit = 0.015m,
+                            RulesJson = "{\"minQuantity\": 100, \"discountPercent\": 15}",
+                            ServiceType = "OnlineStore",
+                            Variant = "Tier1",
+                            Version = 0
+                        });
+                });
 
             modelBuilder.Entity("KSProject.Domain.Aggregates.Roles.Role", b =>
                 {
@@ -211,6 +327,135 @@ namespace KSProject.Infrastructure.Migrations
                     b.ToTable("TestEntities");
                 });
 
+            modelBuilder.Entity("KSProject.Domain.Aggregates.Users.ApiKey", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("ExpirationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Scopes")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ApiKeys");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            ExpirationDate = new DateTimeOffset(new DateTime(2026, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            IsActive = true,
+                            IsDeleted = false,
+                            Key = "c55fb3743d744aa3b576d144c49cd184",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            Scopes = "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete",
+                            UserId = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            ExpirationDate = new DateTimeOffset(new DateTime(2026, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            IsActive = true,
+                            IsDeleted = false,
+                            Key = "0acc9f7592014ea59a165be1c30d6f60",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            Scopes = "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete",
+                            UserId = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            ExpirationDate = new DateTimeOffset(new DateTime(2026, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            IsActive = true,
+                            IsDeleted = false,
+                            Key = "ed12b6798fd04a0cade5fa6aaccf42fd",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            Scopes = "sliders.show-all",
+                            UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            ExpirationDate = new DateTimeOffset(new DateTime(2026, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            IsActive = true,
+                            IsDeleted = false,
+                            Key = "17f9e83cb7634e3889021d0583adab05",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            Scopes = "sliders.create,sliders.show-all",
+                            UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
+                            Version = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            ExpirationDate = new DateTimeOffset(new DateTime(2026, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            IsActive = true,
+                            IsDeleted = false,
+                            Key = "2a5018f6c8db490a9707221469d20bb7",
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            Scopes = "sliders.create,sliders.show-all",
+                            UserId = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
+                            Version = 0
+                        });
+                });
+
             modelBuilder.Entity("KSProject.Domain.Aggregates.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -270,7 +515,13 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<int>("Version")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("WalletId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WalletId")
+                        .IsUnique();
 
                     b.ToTable("Users");
 
@@ -497,7 +748,173 @@ namespace KSProject.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("KSProject.Domain.Aggregates.Users.Wallet", b =>
+            modelBuilder.Entity("KSProject.Domain.Aggregates.Wallets.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("MetricDetails")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MetricType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("MetricValue")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTimeOffset?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ServiceType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("TransactionDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("Transactions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a1b2c3d4-e5f6-4789-abc1-def234567890"),
+                            Amount = 100.0m,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "",
+                            MetricValue = 0m,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            ServiceType = "",
+                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Type = "Charge",
+                            Version = 0,
+                            WalletId = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184")
+                        },
+                        new
+                        {
+                            Id = new Guid("b2c3d4e5-f678-9abc-1def-234567890abc"),
+                            Amount = -5.0m,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "Posts_Count",
+                            MetricValue = 5.0m,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            ServiceType = "Blog",
+                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Type = "Usage",
+                            Version = 0,
+                            WalletId = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184")
+                        },
+                        new
+                        {
+                            Id = new Guid("c3d4e5f6-789a-bc1d-ef23-4567890abcde"),
+                            Amount = 50.0m,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "",
+                            MetricValue = 0m,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            ServiceType = "",
+                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Type = "Charge",
+                            Version = 0,
+                            WalletId = new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60")
+                        },
+                        new
+                        {
+                            Id = new Guid("d4e5f678-9abc-1def-2345-67890abcde12"),
+                            Amount = -2.0m,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "SMS_Count",
+                            MetricValue = 10.0m,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            ServiceType = "Notification",
+                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Type = "Usage",
+                            Version = 0,
+                            WalletId = new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd")
+                        },
+                        new
+                        {
+                            Id = new Guid("e5f6789a-bc1d-ef23-4567-890abcde1234"),
+                            Amount = 10.0m,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "Transactions_Count",
+                            MetricValue = 1.0m,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            ServiceType = "OnlineStore",
+                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Type = "Refund",
+                            Version = 0,
+                            WalletId = new Guid("17f9e83c-b763-4e38-8902-1d0583adab05")
+                        },
+                        new
+                        {
+                            Id = new Guid("f6789abc-1def-2345-6789-0abcde123456"),
+                            Amount = -1.0m,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "",
+                            MetricValue = 0m,
+                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedBy = "System",
+                            ServiceType = "",
+                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Type = "Adjustment",
+                            Version = 0,
+                            WalletId = new Guid("2a5018f6-c8db-490a-9707-221469d20bb7")
+                        });
+                });
+
+            modelBuilder.Entity("KSProject.Domain.Aggregates.Wallets.Wallet", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -517,7 +934,9 @@ namespace KSProject.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTimeOffset?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -542,7 +961,7 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"),
-                            Balance = 0m,
+                            Balance = 100.0m,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
                             CreatedBy = "System",
                             IsDeleted = false,
@@ -554,7 +973,7 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"),
-                            Balance = 0m,
+                            Balance = 50.0m,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
                             CreatedBy = "System",
                             IsDeleted = false,
@@ -566,7 +985,7 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"),
-                            Balance = 0m,
+                            Balance = 20.0m,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
                             CreatedBy = "System",
                             IsDeleted = false,
@@ -578,7 +997,7 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"),
-                            Balance = 0m,
+                            Balance = 0.0m,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
                             CreatedBy = "System",
                             IsDeleted = false,
@@ -590,7 +1009,7 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"),
-                            Balance = 0m,
+                            Balance = 10.0m,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
                             CreatedBy = "System",
                             IsDeleted = false,
@@ -693,8 +1112,24 @@ namespace KSProject.Infrastructure.Migrations
                     b.Navigation("TestAggregate");
                 });
 
+            modelBuilder.Entity("KSProject.Domain.Aggregates.Users.ApiKey", b =>
+                {
+                    b.HasOne("KSProject.Domain.Aggregates.Users.User", "User")
+                        .WithMany("ApiKeys")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("KSProject.Domain.Aggregates.Users.User", b =>
                 {
+                    b.HasOne("KSProject.Domain.Aggregates.Wallets.Wallet", "Wallet")
+                        .WithOne()
+                        .HasForeignKey("KSProject.Domain.Aggregates.Users.User", "WalletId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.OwnsMany("KSProject.Domain.Aggregates.Users.ValueObjects.UserLoginDate", "UserLoginDates", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -809,6 +1244,8 @@ namespace KSProject.Infrastructure.Migrations
                     b.Navigation("UserSecurityStamps");
 
                     b.Navigation("UserTokens");
+
+                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("KSProject.Domain.Aggregates.Users.UserProfile", b =>
@@ -821,14 +1258,15 @@ namespace KSProject.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("KSProject.Domain.Aggregates.Users.Wallet", b =>
+            modelBuilder.Entity("KSProject.Domain.Aggregates.Wallets.Transaction", b =>
                 {
-                    b.HasOne("KSProject.Domain.Aggregates.Users.User", "User")
-                        .WithOne("Wallet")
-                        .HasForeignKey("KSProject.Domain.Aggregates.Users.Wallet", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("KSProject.Domain.Aggregates.Wallets.Wallet", "Wallet")
+                        .WithMany("Transactions")
+                        .HasForeignKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("UsersRoles", b =>
@@ -858,10 +1296,14 @@ namespace KSProject.Infrastructure.Migrations
 
             modelBuilder.Entity("KSProject.Domain.Aggregates.Users.User", b =>
                 {
-                    b.Navigation("Profile");
+                    b.Navigation("ApiKeys");
 
-                    b.Navigation("Wallet")
-                        .IsRequired();
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("KSProject.Domain.Aggregates.Wallets.Wallet", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

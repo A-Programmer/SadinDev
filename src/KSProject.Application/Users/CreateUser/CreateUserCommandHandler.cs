@@ -4,6 +4,7 @@ using KSFramework.Utilities;
 using KSProject.Common.Exceptions;
 using KSProject.Domain.Aggregates.Roles;
 using KSProject.Domain.Aggregates.Users;
+using KSProject.Domain.Aggregates.Wallets;
 using KSProject.Domain.Contracts;
 using Microsoft.Extensions.Logging;
 
