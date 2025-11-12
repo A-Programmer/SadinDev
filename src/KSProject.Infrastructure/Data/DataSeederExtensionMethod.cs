@@ -84,7 +84,7 @@ public static class DataSeederExtensionMethod
 
     private static void SeedApiKeys(this ModelBuilder modelBuilder)
     {
-        var now = DateTime.Parse("2025-11-06T00:00:00Z");
+        var now = DateTime.SpecifyKind(new DateTime(2025, 11, 12, 10, 0, 0), DateTimeKind.Utc);
         ApiKey superAdminApiKey = ApiKey.Create(SuperAdminApiKeyId, SuperAdminUserId, SuperAdminApiKeyId.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete" );
         superAdminApiKey.CreatedAt = now;
         superAdminApiKey.ModifiedAt = now;
@@ -126,7 +126,7 @@ public static class DataSeederExtensionMethod
     }
     private static void SeedProfiles(ModelBuilder modelBuilder)
     {
-        var now = DateTime.Parse("2025-11-06T00:00:00Z");
+        var now = DateTime.SpecifyKind(new DateTime(2025, 11, 12, 10, 0, 0), DateTimeKind.Utc);
         UserProfile superAdminProfile = UserProfile.Create(SuperAdminProfileId, SuperAdminUserId, "Super", "Admin", "/image.png", "This is SuperAdmin Profile", now);
         superAdminProfile.CreatedAt = now;
         superAdminProfile.ModifiedAt = now;
@@ -169,7 +169,7 @@ public static class DataSeederExtensionMethod
 
     private static void SeedWallets(ModelBuilder modelBuilder)
     {
-        var now = DateTime.Parse("2025-11-06T00:00:00Z");
+        var now = DateTime.SpecifyKind(new DateTime(2025, 11, 12, 10, 0, 0), DateTimeKind.Utc);
         Wallet superAdminWallet = Wallet.Create(SuperAdminWalletId, SuperAdminUserId, 100.0m); // اولیه 100 برای تست
         superAdminWallet.CreatedAt = now;
         superAdminWallet.ModifiedAt = now;
@@ -214,7 +214,7 @@ public static class DataSeederExtensionMethod
     // Seeder جدید برای Transactionها (child of Wallet)
     private static void SeedTransactions(ModelBuilder modelBuilder)
     {
-        var now = DateTime.Parse("2025-11-06T00:00:00Z");
+        var now = DateTime.SpecifyKind(new DateTime(2025, 11, 12, 10, 0, 0), DateTimeKind.Utc);
 
         // Transaction برای SuperAdminWallet: Charge 100, Usage for Blog
         Transaction superAdminTransaction1 = Transaction.Create(SuperAdminTransactionId1, SuperAdminWalletId, 100.0m, TransactionTypes.Charge, null, null, 0);
@@ -271,7 +271,7 @@ public static class DataSeederExtensionMethod
     // Seeder جدید برای ServiceRateها (برای تست pricing با variantها و rules)
     private static void SeedServiceRates(ModelBuilder modelBuilder)
     {
-        var now = DateTime.Parse("2025-11-06T00:00:00Z");
+        var now = DateTime.SpecifyKind(new DateTime(2025, 11, 12, 10, 0, 0), DateTimeKind.Utc);
 
         // Rate برای Blog Posts_Count Default
         ServiceRate blogPostsDefaultRate = ServiceRate.Create(BlogPostsDefaultRateId, "Blog", "Posts_Count", "Default", 0.01m, null);
@@ -313,7 +313,7 @@ public static class DataSeederExtensionMethod
     // Seeders
     private static void SeedRoles(this ModelBuilder modelBuilder)
     {
-        var now = DateTime.Parse("2025-11-06T00:00:00Z");
+        var now = DateTime.SpecifyKind(new DateTime(2025, 11, 12, 10, 0, 0), DateTimeKind.Utc);
        Role adminRole = Role.Create(AdminRoleId, "Admin", "Administrator role with all permissions.");
         adminRole.CreatedAt = now;
         adminRole.ModifiedAt = now;
@@ -342,7 +342,7 @@ public static class DataSeederExtensionMethod
 
     private static void SeedUsers(this ModelBuilder modelBuilder)
     {
-        var now = DateTime.Parse("2025-11-06T00:00:00Z");
+        var now = DateTime.SpecifyKind(new DateTime(2025, 11, 12, 10, 0, 0), DateTimeKind.Utc);
        User superAdminUser = User.Create(SuperAdminUserId, "superadmin", SuperAdminHashedPassword, "superadmin@superadmin.com",
        "09123456780", true, true);
         superAdminUser.CreatedAt = now;

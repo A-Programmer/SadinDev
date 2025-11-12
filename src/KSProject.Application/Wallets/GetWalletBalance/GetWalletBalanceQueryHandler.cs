@@ -20,7 +20,7 @@ public sealed class GetWalletBalanceQueryHandler :
     public async Task<GetWalletBalanceQueryResponse> Handle(GetWalletBalanceQuery request,
         CancellationToken cancellationToken)
     {
-        Wallet? wallet = await _uow.Wallets.GetByUserIdAsync(request.Payload.UserId, cancellationToken);
+        Wallet? wallet = await _uow.Wallets.GetByUserIdAsync(request.UserId, cancellationToken);
 
         if (wallet is null)
         {

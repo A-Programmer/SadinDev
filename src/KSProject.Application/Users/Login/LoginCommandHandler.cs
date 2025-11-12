@@ -67,20 +67,20 @@ public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, LoginRes
 
 		UserSecurityStamp securityStamp = new(
 			Guid.NewGuid().ToString(),
-			DateTimeOffset.UtcNow,
-			DateTimeOffset.UtcNow.AddDays(30));
+            DateTime.UtcNow,
+            DateTime.UtcNow.AddDays(30));
 
 		user.AddSecurityStamp(securityStamp);
 
 		UserToken accessToken = new(TokenTypes.AccessToken,
 			_jwtService.GenerateToken(user, permissions),
-			DateTimeOffset.UtcNow.AddDays(1));
+            DateTime.UtcNow.AddDays(1));
 
 		UserToken refreshToken = new(TokenTypes.RefreshToken,
 			SecurityHelper.GenerateToken(),
-			DateTimeOffset.UtcNow.AddDays(7));
+            DateTime.UtcNow.AddDays(7));
 
-		user.AddLoginDate(new(DateTimeOffset.UtcNow, request.Payload.IpAddress));
+		user.AddLoginDate(new(DateTime.UtcNow, request.Payload.IpAddress));
 
 		user.AddToken(accessToken);
 		user.AddToken(refreshToken);
@@ -91,7 +91,7 @@ public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, LoginRes
 		{
 			Access_Token = accessToken.Token,
 			Refresh_Token = refreshToken.Token,
-			Expire_At = DateTimeOffset.UtcNow.AddDays(1)
+			Expire_At = DateTime.UtcNow.AddDays(1)
 		};
 	}
 }

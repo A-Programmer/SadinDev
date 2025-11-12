@@ -6,7 +6,7 @@ namespace KSProject.Application.Wallets.ChargeWallet
     {
         public ChargeWalletCommandValidator()
         {
-            RuleFor(c => c.Payload.UserId)
+            RuleFor(c => c.UserId)
                 .NotEmpty()
                 .WithMessage("UserId cannot be empty.");
 

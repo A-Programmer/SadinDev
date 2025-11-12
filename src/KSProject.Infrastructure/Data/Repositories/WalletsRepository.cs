@@ -21,7 +21,8 @@ public class WalletsRepository : GenericRepository<Wallet>, IWalletsRepository
 
     public async Task<Wallet> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        return await _wallets.Include(w => w.Transactions)
+        return await _wallets
+            .Include(w => w.Transactions)
             .FirstOrDefaultAsync(w => w.UserId == userId, cancellationToken);
     }
 

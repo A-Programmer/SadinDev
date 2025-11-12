@@ -6,7 +6,7 @@ namespace KSProject.Application.Wallets.GetWalletBalance
     {
         public GetWalletBalanceQueryValidator()
         {
-            RuleFor(q => q.Payload.UserId)
+            RuleFor(q => q.UserId)
                 .NotEmpty()
                 .WithMessage("UserId cannot be empty.");
         }

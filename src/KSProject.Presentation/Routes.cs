@@ -87,4 +87,11 @@ public static class Routes
             public const string UPDATE_USER_LEVEL = "{id}/settings/user-level";
         }
     }
+    
+    public static class Wallets_Admin
+    {
+        public const string CREATE = "";
+        public const string GET_BALANCE = "";
+        public const string CHARGE_WALLET = "";
+    }
 }

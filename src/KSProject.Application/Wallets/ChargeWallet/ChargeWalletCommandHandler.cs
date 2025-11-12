@@ -3,6 +3,7 @@ using KSProject.Domain.Aggregates.Wallets;
 using KSProject.Domain.Contracts;
 using KSFramework.Exceptions;
 using KSProject.Common.Constants.Enums;
+using KSProject.Domain.Aggregates.Users;
 
 namespace KSProject.Application.Wallets.ChargeWallet;
 
@@ -19,7 +20,7 @@ public sealed class ChargeWalletCommandHandler :
     public async Task<ChargeWalletCommandResponse> Handle(ChargeWalletCommand request,
         CancellationToken cancellationToken)
     {
-        Wallet? wallet = await _uow.Wallets.GetByUserIdAsync(request.Payload.UserId, cancellationToken);
+        Wallet? wallet = await _uow.Wallets.GetByUserIdAsync(request.UserId, cancellationToken);
 
         if (wallet is null)
         {

@@ -22,13 +22,13 @@ namespace KSProject.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("KSProject.Domain.Aggregates.Billing.ServiceRate", b =>
+            modelBuilder.Entity("KSProject.Domain.Aggregates.Billings.ServiceRate", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset?>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -47,7 +47,7 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModifiedBy")
@@ -72,6 +72,8 @@ namespace KSProject.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsDeleted");
+
                     b.HasIndex("ServiceType", "MetricType", "Variant")
                         .IsUnique();
 
@@ -81,11 +83,11 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-2222-3333-4444-555555555555"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "Posts_Count",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             RatePerUnit = 0.01m,
                             ServiceType = "Blog",
@@ -95,11 +97,11 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-3333-4444-5555-666666666666"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "Posts_Count",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             RatePerUnit = 0.005m,
                             RulesJson = "{\"minQuantity\": 50, \"discountPercent\": 10}",
@@ -110,11 +112,11 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("33333333-4444-5555-6666-777777777777"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "SMS_Count",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             RatePerUnit = 0.02m,
                             ServiceType = "Notification",
@@ -124,11 +126,11 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("44444444-5555-6666-7777-888888888888"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "Transactions_Count",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             RatePerUnit = 0.015m,
                             RulesJson = "{\"minQuantity\": 100, \"discountPercent\": 15}",
@@ -144,7 +146,7 @@ namespace KSProject.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset?>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -161,7 +163,7 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModifiedBy")
@@ -176,17 +178,19 @@ namespace KSProject.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsDeleted");
+
                     b.ToTable("Roles");
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("98f4f7df-15bb-4547-8495-f098a753536f"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             Description = "Administrator role with all permissions.",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             Name = "Admin",
                             Version = 0
@@ -194,11 +198,11 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("1fd5d547-737a-45d3-b71f-c5e8f692d434"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             Description = "Standard user role with limited permissions.",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             Name = "User",
                             Version = 0
@@ -206,11 +210,11 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("3fd5d547-737a-45d3-b71f-c5e8f692d434"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             Description = "Test Role to test soft delete",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             Name = "TestRole",
                             Version = 0
@@ -223,14 +227,14 @@ namespace KSProject.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset?>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModifiedBy")
@@ -263,14 +267,14 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset?>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModifiedBy")
@@ -294,14 +298,14 @@ namespace KSProject.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset?>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModifiedBy")
@@ -330,7 +334,7 @@ namespace KSProject.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset?>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -340,7 +344,7 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("ExpirationDate")
+                    b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
@@ -353,7 +357,7 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModifiedBy")
@@ -371,6 +375,8 @@ namespace KSProject.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsDeleted");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("ApiKeys");
@@ -379,13 +385,13 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
-                            ExpirationDate = new DateTimeOffset(new DateTime(2026, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
                             Key = "c55fb3743d744aa3b576d144c49cd184",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete",
                             UserId = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
@@ -394,13 +400,13 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
-                            ExpirationDate = new DateTimeOffset(new DateTime(2026, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
                             Key = "0acc9f7592014ea59a165be1c30d6f60",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete",
                             UserId = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
@@ -409,13 +415,13 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
-                            ExpirationDate = new DateTimeOffset(new DateTime(2026, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
                             Key = "ed12b6798fd04a0cade5fa6aaccf42fd",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             Scopes = "sliders.show-all",
                             UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
@@ -424,13 +430,13 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
-                            ExpirationDate = new DateTimeOffset(new DateTime(2026, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
                             Key = "17f9e83cb7634e3889021d0583adab05",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all",
                             UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
@@ -439,13 +445,13 @@ namespace KSProject.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
-                            ExpirationDate = new DateTimeOffset(new DateTime(2026, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
                             Key = "2a5018f6c8db490a9707221469d20bb7",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all",
                             UserId = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
@@ -464,7 +470,7 @@ namespace KSProject.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
 
-                    b.Property<DateTimeOffset?>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -487,7 +493,7 @@ namespace KSProject.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModifiedBy")
@@ -517,6 +523,8 @@ namespace KSProject.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsDeleted");
+
                     b.HasIndex("WalletId")
                         .IsUnique();
 
@@ -527,12 +535,12 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
                             Active = true,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             Email = "superadmin@superadmin.com",
                             HashedPassword = "01cVBRfT5lroSYX3twWtmf3Dg3KiLs6gzsr4qvggokk=",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             PhoneNumber = "09123456780",
                             SuperAdmin = true,
@@ -543,12 +551,12 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
                             Active = true,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             Email = "admin@admin.com",
                             HashedPassword = "PrP+ZrMeO00Q+nC1ytSccRIpSvauTkdqHEBRVdRaoSE=",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             PhoneNumber = "09123456789",
                             SuperAdmin = false,
@@ -559,12 +567,12 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
                             Active = true,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             Email = "user1@user.com",
                             HashedPassword = "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             PhoneNumber = "09123456782",
                             SuperAdmin = false,
@@ -575,12 +583,12 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"),
                             Active = true,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             Email = "user2@user.com",
                             HashedPassword = "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             PhoneNumber = "09123456787",
                             SuperAdmin = false,
@@ -591,12 +599,12 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
                             Active = true,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             Email = "test@user.com",
                             HashedPassword = "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             PhoneNumber = "09123456783",
                             SuperAdmin = false,
@@ -615,10 +623,10 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset?>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -639,7 +647,7 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModifiedBy")
@@ -657,6 +665,8 @@ namespace KSProject.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsDeleted");
+
                     b.HasIndex("UserId")
                         .IsUnique();
 
@@ -667,13 +677,13 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("ec7a3150-c202-4895-8b00-232f28e0eb4f"),
                             AboutMe = "This is SuperAdmin Profile",
-                            BirthDate = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            BirthDate = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             FirstName = "Super",
                             IsDeleted = false,
                             LastName = "Admin",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ProfileImageUrl = "/image.png",
                             UserId = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
@@ -683,13 +693,13 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("5e46e00a-5162-4417-a240-36dc48793ad5"),
                             AboutMe = "This is Admin Profile",
-                            BirthDate = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            BirthDate = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             FirstName = "Admin",
                             IsDeleted = false,
                             LastName = "User",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ProfileImageUrl = "/image.png",
                             UserId = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
@@ -699,13 +709,13 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("b21013eb-7182-46ef-b543-b9606bc45c83"),
                             AboutMe = "This is User One Profile",
-                            BirthDate = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            BirthDate = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             FirstName = "User",
                             IsDeleted = false,
                             LastName = "One",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ProfileImageUrl = "/image.png",
                             UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
@@ -715,13 +725,13 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("29a0421c-6e4e-4793-bf3d-aad975155381"),
                             AboutMe = "This is User Two Profile",
-                            BirthDate = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            BirthDate = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             FirstName = "User",
                             IsDeleted = false,
                             LastName = "Two",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ProfileImageUrl = "/image.png",
                             UserId = new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"),
@@ -731,13 +741,13 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("445819eb-053a-4c13-b8dd-fb736d46739f"),
                             AboutMe = "This is User Test Profile",
-                            BirthDate = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            BirthDate = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             FirstName = "Test",
                             IsDeleted = false,
                             LastName = "User",
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ProfileImageUrl = "/image.png",
                             UserId = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
@@ -754,7 +764,7 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<DateTimeOffset?>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -777,7 +787,7 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<decimal>("MetricValue")
                         .HasColumnType("numeric");
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModifiedBy")
@@ -787,7 +797,7 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("TransactionDateTime")
+                    b.Property<DateTime>("TransactionDateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Type")
@@ -802,6 +812,8 @@ namespace KSProject.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsDeleted");
+
                     b.HasIndex("WalletId");
 
                     b.ToTable("Transactions");
@@ -811,15 +823,15 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("a1b2c3d4-e5f6-4789-abc1-def234567890"),
                             Amount = 100.0m,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "",
                             MetricValue = 0m,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "",
-                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Charge",
                             Version = 0,
                             WalletId = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184")
@@ -828,15 +840,15 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("b2c3d4e5-f678-9abc-1def-234567890abc"),
                             Amount = -5.0m,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "Posts_Count",
                             MetricValue = 5.0m,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "Blog",
-                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Usage",
                             Version = 0,
                             WalletId = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184")
@@ -845,15 +857,15 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("c3d4e5f6-789a-bc1d-ef23-4567890abcde"),
                             Amount = 50.0m,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "",
                             MetricValue = 0m,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "",
-                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Charge",
                             Version = 0,
                             WalletId = new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60")
@@ -862,15 +874,15 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("d4e5f678-9abc-1def-2345-67890abcde12"),
                             Amount = -2.0m,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "SMS_Count",
                             MetricValue = 10.0m,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "Notification",
-                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Usage",
                             Version = 0,
                             WalletId = new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd")
@@ -879,15 +891,15 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("e5f6789a-bc1d-ef23-4567-890abcde1234"),
                             Amount = 10.0m,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "Transactions_Count",
                             MetricValue = 1.0m,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "OnlineStore",
-                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Refund",
                             Version = 0,
                             WalletId = new Guid("17f9e83c-b763-4e38-8902-1d0583adab05")
@@ -896,15 +908,15 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("f6789abc-1def-2345-6789-0abcde123456"),
                             Amount = -1.0m,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "",
                             MetricValue = 0m,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "",
-                            TransactionDateTime = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Adjustment",
                             Version = 0,
                             WalletId = new Guid("2a5018f6-c8db-490a-9707-221469d20bb7")
@@ -920,7 +932,7 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<decimal>("Balance")
                         .HasColumnType("numeric");
 
-                    b.Property<DateTimeOffset?>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
@@ -935,7 +947,7 @@ namespace KSProject.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<DateTimeOffset?>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModifiedBy")
@@ -949,6 +961,8 @@ namespace KSProject.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsDeleted");
+
                     b.HasIndex("UserId")
                         .IsUnique();
 
@@ -959,10 +973,10 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"),
                             Balance = 100.0m,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             UserId = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
                             Version = 0
@@ -971,10 +985,10 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"),
                             Balance = 50.0m,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             UserId = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
                             Version = 0
@@ -983,10 +997,10 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"),
                             Balance = 20.0m,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
                             Version = 0
@@ -995,10 +1009,10 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"),
                             Balance = 0.0m,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             UserId = new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"),
                             Version = 0
@@ -1007,10 +1021,10 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"),
                             Balance = 10.0m,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
-                            ModifiedAt = new DateTimeOffset(new DateTime(2025, 11, 6, 3, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 30, 0, 0)),
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             UserId = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
                             Version = 0
@@ -1137,7 +1151,7 @@ namespace KSProject.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<DateTimeOffset>("LoginDate")
+                            b1.Property<DateTime>("LoginDate")
                                 .HasColumnType("timestamp with time zone");
 
                             b1.Property<Guid>("UserId")
@@ -1182,10 +1196,10 @@ namespace KSProject.Infrastructure.Migrations
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTimeOffset>("CreatedAt")
+                            b1.Property<DateTime>("CreatedAt")
                                 .HasColumnType("timestamp with time zone");
 
-                            b1.Property<DateTimeOffset>("ExpirationDate")
+                            b1.Property<DateTime>("ExpirationDate")
                                 .HasColumnType("timestamp with time zone");
 
                             b1.Property<string>("SecurityStamp")
@@ -1211,7 +1225,7 @@ namespace KSProject.Infrastructure.Migrations
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("uuid");
 
-                            b1.Property<DateTimeOffset>("ExpirationDateTime")
+                            b1.Property<DateTime>("ExpirationDateTime")
                                 .HasColumnType("timestamp with time zone");
 
                             b1.Property<string>("Token")

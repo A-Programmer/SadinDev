@@ -8,8 +8,8 @@ public class UserSecurityStamp : ValueObject, ISerializable
 {
 	public UserSecurityStamp(
 		string securityStamp,
-		DateTimeOffset createdDate,
-		DateTimeOffset expirationDate)
+        DateTime createdDate,
+        DateTime expirationDate)
 	{
 		SecurityStamp = securityStamp;
 		CreatedAt = createdDate;
@@ -18,9 +18,9 @@ public class UserSecurityStamp : ValueObject, ISerializable
 
 	public string SecurityStamp { get; private set; }
 
-	public DateTimeOffset CreatedAt { get; private set; }
+	public DateTime CreatedAt { get; private set; }
 
-	public DateTimeOffset ExpirationDate { get; private set; }
+	public DateTime ExpirationDate { get; private set; }
 
 
 	public void GetObjectData(SerializationInfo info, StreamingContext context)

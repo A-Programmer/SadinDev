@@ -48,14 +48,14 @@ public sealed class UpdateUserCommandHandler
 		user.ClearSecurityStamps();
 		user.ClearTokens();
 
-		UserSecurityStamp securityStamp = new(SecurityHelper.GenerateToken(), DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddDays(30));
+		UserSecurityStamp securityStamp = new(SecurityHelper.GenerateToken(), DateTime.UtcNow, DateTime.UtcNow.AddDays(30));
 
-		UserToken accessToken = new(TokenTypes.AccessToken, _jwtService.GenerateToken(user, permissions), DateTimeOffset.UtcNow.AddDays(7));
-		UserToken refreshToken = new(TokenTypes.RefreshToken, SecurityHelper.GenerateToken(), DateTimeOffset.UtcNow.AddDays(30));
+		UserToken accessToken = new(TokenTypes.AccessToken, _jwtService.GenerateToken(user, permissions), DateTime.UtcNow.AddDays(7));
+		UserToken refreshToken = new(TokenTypes.RefreshToken, SecurityHelper.GenerateToken(), DateTime.UtcNow.AddDays(30));
 		// We might need these two tokens if the user needs to confirm their email and phone number
 		// Then we need to send confirmation link to the email and confirmation code via SMS to the user
-		UserToken emailConfirmationToken = new(TokenTypes.EmailConfirmationToken, SecurityHelper.GenerateToken(), DateTimeOffset.UtcNow.AddMinutes(30));
-		UserToken phoneConfirmationToken = new(TokenTypes.PhoneConfirmationToken, SecurityHelper.GenerateToken(), DateTimeOffset.UtcNow.AddMinutes(30));
+		UserToken emailConfirmationToken = new(TokenTypes.EmailConfirmationToken, SecurityHelper.GenerateToken(), DateTime.UtcNow.AddMinutes(30));
+		UserToken phoneConfirmationToken = new(TokenTypes.PhoneConfirmationToken, SecurityHelper.GenerateToken(), DateTime.UtcNow.AddMinutes(30));
 
 		user.AddToken(accessToken);
 		user.AddToken(refreshToken);

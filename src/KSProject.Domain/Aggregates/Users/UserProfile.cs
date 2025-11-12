@@ -9,7 +9,7 @@ public sealed class UserProfile : BaseEntity, ISoftDeletable
 		string lastName,
 		string profileImageUrl,
 		string aboutMe,
-		DateTimeOffset? birthDate)
+        DateTime? birthDate)
 	{
 		Id = id;
 		FirstName = firstName;
@@ -24,7 +24,7 @@ public sealed class UserProfile : BaseEntity, ISoftDeletable
 		string lastName,
 		string profileImageUrl,
 		string aboutMe,
-		DateTimeOffset? birthDate)
+        DateTime? birthDate)
 	{
 		FirstName = firstName;
 		LastName = lastName;
@@ -43,7 +43,7 @@ public sealed class UserProfile : BaseEntity, ISoftDeletable
 	public string LastName { get; private set; }
 	public string ProfileImageUrl { get; private set; }
 	public string AboutMe { get; private set; }
-	public DateTimeOffset? BirthDate { get; private set; }
+	public DateTime? BirthDate { get; private set; }
     public bool IsDeleted { get; set; }
     public DateTime? DeletedOnUtc { get; set; }
 
@@ -72,7 +72,7 @@ public sealed class UserProfile : BaseEntity, ISoftDeletable
 		string lastName,
 		string profileImageUrl,
 		string aboutMe,
-		DateTimeOffset? birthDate)
+        DateTime? birthDate)
 	{
 		UserProfile profile = new(id,
 			firstName,

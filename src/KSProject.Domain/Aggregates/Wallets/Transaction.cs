@@ -12,7 +12,7 @@ public sealed class Transaction : BaseEntity, ISoftDeletable
     public string ServiceType { get; private set; } // نوع سرویس: e.g., "Slider", "Storage", "Blog"
     public string MetricType { get; private set; } // نوع متریک: e.g., "Slides", "GB", "Posts"
     public decimal MetricValue { get; private set; } // مقدار متریک مصرف‌شده: e.g., 5 برای 5 اسلاید
-    public DateTimeOffset TransactionDateTime { get; private set; } // زمان تراکنش
+    public DateTime TransactionDateTime { get; private set; } // زمان تراکنش
     public string? MetricDetails { get; private set; }
     public Guid WalletId { get; private set; }
     public Wallet Wallet { get; set; }

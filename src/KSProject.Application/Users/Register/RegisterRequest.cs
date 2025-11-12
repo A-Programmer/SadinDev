@@ -26,5 +26,5 @@ public sealed class RegisterRequest : IInjectable
 
     public string? AboutMe { get; set; } = string.Empty;
 
-    public DateTimeOffset? BirthDateUtc { get; set; } = null;
+    public DateTime? BirthDateUtc { get; set; } = null;
 }

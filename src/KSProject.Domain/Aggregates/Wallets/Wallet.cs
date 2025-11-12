@@ -44,9 +44,9 @@ public sealed class Wallet : BaseEntity, IAggregateRoot, ISoftDeletable
 
         Balance = newBalance;
 
-        // Add transaction automatically
-        var transaction = Transaction.Create(Guid.NewGuid(), Id, amount, type, serviceType, metricType, metricValue);
-        AddTransaction(transaction);
+        // // Add transaction automatically
+        // var transaction = Transaction.Create(Guid.NewGuid(), Id, amount, type, serviceType, metricType, metricValue);
+        // AddTransaction(transaction);
 
         AddDomainEvent(new BalanceChangedEvent { WalletId = Id, NewBalance = Balance, Amount = amount });
     }

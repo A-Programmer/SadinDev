@@ -10,5 +10,5 @@ public sealed class LoginResponse : IInjectable
 	[JsonPropertyName("refresh_token")]
 	public required string Refresh_Token { get; set; }
 	[JsonPropertyName("expire_at")]
-	public required DateTimeOffset Expire_At { get; set; }
+	public required DateTime Expire_At { get; set; }
 }

@@ -1,8 +1,7 @@
-using KSFramework.Contracts;
+using System.Text.Json.Serialization;
 
 namespace KSProject.Application.Wallets.ChargeWallet;
-public sealed class ChargeWalletCommandRequest : IInjectable
-{
-    public required Guid UserId { get; set; }
-    public required decimal Amount { get; set; }
-}
+public record ChargeWalletCommandRequest
+(
+    [property: JsonPropertyName("amount")] decimal Amount
+);
