@@ -94,4 +94,9 @@ public static class Routes
         public const string GET_BALANCE = "";
         public const string CHARGE_WALLET = "";
     }
+    
+    public static class Billings_Admin
+    {
+        public const string CALCULATE_COST = "";
+    }
 }
