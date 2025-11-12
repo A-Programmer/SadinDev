@@ -23,7 +23,11 @@ public class WalletsController(ISender sender) : SecureBaseController(sender)
         [FromBody] ChargeWalletCommandRequest payload,
         CancellationToken cancellationToken = default)
     {
-        bool hasUserId = Guid.TryParse(UserId, out var userId);
+        if (!Guid.TryParse(UserId, out Guid userId))
+        {
+            return BadRequest("Invalid User ID.");
+        }
+        
         ChargeWalletCommand command = new(userId, payload);
 
         ChargeWalletCommandResponse result = await Sender.Send(command, cancellationToken);
@@ -42,10 +46,9 @@ public class WalletsController(ISender sender) : SecureBaseController(sender)
     public async Task<ActionResult<GetWalletBalanceQueryResponse>> GetAsync(
         CancellationToken cancellationToken = default)
     {
-        bool hasUserId = Guid.TryParse(UserId, out Guid userId);
-        if (!hasUserId)
+        if (!Guid.TryParse(UserId, out Guid userId))
         {
-            return BadRequest();
+            return BadRequest("Invalid User ID.");
         }
         GetWalletBalanceQuery query = new(userId);
 
