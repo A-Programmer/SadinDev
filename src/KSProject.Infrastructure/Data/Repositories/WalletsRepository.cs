@@ -7,7 +7,7 @@ namespace KSProject.Infrastructure.Data.Repositories;
 public class WalletsRepository : GenericRepository<Wallet>, IWalletsRepository
 {
     private readonly DbSet<Wallet> _wallets;
-    public WalletsRepository(DbContext context) : base(context)
+    public WalletsRepository(KSProjectDbContext context) : base(context)
     {
         _wallets = context.Set<Wallet>();
     }

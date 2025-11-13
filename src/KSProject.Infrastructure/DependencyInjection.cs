@@ -52,17 +52,17 @@ public static class DependencyInjection
         builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
         builder.Services.AddScoped<DbContext, KSProjectDbContext>();
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        // builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<IKSProjectUnitOfWork, KSProjectUnitOfWork>();
         return builder.Services;
     }
 
-    public static WebApplication UseInfrastructure(this WebApplication app)
+    public static WebApplication UseInfrastructureAsync(this WebApplication app)
     {
         using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
         var context = serviceScope.ServiceProvider.GetRequiredService<KSProjectDbContext>();
         context.Database.Migrate();
-
+        
         return app;
     }
 }

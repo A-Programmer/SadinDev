@@ -1,4 +1,6 @@
 using KSFramework.KSDomain;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace KSProject.Domain.Aggregates.Users;
 
@@ -9,7 +11,7 @@ public sealed class ApiKey : BaseEntity, ISoftDeletable
     public DateTime? ExpirationDate { get; private set; }
     public string Scopes { get; private set; }
     public Guid UserId { get; private set; }
-    public User User { get; private set; }
+    public User User { get; set; }
     public bool IsDeleted { get; set; }
     public DateTime? DeletedOnUtc { get; set; }
 
@@ -57,6 +59,11 @@ public sealed class ApiKey : BaseEntity, ISoftDeletable
         UserId = userId;
     }
 
+    public void SetUser(User user)
+    {
+        User = user;
+    }
+
     // Added behavior for future: Check if expired
     public bool IsExpired()
     {
@@ -65,5 +72,13 @@ public sealed class ApiKey : BaseEntity, ISoftDeletable
 
     protected ApiKey()
     {
+    }
+}
+public sealed class TransactionsConfiguration : IEntityTypeConfiguration<ApiKey>
+{
+    public void Configure(EntityTypeBuilder<ApiKey> builder)
+    {
+        builder.HasKey(x => x.Id);;
+        builder.Property(x => x.Key).IsUnicode();
     }
 }

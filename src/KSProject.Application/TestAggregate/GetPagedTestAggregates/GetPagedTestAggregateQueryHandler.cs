@@ -2,13 +2,14 @@ using KSFramework.GenericRepository;
 using KSFramework.KSMessaging;
 using KSFramework.KSMessaging.Abstraction;
 using KSFramework.Pagination;
+using KSProject.Domain.Contracts;
 
 namespace KSProject.Application.TestAggregate.GetPagedTestAggregates;
 
-public sealed class GetPagedTestAggregateQueryHandler : CqrsBase, IQueryHandler<GetPagedTestAggregateQuery, PaginatedList<GetPagedTestAggregateResponse>>
+public sealed class GetPagedTestAggregateQueryHandler : IQueryHandler<GetPagedTestAggregateQuery, PaginatedList<GetPagedTestAggregateResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-    public GetPagedTestAggregateQueryHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+    private readonly IKSProjectUnitOfWork _unitOfWork;
+    public GetPagedTestAggregateQueryHandler(IKSProjectUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

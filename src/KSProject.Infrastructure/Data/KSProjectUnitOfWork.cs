@@ -41,20 +41,13 @@ public class KSProjectUnitOfWork : IKSProjectUnitOfWork
 	/// Saves all changes made in this unit of work to the underlying data store asynchronously.
 	/// </summary>
 	/// <returns>A task that represents the asynchronous save operation. The task result contains the number of state entries written to the database.</returns>
-	public async Task<int> SaveChangesAsync()
-	{
-        _context.FixYeke();
-        _context.SetDetailFields();
-		return await _context.SaveChangesAsync();
-	}
-
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         _context.FixYeke();
         _context.SetDetailFields();
         return await _context.SaveChangesAsync(cancellationToken);
     }
-
+    
     public async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
     {
         _context.FixYeke();
@@ -81,7 +74,7 @@ public class KSProjectUnitOfWork : IKSProjectUnitOfWork
 	/// </summary>
 	/// <typeparam name="TEntity">The type of the entity.</typeparam>
 	/// <returns>An instance of <see cref="IGenericRepository{TEntity}"/> for the specified entity type.</returns>
-	IGenericRepository<TEntity> IUnitOfWork.GetRepository<TEntity>() where TEntity : class
+	public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class
 	{
 		if (_repositories.TryGetValue(typeof(TEntity), out var repository))
 		{

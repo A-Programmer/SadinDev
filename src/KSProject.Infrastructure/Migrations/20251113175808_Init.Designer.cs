@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KSProject.Infrastructure.Migrations
 {
     [DbContext(typeof(KSProjectDbContext))]
-    [Migration("20251112024909_Init")]
+    [Migration("20251113175808_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -42,9 +42,7 @@ namespace KSProject.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasColumnType("boolean");
 
                     b.Property<string>("MetricType")
                         .IsRequired()
@@ -70,8 +68,8 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -95,7 +93,7 @@ namespace KSProject.Infrastructure.Migrations
                             RatePerUnit = 0.01m,
                             ServiceType = "Blog",
                             Variant = "Default",
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -110,7 +108,7 @@ namespace KSProject.Infrastructure.Migrations
                             RulesJson = "{\"minQuantity\": 50, \"discountPercent\": 10}",
                             ServiceType = "Blog",
                             Variant = "Premium",
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -124,7 +122,7 @@ namespace KSProject.Infrastructure.Migrations
                             RatePerUnit = 0.02m,
                             ServiceType = "Notification",
                             Variant = "Default",
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -139,7 +137,7 @@ namespace KSProject.Infrastructure.Migrations
                             RulesJson = "{\"minQuantity\": 100, \"discountPercent\": 15}",
                             ServiceType = "OnlineStore",
                             Variant = "Tier1",
-                            Version = 0
+                            Version = 0L
                         });
                 });
 
@@ -176,8 +174,8 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -196,7 +194,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             Name = "Admin",
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -208,7 +206,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             Name = "User",
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -220,7 +218,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             Name = "TestRole",
-                            Version = 0
+                            Version = 0L
                         });
                 });
 
@@ -250,8 +248,8 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -287,8 +285,8 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -321,8 +319,8 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -358,6 +356,7 @@ namespace KSProject.Infrastructure.Migrations
 
                     b.Property<string>("Key")
                         .IsRequired()
+                        .IsUnicode(true)
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("ModifiedAt")
@@ -373,8 +372,8 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -398,7 +397,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete",
                             UserId = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -413,7 +412,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete",
                             UserId = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -428,7 +427,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             Scopes = "sliders.show-all",
                             UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -443,7 +442,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all",
                             UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -458,7 +457,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all",
                             UserId = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
-                            Version = 0
+                            Version = 0L
                         });
                 });
 
@@ -469,9 +468,7 @@ namespace KSProject.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(true);
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -492,9 +489,7 @@ namespace KSProject.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -507,9 +502,7 @@ namespace KSProject.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("SuperAdmin")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -518,8 +511,8 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<Guid?>("UserProfileId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid?>("WalletId")
                         .HasColumnType("uuid");
@@ -548,7 +541,7 @@ namespace KSProject.Infrastructure.Migrations
                             PhoneNumber = "09123456780",
                             SuperAdmin = true,
                             UserName = "superadmin",
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -564,7 +557,7 @@ namespace KSProject.Infrastructure.Migrations
                             PhoneNumber = "09123456789",
                             SuperAdmin = false,
                             UserName = "admin",
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -580,7 +573,7 @@ namespace KSProject.Infrastructure.Migrations
                             PhoneNumber = "09123456782",
                             SuperAdmin = false,
                             UserName = "user1",
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -596,7 +589,7 @@ namespace KSProject.Infrastructure.Migrations
                             PhoneNumber = "09123456787",
                             SuperAdmin = false,
                             UserName = "user2",
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -612,7 +605,7 @@ namespace KSProject.Infrastructure.Migrations
                             PhoneNumber = "09123456783",
                             SuperAdmin = false,
                             UserName = "test",
-                            Version = 0
+                            Version = 0L
                         });
                 });
 
@@ -663,8 +656,8 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -690,7 +683,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             ProfileImageUrl = "/image.png",
                             UserId = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -706,7 +699,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             ProfileImageUrl = "/image.png",
                             UserId = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -722,7 +715,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             ProfileImageUrl = "/image.png",
                             UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -738,7 +731,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             ProfileImageUrl = "/image.png",
                             UserId = new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -754,7 +747,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             ProfileImageUrl = "/image.png",
                             UserId = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
-                            Version = 0
+                            Version = 0L
                         });
                 });
 
@@ -807,8 +800,8 @@ namespace KSProject.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("WalletId")
                         .HasColumnType("uuid");
@@ -836,7 +829,7 @@ namespace KSProject.Infrastructure.Migrations
                             ServiceType = "",
                             TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Charge",
-                            Version = 0,
+                            Version = 0L,
                             WalletId = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184")
                         },
                         new
@@ -853,7 +846,7 @@ namespace KSProject.Infrastructure.Migrations
                             ServiceType = "Blog",
                             TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Usage",
-                            Version = 0,
+                            Version = 0L,
                             WalletId = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184")
                         },
                         new
@@ -870,7 +863,7 @@ namespace KSProject.Infrastructure.Migrations
                             ServiceType = "",
                             TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Charge",
-                            Version = 0,
+                            Version = 0L,
                             WalletId = new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60")
                         },
                         new
@@ -887,7 +880,7 @@ namespace KSProject.Infrastructure.Migrations
                             ServiceType = "Notification",
                             TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Usage",
-                            Version = 0,
+                            Version = 0L,
                             WalletId = new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd")
                         },
                         new
@@ -904,7 +897,7 @@ namespace KSProject.Infrastructure.Migrations
                             ServiceType = "OnlineStore",
                             TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Refund",
-                            Version = 0,
+                            Version = 0L,
                             WalletId = new Guid("17f9e83c-b763-4e38-8902-1d0583adab05")
                         },
                         new
@@ -921,7 +914,7 @@ namespace KSProject.Infrastructure.Migrations
                             ServiceType = "",
                             TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Adjustment",
-                            Version = 0,
+                            Version = 0L,
                             WalletId = new Guid("2a5018f6-c8db-490a-9707-221469d20bb7")
                         });
                 });
@@ -946,9 +939,7 @@ namespace KSProject.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -959,8 +950,8 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -982,7 +973,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             UserId = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -994,7 +985,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             UserId = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -1006,7 +997,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -1018,7 +1009,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             UserId = new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"),
-                            Version = 0
+                            Version = 0L
                         },
                         new
                         {
@@ -1030,7 +1021,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             UserId = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
-                            Version = 0
+                            Version = 0L
                         });
                 });
 

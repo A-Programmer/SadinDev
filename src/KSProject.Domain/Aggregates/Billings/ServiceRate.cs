@@ -88,7 +88,7 @@ public class ServiceRateConfiguration : IEntityTypeConfiguration<ServiceRate>
     public void Configure(EntityTypeBuilder<ServiceRate> builder)
     {
         builder.HasKey(sr => sr.Id);
-        builder.Property(sr => sr.IsDeleted).HasDefaultValue(false);
+        builder.Property(sr => sr.IsDeleted);
         builder.HasIndex(sr => new { sr.ServiceType, sr.MetricType, sr.Variant }).IsUnique();
         builder.Property(sr => sr.RulesJson).HasColumnType("jsonb"); // اگر PostgreSQL, иначе nvarchar(max)
     }

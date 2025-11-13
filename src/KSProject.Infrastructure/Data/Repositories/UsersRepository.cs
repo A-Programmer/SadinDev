@@ -9,7 +9,7 @@ namespace KSProject.Infrastructure.Data.Repositories;
 public class UsersRepository : GenericRepository<User>, IUsersRepository
 {
 	private readonly DbSet<User> _users;
-	public UsersRepository(DbContext context) : base(context)
+	public UsersRepository(KSProjectDbContext context) : base(context)
 	{
 		_users = context.Set<User>();
 	}
@@ -137,6 +137,16 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 			.Include(u => u.Permissions)
 			.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 	}
+
+
+
+
+    public async Task<User> GetUserByIdIncludingApiKeysAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _users
+            .Include(u => u.ApiKeys)
+            .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+    }
     
     public async Task<ApiKey?> GetApiKeyByKeyAsync(string key, CancellationToken cancellationToken = default)
     {

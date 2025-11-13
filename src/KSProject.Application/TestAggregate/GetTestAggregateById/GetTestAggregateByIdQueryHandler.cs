@@ -2,13 +2,14 @@ using KSFramework.Exceptions;
 using KSFramework.GenericRepository;
 using KSFramework.KSMessaging;
 using KSFramework.KSMessaging.Abstraction;
+using KSProject.Domain.Contracts;
 
 namespace KSProject.Application.TestAggregate.GetTestAggregateById;
 
-public sealed class GetTestAggregateByIdQueryHandler : CqrsBase, IQueryHandler<GetTestAggregateByIdQuery, GetTestAggregateByIdResponse>
+public sealed class GetTestAggregateByIdQueryHandler : IQueryHandler<GetTestAggregateByIdQuery, GetTestAggregateByIdResponse>
 {
-    private readonly IUnitOfWork _unitOfWork;
-    public GetTestAggregateByIdQueryHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+    private readonly IKSProjectUnitOfWork _unitOfWork;
+    public GetTestAggregateByIdQueryHandler(IKSProjectUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

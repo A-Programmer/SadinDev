@@ -7,7 +7,7 @@ namespace KSProject.Infrastructure.Data.Repositories
     public class ServiceRatesRepository : GenericRepository<ServiceRate>, IServiceRatesRepository
     {
         private readonly DbSet<ServiceRate> _serviceRates;
-        public ServiceRatesRepository(DbContext context) : base(context)
+        public ServiceRatesRepository(KSProjectDbContext context) : base(context)
         {
             _serviceRates = context.Set<ServiceRate>();
         }

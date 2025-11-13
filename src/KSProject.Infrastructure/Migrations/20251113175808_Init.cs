@@ -38,7 +38,7 @@ namespace KSProject.Infrastructure.Migrations
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -59,9 +59,9 @@ namespace KSProject.Infrastructure.Migrations
                     Variant = table.Column<string>(type: "text", nullable: false),
                     RatePerUnit = table.Column<decimal>(type: "numeric", nullable: false),
                     RulesJson = table.Column<string>(type: "jsonb", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Version = table.Column<int>(type: "integer", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -79,7 +79,7 @@ namespace KSProject.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -97,9 +97,9 @@ namespace KSProject.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Balance = table.Column<decimal>(type: "numeric", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Version = table.Column<int>(type: "integer", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -117,7 +117,7 @@ namespace KSProject.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     RoleId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -141,7 +141,7 @@ namespace KSProject.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     TestAggregateId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -173,7 +173,7 @@ namespace KSProject.Infrastructure.Migrations
                     WalletId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Version = table.Column<int>(type: "integer", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -199,13 +199,13 @@ namespace KSProject.Infrastructure.Migrations
                     HashedPassword = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
-                    SuperAdmin = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    Active = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    SuperAdmin = table.Column<bool>(type: "boolean", nullable: false),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     UserProfileId = table.Column<Guid>(type: "uuid", nullable: true),
                     WalletId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Version = table.Column<int>(type: "integer", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -234,7 +234,7 @@ namespace KSProject.Infrastructure.Migrations
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Version = table.Column<int>(type: "integer", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -303,7 +303,7 @@ namespace KSProject.Infrastructure.Migrations
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -391,52 +391,44 @@ namespace KSProject.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedOnUtc", "Description", "IsDeleted", "ModifiedAt", "ModifiedBy", "Name", "Version" },
                 values: new object[,]
                 {
-                    { new Guid("1fd5d547-737a-45d3-b71f-c5e8f692d434"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Standard user role with limited permissions.", false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "User", 0 },
-                    { new Guid("3fd5d547-737a-45d3-b71f-c5e8f692d434"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Test Role to test soft delete", false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "TestRole", 0 },
-                    { new Guid("98f4f7df-15bb-4547-8495-f098a753536f"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Administrator role with all permissions.", false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "Admin", 0 }
+                    { new Guid("1fd5d547-737a-45d3-b71f-c5e8f692d434"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Standard user role with limited permissions.", false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "User", 0L },
+                    { new Guid("3fd5d547-737a-45d3-b71f-c5e8f692d434"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Test Role to test soft delete", false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "TestRole", 0L },
+                    { new Guid("98f4f7df-15bb-4547-8495-f098a753536f"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Administrator role with all permissions.", false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "Admin", 0L }
                 });
 
             migrationBuilder.InsertData(
                 table: "ServiceRates",
-                columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedOnUtc", "MetricType", "ModifiedAt", "ModifiedBy", "RatePerUnit", "RulesJson", "ServiceType", "Variant", "Version" },
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedOnUtc", "IsDeleted", "MetricType", "ModifiedAt", "ModifiedBy", "RatePerUnit", "RulesJson", "ServiceType", "Variant", "Version" },
                 values: new object[,]
                 {
-                    { new Guid("11111111-2222-3333-4444-555555555555"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Posts_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.01m, null, "Blog", "Default", 0 },
-                    { new Guid("22222222-3333-4444-5555-666666666666"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Posts_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.005m, "{\"minQuantity\": 50, \"discountPercent\": 10}", "Blog", "Premium", 0 },
-                    { new Guid("33333333-4444-5555-6666-777777777777"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "SMS_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.02m, null, "Notification", "Default", 0 },
-                    { new Guid("44444444-5555-6666-7777-888888888888"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Transactions_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.015m, "{\"minQuantity\": 100, \"discountPercent\": 15}", "OnlineStore", "Tier1", 0 }
+                    { new Guid("11111111-2222-3333-4444-555555555555"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "Posts_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.01m, null, "Blog", "Default", 0L },
+                    { new Guid("22222222-3333-4444-5555-666666666666"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "Posts_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.005m, "{\"minQuantity\": 50, \"discountPercent\": 10}", "Blog", "Premium", 0L },
+                    { new Guid("33333333-4444-5555-6666-777777777777"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "SMS_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.02m, null, "Notification", "Default", 0L },
+                    { new Guid("44444444-5555-6666-7777-888888888888"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "Transactions_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.015m, "{\"minQuantity\": 100, \"discountPercent\": 15}", "OnlineStore", "Tier1", 0L }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Active", "CreatedAt", "CreatedBy", "DeletedOnUtc", "Email", "HashedPassword", "ModifiedAt", "ModifiedBy", "PhoneNumber", "UserName", "UserProfileId", "Version", "WalletId" },
-                values: new object[] { new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"), true, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "test@user.com", "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "09123456783", "test", null, 0, null });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Active", "CreatedAt", "CreatedBy", "DeletedOnUtc", "Email", "HashedPassword", "ModifiedAt", "ModifiedBy", "PhoneNumber", "SuperAdmin", "UserName", "UserProfileId", "Version", "WalletId" },
-                values: new object[] { new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), true, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "superadmin@superadmin.com", "01cVBRfT5lroSYX3twWtmf3Dg3KiLs6gzsr4qvggokk=", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "09123456780", true, "superadmin", null, 0, null });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Active", "CreatedAt", "CreatedBy", "DeletedOnUtc", "Email", "HashedPassword", "ModifiedAt", "ModifiedBy", "PhoneNumber", "UserName", "UserProfileId", "Version", "WalletId" },
+                columns: new[] { "Id", "Active", "CreatedAt", "CreatedBy", "DeletedOnUtc", "Email", "HashedPassword", "IsDeleted", "ModifiedAt", "ModifiedBy", "PhoneNumber", "SuperAdmin", "UserName", "UserProfileId", "Version", "WalletId" },
                 values: new object[,]
                 {
-                    { new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), true, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "admin@admin.com", "PrP+ZrMeO00Q+nC1ytSccRIpSvauTkdqHEBRVdRaoSE=", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "09123456789", "admin", null, 0, null },
-                    { new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"), true, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "user2@user.com", "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "09123456787", "user2", null, 0, null },
-                    { new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), true, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "user1@user.com", "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "09123456782", "user1", null, 0, null }
+                    { new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"), true, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "test@user.com", "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=", false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "09123456783", false, "test", null, 0L, null },
+                    { new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), true, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "superadmin@superadmin.com", "01cVBRfT5lroSYX3twWtmf3Dg3KiLs6gzsr4qvggokk=", false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "09123456780", true, "superadmin", null, 0L, null },
+                    { new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), true, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "admin@admin.com", "PrP+ZrMeO00Q+nC1ytSccRIpSvauTkdqHEBRVdRaoSE=", false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "09123456789", false, "admin", null, 0L, null },
+                    { new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"), true, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "user2@user.com", "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=", false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "09123456787", false, "user2", null, 0L, null },
+                    { new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), true, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "user1@user.com", "vFhI8ifMFh619o3+mMsTEQqchDzmnpU6iBB9hlWD05c=", false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "09123456782", false, "user1", null, 0L, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Wallets",
-                columns: new[] { "Id", "Balance", "CreatedAt", "CreatedBy", "DeletedOnUtc", "ModifiedAt", "ModifiedBy", "UserId", "Version" },
+                columns: new[] { "Id", "Balance", "CreatedAt", "CreatedBy", "DeletedOnUtc", "IsDeleted", "ModifiedAt", "ModifiedBy", "UserId", "Version" },
                 values: new object[,]
                 {
-                    { new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"), 50.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), 0 },
-                    { new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"), 0.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"), 0 },
-                    { new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"), 10.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"), 0 },
-                    { new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"), 100.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), 0 },
-                    { new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"), 20.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 0 }
+                    { new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"), 50.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), 0L },
+                    { new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"), 0.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"), 0L },
+                    { new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"), 10.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"), 0L },
+                    { new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"), 100.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), 0L },
+                    { new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"), 20.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 0L }
                 });
 
             migrationBuilder.InsertData(
@@ -444,11 +436,11 @@ namespace KSProject.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedOnUtc", "ExpirationDate", "IsActive", "IsDeleted", "Key", "ModifiedAt", "ModifiedBy", "Scopes", "UserId", "Version" },
                 values: new object[,]
                 {
-                    { new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "0acc9f7592014ea59a165be1c30d6f60", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete", new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), 0 },
-                    { new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "17f9e83cb7634e3889021d0583adab05", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 0 },
-                    { new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "2a5018f6c8db490a9707221469d20bb7", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all", new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"), 0 },
-                    { new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "c55fb3743d744aa3b576d144c49cd184", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete", new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), 0 },
-                    { new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "ed12b6798fd04a0cade5fa6aaccf42fd", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.show-all", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 0 }
+                    { new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "0acc9f7592014ea59a165be1c30d6f60", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete", new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), 0L },
+                    { new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "17f9e83cb7634e3889021d0583adab05", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 0L },
+                    { new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "2a5018f6c8db490a9707221469d20bb7", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all", new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"), 0L },
+                    { new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "c55fb3743d744aa3b576d144c49cd184", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete", new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), 0L },
+                    { new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "ed12b6798fd04a0cade5fa6aaccf42fd", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.show-all", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 0L }
                 });
 
             migrationBuilder.InsertData(
@@ -456,12 +448,12 @@ namespace KSProject.Infrastructure.Migrations
                 columns: new[] { "Id", "Amount", "CreatedAt", "CreatedBy", "DeletedOnUtc", "IsDeleted", "MetricDetails", "MetricType", "MetricValue", "ModifiedAt", "ModifiedBy", "ServiceType", "TransactionDateTime", "Type", "Version", "WalletId" },
                 values: new object[,]
                 {
-                    { new Guid("a1b2c3d4-e5f6-4789-abc1-def234567890"), 100.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "", 0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Charge", 0, new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184") },
-                    { new Guid("b2c3d4e5-f678-9abc-1def-234567890abc"), -5.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "Posts_Count", 5.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "Blog", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Usage", 0, new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184") },
-                    { new Guid("c3d4e5f6-789a-bc1d-ef23-4567890abcde"), 50.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "", 0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Charge", 0, new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60") },
-                    { new Guid("d4e5f678-9abc-1def-2345-67890abcde12"), -2.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "SMS_Count", 10.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "Notification", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Usage", 0, new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd") },
-                    { new Guid("e5f6789a-bc1d-ef23-4567-890abcde1234"), 10.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "Transactions_Count", 1.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "OnlineStore", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Refund", 0, new Guid("17f9e83c-b763-4e38-8902-1d0583adab05") },
-                    { new Guid("f6789abc-1def-2345-6789-0abcde123456"), -1.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "", 0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Adjustment", 0, new Guid("2a5018f6-c8db-490a-9707-221469d20bb7") }
+                    { new Guid("a1b2c3d4-e5f6-4789-abc1-def234567890"), 100.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "", 0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Charge", 0L, new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184") },
+                    { new Guid("b2c3d4e5-f678-9abc-1def-234567890abc"), -5.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "Posts_Count", 5.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "Blog", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Usage", 0L, new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184") },
+                    { new Guid("c3d4e5f6-789a-bc1d-ef23-4567890abcde"), 50.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "", 0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Charge", 0L, new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60") },
+                    { new Guid("d4e5f678-9abc-1def-2345-67890abcde12"), -2.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "SMS_Count", 10.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "Notification", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Usage", 0L, new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd") },
+                    { new Guid("e5f6789a-bc1d-ef23-4567-890abcde1234"), 10.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "Transactions_Count", 1.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "OnlineStore", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Refund", 0L, new Guid("17f9e83c-b763-4e38-8902-1d0583adab05") },
+                    { new Guid("f6789abc-1def-2345-6789-0abcde123456"), -1.0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, null, "", 0m, new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Adjustment", 0L, new Guid("2a5018f6-c8db-490a-9707-221469d20bb7") }
                 });
 
             migrationBuilder.InsertData(
@@ -469,11 +461,11 @@ namespace KSProject.Infrastructure.Migrations
                 columns: new[] { "Id", "AboutMe", "BirthDate", "CreatedAt", "CreatedBy", "DeletedOnUtc", "FirstName", "IsDeleted", "LastName", "ModifiedAt", "ModifiedBy", "ProfileImageUrl", "UserId", "Version" },
                 values: new object[,]
                 {
-                    { new Guid("29a0421c-6e4e-4793-bf3d-aad975155381"), "This is User Two Profile", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "User", false, "Two", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "/image.png", new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"), 0 },
-                    { new Guid("445819eb-053a-4c13-b8dd-fb736d46739f"), "This is User Test Profile", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Test", false, "User", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "/image.png", new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"), 0 },
-                    { new Guid("5e46e00a-5162-4417-a240-36dc48793ad5"), "This is Admin Profile", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Admin", false, "User", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "/image.png", new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), 0 },
-                    { new Guid("b21013eb-7182-46ef-b543-b9606bc45c83"), "This is User One Profile", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "User", false, "One", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "/image.png", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 0 },
-                    { new Guid("ec7a3150-c202-4895-8b00-232f28e0eb4f"), "This is SuperAdmin Profile", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Super", false, "Admin", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "/image.png", new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), 0 }
+                    { new Guid("29a0421c-6e4e-4793-bf3d-aad975155381"), "This is User Two Profile", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "User", false, "Two", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "/image.png", new Guid("9650f7f3-333b-4a77-b992-9a55179bfa12"), 0L },
+                    { new Guid("445819eb-053a-4c13-b8dd-fb736d46739f"), "This is User Test Profile", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Test", false, "User", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "/image.png", new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"), 0L },
+                    { new Guid("5e46e00a-5162-4417-a240-36dc48793ad5"), "This is Admin Profile", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Admin", false, "User", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "/image.png", new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), 0L },
+                    { new Guid("b21013eb-7182-46ef-b543-b9606bc45c83"), "This is User One Profile", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "User", false, "One", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "/image.png", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 0L },
+                    { new Guid("ec7a3150-c202-4895-8b00-232f28e0eb4f"), "This is SuperAdmin Profile", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, "Super", false, "Admin", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "/image.png", new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), 0L }
                 });
 
             migrationBuilder.InsertData(

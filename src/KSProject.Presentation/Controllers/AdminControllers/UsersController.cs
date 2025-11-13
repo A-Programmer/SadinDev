@@ -1,5 +1,8 @@
 using KSFramework.KSMessaging.Abstraction;
 using KSFramework.Pagination;
+using KSProject.Application.ApiKeys.GenerateApiKey;
+using KSProject.Application.ApiKeys.GetUserApiKeys;
+using KSProject.Application.ApiKeys.RevokeApiKey;
 using KSProject.Application.Users.CreateUser;
 using KSProject.Application.Users.DeleteUser;
 using KSProject.Application.Users.GetPaginatedUsers;
@@ -15,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KSProject.Presentation.Controllers.AdminControllers;
 
-public sealed class UsersController(ISender sender) : BaseController(sender)
+public sealed class UsersController(ISender sender) : SecureBaseController(sender)
 {
     [HttpGet]
     [Route(Routes.Users_Admin.GET_PAGED)]
@@ -168,4 +171,77 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 
         return NoContent();
     }
+    
+    #region API Keys
+    [HttpPost]
+    [Permission("GenerateApiKey")]
+    [Route(Routes.Users_Admin.ApiKeys_Admin.GENERATE)]
+    [Produces(typeof(GenerateApiKeyCommandResponse))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<GenerateApiKeyCommandResponse>> GenerateAsync(
+        [FromQuery] Guid userId,
+        [FromBody] GenerateApiKeyCommandRequest payload, // e.g., { Scopes = "blog,notification" }
+        CancellationToken cancellationToken = default)
+    {
+        var currentUserId = Guid.Parse(UserId);
+        if (currentUserId != userId)
+        {
+            return BadRequest("The userId does not match the request.");
+        }
+
+        var newPayload = payload with { UserId = userId }; // Set in request if needed
+
+        GenerateApiKeyCommand command = new(newPayload);
+        GenerateApiKeyCommandResponse result = await Sender.Send(command, cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Permission("GetUserApiKeys")]
+    [Route(Routes.Users_Admin.ApiKeys_Admin.GET_USER_API_KEYS)]
+    [Produces(typeof(GetUserApiKeysQueryResponse))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<GetUserApiKeysQueryResponse>> GetUserApiKeysAsync(
+        [FromQuery] Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        var currentUserId = Guid.Parse(UserId);
+        if (currentUserId != userId)
+        {
+            return BadRequest("The userId does not match the request.");
+        }
+        
+        GetUserApiKeysQueryRequest request = new(userId);
+        GetUserApiKeysQuery query = new(request);
+        GetUserApiKeysQueryResponse result = await Sender.Send(query, cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpPut]
+    [Permission("RevokeApiKey")]
+    [Route(Routes.Users_Admin.ApiKeys_Admin.REVOKE)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> RevokeAsync(
+        [FromQuery] Guid userId,
+        Guid apiKeyId,
+        CancellationToken cancellationToken = default)
+    {
+        var currentUserId = Guid.Parse(UserId);
+        if (currentUserId != userId)
+        {
+            return BadRequest("The userId does not match the request.");
+        }
+
+        RevokeApiKeyCommandRequest request = new(userId, apiKeyId);
+        RevokeApiKeyCommand command = new(request);
+        await Sender.Send(command, cancellationToken);
+
+        return NoContent();
+    }
+    #endregion
 }

@@ -31,7 +31,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 app.UsePresentation();
 app.UseDomain();
 app.UseApplication();
-app.UseInfrastructure();
+app.UseInfrastructureAsync();
 app.UseWebApi();
 
 

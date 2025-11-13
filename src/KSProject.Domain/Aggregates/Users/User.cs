@@ -1,3 +1,4 @@
+using KSFramework.Exceptions;
 using KSFramework.KSDomain;
 using KSFramework.KSDomain.AggregatesHelper;
 using KSFramework.Utilities;
@@ -64,20 +65,22 @@ public sealed class User : BaseEntity, IAggregateRoot, ISoftDeletable
 
     private List<UserPermission> _permissions = new();
     public IReadOnlyCollection<UserPermission> Permissions => _permissions;
-    
 
-    private List<ApiKey> _apiKeys = new();
+
+    private List<ApiKey> _apiKeys = [];
     public IReadOnlyCollection<ApiKey> ApiKeys => _apiKeys;
 
 
     private List<Role> _roles = new();
-    public IReadOnlyCollection<Role> Roles => _roles; private List<UserToken> _userTokens = new();
+    public IReadOnlyCollection<Role> Roles => _roles;
+    
+    private List<UserToken> _userTokens = [];
     public IReadOnlyCollection<UserToken> UserTokens => _userTokens;
 
-    private List<UserLoginDate> _loginDates = new();
+    private List<UserLoginDate> _loginDates = [];
     public IReadOnlyCollection<UserLoginDate> UserLoginDates => _loginDates;
 
-    private List<UserSecurityStamp> _securityStamps = new();
+    private List<UserSecurityStamp> _securityStamps = [];
     public IReadOnlyCollection<UserSecurityStamp> UserSecurityStamps => _securityStamps;
 
 
@@ -394,7 +397,7 @@ public sealed class User : BaseEntity, IAggregateRoot, ISoftDeletable
     }
     #endregion
 
-    #region Secrity Stamps and Tokens
+    #region Security Stamps and Tokens
 
     public void AddSecurityStamp(UserSecurityStamp securityStamp)
     {
@@ -511,6 +514,15 @@ public sealed class User : BaseEntity, IAggregateRoot, ISoftDeletable
     {
         _apiKeys.AddRange(apiKeys);
     }
+    
+    public void RevokeApiKey(Guid apiKeyId)
+    {
+        var apiKey = _apiKeys.FirstOrDefault(ak => ak.Id == apiKeyId);
+        if (apiKey == null)
+            throw new KSNotFoundException("ApiKey not found.");
+
+        apiKey.Revoke();
+    }
 
     public void RemoveApiKey(ApiKey apiKey)
     {
@@ -531,13 +543,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(u => u.Id);
         
-        builder.Property(u => u.IsDeleted).HasDefaultValue(false);
+        builder.Property(x => x.Active);
 
-        builder.Property(x => x.Active)
-            .HasDefaultValue(true);
-
-        builder.Property(x => x.SuperAdmin)
-            .HasDefaultValue(false);
+        builder.Property(x => x.SuperAdmin);
 
         builder.HasMany(u => u.Roles)
             .WithMany(r => r.Users)
@@ -559,8 +567,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasMany(u => u.ApiKeys)
-            .WithOne(k => k.User)
-            .HasForeignKey(k => k.UserId)
+            .WithOne(u => u.User)
+            .HasForeignKey(u => u.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasOne(u => u.Wallet)

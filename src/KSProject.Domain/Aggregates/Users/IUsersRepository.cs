@@ -50,6 +50,7 @@ public interface IUsersRepository : IRepository<User>
 		CancellationToken cancellationToken = default);
     
     
+    Task<User> GetUserByIdIncludingApiKeysAsync(Guid id, CancellationToken cancellationToken = default);
     Task<ApiKey> GetApiKeyByKeyAsync(string key, CancellationToken cancellationToken = default);
     Task<ApiKey> GenerateApiKeyForUserAsync(Guid userId, string scopes = null, CancellationToken cancellationToken = default);
     Task AddApiKeyToUserAsync(Guid userId, ApiKey apiKey, CancellationToken cancellationToken = default);

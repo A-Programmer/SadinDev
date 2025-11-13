@@ -7,7 +7,7 @@ namespace KSProject.Infrastructure.Data.Repositories;
 public sealed class RolesRepository : GenericRepository<Role>, IRolesRepository
 {
 	private readonly DbSet<Role> _roles;
-	public RolesRepository(DbContext context) : base(context)
+	public RolesRepository(KSProjectDbContext context) : base(context)
 	{
 		_roles = context.Set<Role>();
 	}

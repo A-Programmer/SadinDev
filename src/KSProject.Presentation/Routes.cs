@@ -86,6 +86,13 @@ public static class Routes
             public const string USER_LEVEL = "{id}/settings/user-level";
             public const string UPDATE_USER_LEVEL = "{id}/settings/user-level";
         }
+        
+        public static class ApiKeys_Admin
+        {
+            public const string GENERATE = "{userId}/apikeys";
+            public const string GET_USER_API_KEYS = "{userId}/apikeys";
+            public const string REVOKE = "{userId}/apikeys/revoke/{apiKeyId}";
+        }
     }
     
     public static class Wallets_Admin
@@ -98,5 +105,12 @@ public static class Routes
     public static class Billings_Admin
     {
         public const string CALCULATE_COST = "";
+    }
+    
+    public static class ApiKeys_Admin
+    {
+        public const string GENERATE = "";
+        public const string GET_USER_API_KEYS = "";
+        public const string REVOKE = "revoke/{apiKeyId}";
     }
 }
