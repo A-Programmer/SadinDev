@@ -3,11 +3,13 @@ using KSProject.Domain.Aggregates.Billings;
 using KSProject.Domain.Aggregates.Roles;
 using KSProject.Domain.Aggregates.Users;
 using KSProject.Domain.Aggregates.Wallets;
+using Microsoft.EntityFrameworkCore;
 
 namespace KSProject.Domain.Contracts;
 
 public interface IKSProjectUnitOfWork
 {
+    void ChangeEntityState<TEntity>(TEntity entity, EntityState entityState)  where TEntity : class;
 	public IRolesRepository Roles { get; }
 	public IUsersRepository Users { get; }
     public IWalletsRepository Wallets { get; }

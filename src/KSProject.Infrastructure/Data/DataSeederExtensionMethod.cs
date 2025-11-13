@@ -90,30 +90,35 @@ public static class DataSeederExtensionMethod
         superAdminApiKey.ModifiedAt = now;
         superAdminApiKey.CreatedBy = "System";
         superAdminApiKey.ModifiedBy = "System";
+        superAdminApiKey.IncreaseVersion();
         
         ApiKey adminApiKey = ApiKey.Create(AdminApiKeyId, AdminUserId, AdminApiKeyId.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete" );
         adminApiKey.CreatedAt = now;
         adminApiKey.ModifiedAt = now;
         adminApiKey.CreatedBy = "System";
         adminApiKey.ModifiedBy = "System";
+        adminApiKey.IncreaseVersion();
         
         ApiKey user1ApiKey1 = ApiKey.Create(User1ApiKeyId1, UserId1, User1ApiKeyId1.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.show-all" );
         user1ApiKey1.CreatedAt = now;
         user1ApiKey1.ModifiedAt = now;
         user1ApiKey1.CreatedBy = "System";
         user1ApiKey1.ModifiedBy = "System";
+        user1ApiKey1.IncreaseVersion();
         
         ApiKey user1ApiKey2 = ApiKey.Create(User1ApiKeyId2, UserId1, User1ApiKeyId2.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all" );
         user1ApiKey2.CreatedAt = now;
         user1ApiKey2.ModifiedAt = now;
         user1ApiKey2.CreatedBy = "System";
         user1ApiKey2.ModifiedBy = "System";
+        user1ApiKey2.IncreaseVersion();
         
         ApiKey testUserApiKey = ApiKey.Create(TestUserApiKeyId, TestUserId, TestUserApiKeyId.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all" );
         testUserApiKey.CreatedAt = now;
         testUserApiKey.ModifiedAt = now;
         testUserApiKey.CreatedBy = "System";
         testUserApiKey.ModifiedBy = "System";
+        testUserApiKey.IncreaseVersion();
         
         modelBuilder.Entity<ApiKey>()
             .HasData(
@@ -132,30 +137,35 @@ public static class DataSeederExtensionMethod
         superAdminProfile.ModifiedAt = now;
         superAdminProfile.CreatedBy = "System";
         superAdminProfile.ModifiedBy = "System";
+        superAdminProfile.IncreaseVersion();
         
         UserProfile adminProfile = UserProfile.Create(AdminProfileId, AdminUserId, "Admin", "User", "/image.png", "This is Admin Profile", now);
         adminProfile.CreatedAt = now;
         adminProfile.ModifiedAt = now;
         adminProfile.CreatedBy = "System";
         adminProfile.ModifiedBy = "System";
+        adminProfile.IncreaseVersion();
         
         UserProfile user1Profile = UserProfile.Create(User1ProfileId, UserId1, "User", "One", "/image.png", "This is User One Profile", now);
         user1Profile.CreatedAt = now;
         user1Profile.ModifiedAt = now;
         user1Profile.CreatedBy = "System";
         user1Profile.ModifiedBy = "System";
+        user1Profile.IncreaseVersion();
         
         UserProfile user2Profile = UserProfile.Create(User2ProfileId, UserId2, "User", "Two", "/image.png", "This is User Two Profile", now);
         user2Profile.CreatedAt = now;
         user2Profile.ModifiedAt = now;
         user2Profile.CreatedBy = "System";
         user2Profile.ModifiedBy = "System";
+        user2Profile.IncreaseVersion();
         
         UserProfile testUserProfile = UserProfile.Create(TestUserProfileId, TestUserId, "Test", "User", "/image.png", "This is User Test Profile", now);
         testUserProfile.CreatedAt = now;
         testUserProfile.ModifiedAt = now;
         testUserProfile.CreatedBy = "System";
         testUserProfile.ModifiedBy = "System";
+        testUserProfile.IncreaseVersion();
         
         modelBuilder.Entity<UserProfile>()
             .HasData(
@@ -175,30 +185,35 @@ public static class DataSeederExtensionMethod
         superAdminWallet.ModifiedAt = now;
         superAdminWallet.CreatedBy = "System";
         superAdminWallet.ModifiedBy = "System";
+        superAdminWallet.IncreaseVersion();
         
         Wallet adminWallet = Wallet.Create(AdminWalletId, AdminUserId, 50.0m); // اولیه 50 برای تست
         adminWallet.CreatedAt = now;
         adminWallet.ModifiedAt = now;
         adminWallet.CreatedBy = "System";
         adminWallet.ModifiedBy = "System";
+        adminWallet.IncreaseVersion();
         
         Wallet user1Wallet = Wallet.Create(User1WalletId, UserId1, 20.0m); // اولیه 20 برای تست
         user1Wallet.CreatedAt = now;
         user1Wallet.ModifiedAt = now;
         user1Wallet.CreatedBy = "System";
         user1Wallet.ModifiedBy = "System";
+        user1Wallet.IncreaseVersion();
 
         Wallet user2Wallet = Wallet.Create(User2WalletId, UserId2, 0.0m);
         user2Wallet.CreatedAt = now;
         user2Wallet.ModifiedAt = now;
         user2Wallet.CreatedBy = "System";
         user2Wallet.ModifiedBy = "System";
+        user2Wallet.IncreaseVersion();
 
         Wallet testUserWallet = Wallet.Create(TestUserWalletId, TestUserId, 10.0m); // اولیه 10 برای تست
         testUserWallet.CreatedAt = now;
         testUserWallet.ModifiedAt = now;
         testUserWallet.CreatedBy = "System";
         testUserWallet.ModifiedBy = "System";
+        testUserWallet.IncreaseVersion();
         
         modelBuilder.Entity<Wallet>()
             .HasData(
@@ -222,12 +237,14 @@ public static class DataSeederExtensionMethod
         superAdminTransaction1.ModifiedAt = now;
         superAdminTransaction1.CreatedBy = "System";
         superAdminTransaction1.ModifiedBy = "System";
+        superAdminTransaction1.IncreaseVersion();
 
         Transaction superAdminTransaction2 = Transaction.Create(SuperAdminTransactionId2, SuperAdminWalletId, -5.0m, TransactionTypes.Usage, "Blog", "Posts_Count", 5.0m);
         superAdminTransaction2.CreatedAt = now;
         superAdminTransaction2.ModifiedAt = now;
         superAdminTransaction2.CreatedBy = "System";
         superAdminTransaction2.ModifiedBy = "System";
+        superAdminTransaction2.IncreaseVersion();
 
         // Transaction برای AdminWallet: Charge 50
         Transaction adminTransaction1 = Transaction.Create(AdminTransactionId1, AdminWalletId, 50.0m, TransactionTypes.Charge, null, null, 0);
@@ -235,6 +252,7 @@ public static class DataSeederExtensionMethod
         adminTransaction1.ModifiedAt = now;
         adminTransaction1.CreatedBy = "System";
         adminTransaction1.ModifiedBy = "System";
+        adminTransaction1.IncreaseVersion();
 
         // Transaction برای User1Wallet: Usage for Notification
         Transaction user1Transaction1 = Transaction.Create(User1TransactionId1, User1WalletId, -2.0m, TransactionTypes.Usage, "Notification", "SMS_Count", 10.0m);
@@ -242,6 +260,7 @@ public static class DataSeederExtensionMethod
         user1Transaction1.ModifiedAt = now;
         user1Transaction1.CreatedBy = "System";
         user1Transaction1.ModifiedBy = "System";
+        user1Transaction1.IncreaseVersion();
 
         // Transaction برای User2Wallet: Refund test
         Transaction user2Transaction1 = Transaction.Create(User2TransactionId1, User2WalletId, 10.0m, TransactionTypes.Refund, "OnlineStore", "Transactions_Count", 1.0m);
@@ -249,6 +268,7 @@ public static class DataSeederExtensionMethod
         user2Transaction1.ModifiedAt = now;
         user2Transaction1.CreatedBy = "System";
         user2Transaction1.ModifiedBy = "System";
+        user2Transaction1.IncreaseVersion();
 
         // Transaction برای TestUserWallet: Adjustment
         Transaction testUserTransaction1 = Transaction.Create(TestUserTransactionId1, TestUserWalletId, -1.0m, TransactionTypes.Adjustment, null, null, 0);
@@ -256,6 +276,7 @@ public static class DataSeederExtensionMethod
         testUserTransaction1.ModifiedAt = now;
         testUserTransaction1.CreatedBy = "System";
         testUserTransaction1.ModifiedBy = "System";
+        testUserTransaction1.IncreaseVersion();
 
         modelBuilder.Entity<Transaction>()
             .HasData(
@@ -279,6 +300,7 @@ public static class DataSeederExtensionMethod
         blogPostsDefaultRate.ModifiedAt = now;
         blogPostsDefaultRate.CreatedBy = "System";
         blogPostsDefaultRate.ModifiedBy = "System";
+        blogPostsDefaultRate.IncreaseVersion();
 
         // Rate برای Blog Posts_Count Premium with rule (discount if >50 posts)
         ServiceRate blogPostsPremiumRate = ServiceRate.Create(BlogPostsPremiumRateId, "Blog", "Posts_Count", "Premium", 0.005m, "{\"minQuantity\": 50, \"discountPercent\": 10}");
@@ -286,6 +308,7 @@ public static class DataSeederExtensionMethod
         blogPostsPremiumRate.ModifiedAt = now;
         blogPostsPremiumRate.CreatedBy = "System";
         blogPostsPremiumRate.ModifiedBy = "System";
+        blogPostsPremiumRate.IncreaseVersion();
 
         // Rate برای Notification SMS_Count Default
         ServiceRate notificationSmsDefaultRate = ServiceRate.Create(NotificationSmsDefaultRateId, "Notification", "SMS_Count", "Default", 0.02m, null);
@@ -293,6 +316,7 @@ public static class DataSeederExtensionMethod
         notificationSmsDefaultRate.ModifiedAt = now;
         notificationSmsDefaultRate.CreatedBy = "System";
         notificationSmsDefaultRate.ModifiedBy = "System";
+        notificationSmsDefaultRate.IncreaseVersion();
 
         // Rate برای OnlineStore Transactions_Count Tier1 with rule (discount if >100 transactions)
         ServiceRate onlineStoreTransactionsTier1Rate = ServiceRate.Create(OnlineStoreTransactionsTier1RateId, "OnlineStore", "Transactions_Count", "Tier1", 0.015m, "{\"minQuantity\": 100, \"discountPercent\": 15}");
@@ -300,6 +324,7 @@ public static class DataSeederExtensionMethod
         onlineStoreTransactionsTier1Rate.ModifiedAt = now;
         onlineStoreTransactionsTier1Rate.CreatedBy = "System";
         onlineStoreTransactionsTier1Rate.ModifiedBy = "System";
+        onlineStoreTransactionsTier1Rate.IncreaseVersion();
 
         modelBuilder.Entity<ServiceRate>()
             .HasData(
@@ -319,18 +344,21 @@ public static class DataSeederExtensionMethod
         adminRole.ModifiedAt = now;
         adminRole.CreatedBy = "System";
         adminRole.ModifiedBy = "System";
+        adminRole.IncreaseVersion();
 
         Role userRole = Role.Create(UserRoleId, "User", "Standard user role with limited permissions.");
         userRole.CreatedAt = now;
         userRole.ModifiedAt = now;
         userRole.CreatedBy = "System";
         userRole.ModifiedBy = "System";
+        userRole.IncreaseVersion();
         
         Role testRole = Role.Create(TestRoleId, "TestRole", "Test Role to test soft delete");
         testRole.CreatedAt = now;
         testRole.ModifiedAt = now;
         testRole.CreatedBy = "System";
         testRole.ModifiedBy = "System";
+        testRole.IncreaseVersion();
         
        modelBuilder.Entity<Role>()
           .HasData(
@@ -349,6 +377,7 @@ public static class DataSeederExtensionMethod
         superAdminUser.ModifiedAt = now;
         superAdminUser.CreatedBy = "System";
         superAdminUser.ModifiedBy = "System";
+        superAdminUser.IncreaseVersion();
         // superAdminUser.AddWallet(Wallet.Create(Guid.NewGuid(), SuperAdminUserId, 0));
         // superAdminUser.AddProfile(UserProfile.Create(Guid.NewGuid(), SuperAdminUserId, "", "", "", "", null));
 
@@ -358,6 +387,7 @@ public static class DataSeederExtensionMethod
         adminUser.ModifiedAt = now;
         adminUser.CreatedBy = "System";
         adminUser.ModifiedBy = "System";
+        adminUser.IncreaseVersion();
 
        User userUser1 = User
           .Create(UserId1, "user1", UserHashedPassword, "user1@user.com", "09123456782", true, false);
@@ -365,6 +395,7 @@ public static class DataSeederExtensionMethod
         userUser1.ModifiedAt = now;
         userUser1.CreatedBy = "System";
         userUser1.ModifiedBy = "System";
+        userUser1.IncreaseVersion();
 
         User userUser2 = User
             .Create(UserId2, "user2", UserHashedPassword, "user2@user.com", "09123456787", true, false);
@@ -372,6 +403,7 @@ public static class DataSeederExtensionMethod
         userUser2.ModifiedAt = now;
         userUser2.CreatedBy = "System";
         userUser2.ModifiedBy = "System";
+        userUser2.IncreaseVersion();
 
         User testUser = User
             .Create(TestUserId, "test", UserHashedPassword, "test@user.com", "09123456783", true, false);
@@ -379,6 +411,7 @@ public static class DataSeederExtensionMethod
         testUser.ModifiedAt = now;
         testUser.CreatedBy = "System";
         testUser.ModifiedBy = "System";
+        testUser.IncreaseVersion();
 
        modelBuilder.Entity<User>().HasData(new List<User>()
        {

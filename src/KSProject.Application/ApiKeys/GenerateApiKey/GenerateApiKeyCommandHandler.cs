@@ -2,6 +2,7 @@ using KSFramework.KSMessaging.Abstraction;
 using KSProject.Domain.Aggregates.Users;
 using KSProject.Domain.Contracts;
 using KSFramework.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace KSProject.Application.ApiKeys.GenerateApiKey;
 
@@ -30,11 +31,10 @@ public sealed class GenerateApiKeyCommandHandler :
         newApiKey.User = user;
         
         user.AddApiKey(newApiKey);
-        // var addedApiKey = await _uow.Users.GenerateApiKeyForUserAsync(request.Payload.UserId, request.Payload.Scopes, cancellationToken);
+        _uow.ChangeEntityState(newApiKey, EntityState.Added);
         
         await _uow.SaveChangesAsync(cancellationToken);
 
-        // return new(addedApiKey.Id, addedApiKey.Key, addedApiKey.Scopes, addedApiKey.ExpirationDate);
         return new(newApiKey.Id, newApiKey.Key, newApiKey.Scopes, newApiKey.ExpirationDate);
     }
 }

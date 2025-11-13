@@ -5,6 +5,7 @@ using KSProject.Domain.Aggregates.Users;
 using KSProject.Domain.Aggregates.Wallets;
 using KSProject.Domain.Contracts;
 using KSProject.Infrastructure.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace KSProject.Infrastructure.Data;
 
@@ -26,7 +27,13 @@ public class KSProjectUnitOfWork : IKSProjectUnitOfWork
 	/// Register Custom Repositories manually
 	/// </summary>
 	private RolesRepository? _roles;
-	public IRolesRepository Roles => _roles ??= new RolesRepository(_context);
+
+    public void ChangeEntityState<TEntity>(TEntity entity, EntityState entityState)  where TEntity : class
+    {
+        _context.Entry<TEntity>(entity).State = entityState;
+    }
+
+    public IRolesRepository Roles => _roles ??= new RolesRepository(_context);
 
     private UsersRepository? _users;
     public IUsersRepository Users => _users ??= new UsersRepository(_context);
@@ -36,6 +43,11 @@ public class KSProjectUnitOfWork : IKSProjectUnitOfWork
 
     private ServiceRatesRepository? _serviceRates;
     public IServiceRatesRepository ServiceRates => _serviceRates ??= new ServiceRatesRepository(_context);
+
+    // public void ChangeEntityState<TEntity>(TEntity entity, EntityState entityState) where TEntity : class
+    // {
+    //     _context.Entry<TEntity>(entity).State = entityState;
+    // }
 
 	/// <summary>
 	/// Saves all changes made in this unit of work to the underlying data store asynchronously.

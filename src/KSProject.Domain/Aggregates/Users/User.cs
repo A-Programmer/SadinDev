@@ -494,13 +494,6 @@ public sealed class User : BaseEntity, IAggregateRoot, ISoftDeletable
         Wallet = wallet;
         WalletId = wallet.Id;
     }
-
-    public void UpdateWalletBalance(decimal amount)
-    {
-        if (Wallet == null)
-            throw new InvalidOperationException("No wallet assigned.");
-        Wallet.UpdateBalance(amount, TransactionTypes.Adjustment); // Use Wallet's behavior
-    }
     #endregion
     
     #region Api Keys

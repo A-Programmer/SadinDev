@@ -4,6 +4,7 @@ using KSProject.Domain.Contracts;
 using KSFramework.Exceptions;
 using KSProject.Common.Constants.Enums;
 using KSProject.Domain.Aggregates.Users;
+using Microsoft.EntityFrameworkCore;
 
 namespace KSProject.Application.Wallets.ChargeWallet;
 
@@ -27,7 +28,12 @@ public sealed class ChargeWalletCommandHandler :
             throw new KSNotFoundException("Wallet not found for the specified user.");
         }
 
-        wallet.UpdateBalance(request.Payload.Amount, TransactionTypes.Charge);
+        Transaction transaction = Transaction.Create(Guid.NewGuid(), wallet.Id, request.Payload.Amount,
+            TransactionTypes.Charge, null, null, 0);
+
+        wallet.UpdateBalance(transaction);
+        
+        _uow.ChangeEntityState(transaction, EntityState.Added);
 
         await _uow.SaveChangesAsync(cancellationToken);
 

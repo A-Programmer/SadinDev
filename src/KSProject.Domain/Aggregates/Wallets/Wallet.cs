@@ -33,22 +33,18 @@ public sealed class Wallet : BaseEntity, IAggregateRoot, ISoftDeletable
     }
 
     // Behavioral methods
-    public void UpdateBalance(decimal amount, TransactionTypes type, string serviceType = null, string metricType = null, decimal metricValue = 0)
+    public void UpdateBalance(Transaction transaction)
     {
-        if (amount == 0)
-            throw new ArgumentException("Amount cannot be zero.", nameof(amount));
+        if (transaction.Amount == 0)
+            throw new ArgumentException("Amount cannot be zero.", nameof(transaction.Amount));
 
-        decimal newBalance = Balance + amount;
+        decimal newBalance = Balance + transaction.Amount;
         if (newBalance < 0)
             throw new InvalidOperationException("Balance cannot go negative.");
 
         Balance = newBalance;
 
-        // Add transaction automatically
-        var transaction = Transaction.Create(Guid.NewGuid(), Id, amount, type, serviceType, metricType, metricValue);
-        AddTransaction(transaction);
-
-        AddDomainEvent(new BalanceChangedEvent { WalletId = Id, NewBalance = Balance, Amount = amount });
+        AddDomainEvent(new BalanceChangedEvent { WalletId = Id, NewBalance = Balance, Amount = transaction.Amount });
     }
     
     public void SetUserId(Guid userId)
@@ -93,15 +89,15 @@ public sealed class Wallet : BaseEntity, IAggregateRoot, ISoftDeletable
     }
 
     // For future: Transfer to another wallet
-    public void TransferTo(Wallet targetWallet, decimal amount)
+    public void TransferTo(Wallet targetWallet, Transaction transaction)
     {
-        if (amount <= 0)
-            throw new ArgumentException("Transfer amount must be positive.", nameof(amount));
-        if (!CheckSufficientBalance(amount))
+        if (transaction.Amount <= 0)
+            throw new ArgumentException("Transfer amount must be positive.", nameof(transaction.Amount));
+        if (!CheckSufficientBalance(transaction.Amount))
             throw new InvalidOperationException("Insufficient balance for transfer.");
 
-        UpdateBalance(-amount, TransactionTypes.Transfer);
-        targetWallet.UpdateBalance(amount, TransactionTypes.Transfer);
+        UpdateBalance(transaction);
+        targetWallet.UpdateBalance(transaction);
     }
 
     protected Wallet() { }
