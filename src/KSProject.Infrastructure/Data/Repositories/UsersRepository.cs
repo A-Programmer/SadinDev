@@ -30,7 +30,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 			.Include(u => u.Roles)
 			.Include(u => u.UserTokens)
 			.Include(u => u.UserSecurityStamps)
-			.FirstOrDefaultAsync(x => x.UserName.ToLower() == userName, cancellationToken);
+			.FirstOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower(), cancellationToken);
 	}
 
 	public async Task<User?> FindUserByEmailAsync(string email,
@@ -40,7 +40,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 			.Include(u => u.Roles)
 			.Include(u => u.UserTokens)
 			.Include(u => u.UserSecurityStamps)
-			.FirstOrDefaultAsync(x => x.Email.ToLower() == email, cancellationToken);
+			.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower(), cancellationToken);
 	}
 
 	public async Task<User?> FindUserByPhoneNumberAsync(string phoneNumber,
@@ -50,7 +50,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 			.Include(u => u.Roles)
 			.Include(u => u.UserTokens)
 			.Include(u => u.UserSecurityStamps)
-			.FirstOrDefaultAsync(x => x.PhoneNumber.ToLower() == phoneNumber, cancellationToken);
+			.FirstOrDefaultAsync(x => x.PhoneNumber.ToLower() == phoneNumber.ToLower(), cancellationToken);
 	}
 
 	public async Task<bool> IsUserNameInUseAsync(Guid id,
@@ -59,7 +59,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 	{
 		return await _users
 			.FirstOrDefaultAsync(x => x.Id != id &&
-									  x.UserName.ToLower() == userName,
+									  x.UserName.ToLower() == userName.ToLower(),
 				cancellationToken) is not null;
 	}
 
@@ -69,7 +69,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 	{
 		return await _users
 			.FirstOrDefaultAsync(x => x.Id != id &&
-									  x.Email.ToLower() == email,
+									  x.Email.ToLower() == email.ToLower(),
 				cancellationToken) is not null;
 	}
 
@@ -79,7 +79,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 	{
 		return await _users
 			.FirstOrDefaultAsync(x => x.Id != id &&
-									  x.PhoneNumber.ToLower() == phoneNumber,
+									  x.PhoneNumber.ToLower() == phoneNumber.ToLower(),
 				cancellationToken) is not null;
 	}
 
