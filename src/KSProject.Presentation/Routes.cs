@@ -113,4 +113,9 @@ public static class Routes
         public const string GET_USER_API_KEYS = "";
         public const string REVOKE = "revoke/{apiKeyId}";
     }
+
+    public static class Static_Data
+    {
+        public const string GET_PAYMENT_GTEWAYS = "";
+    }
 }
