@@ -5,6 +5,7 @@ using KSProject.Infrastructure.BackgroundJobs;
 using KSProject.Infrastructure.Data;
 using KSProject.Infrastructure.ExtensionMethods;
 using KSProject.Infrastructure.Interceptors;
+using KSProject.Infrastructure.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -64,6 +65,8 @@ public static class DependencyInjection
         using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
         var context = serviceScope.ServiceProvider.GetRequiredService<KSProjectDbContext>();
         context.Database.Migrate();
+        
+        app.UseApiKeyAuthentication();
         
         return app;
     }
