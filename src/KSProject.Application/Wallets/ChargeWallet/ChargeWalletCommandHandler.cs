@@ -30,7 +30,6 @@ public sealed class ChargeWalletCommandHandler :
     public async Task<ChargeWalletCommandResponse> Handle(ChargeWalletCommand request,
         CancellationToken cancellationToken)
     {
-        var confs = _configuration.GetSection("PaymentGateways");
         var factory = _serviceProvider.GetRequiredService<IPaymentGatewayFactory>();
         var gateway = factory.GetGateway(request.Payload.PaymentGatewayType); // GatewayType مثل "ZarrinPal" در request اضافه کن
 

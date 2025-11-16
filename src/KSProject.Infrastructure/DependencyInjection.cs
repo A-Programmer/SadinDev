@@ -4,6 +4,7 @@ using KSProject.Domain.Contracts;
 using KSProject.Infrastructure.BackgroundJobs;
 using KSProject.Infrastructure.Data;
 using KSProject.Infrastructure.ExtensionMethods;
+using KSProject.Infrastructure.Helpers;
 using KSProject.Infrastructure.Interceptors;
 using KSProject.Infrastructure.Middleware;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +24,7 @@ public static class DependencyInjection
         builder.Services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
         builder.Services.AddSingleton<SoftDeleteInterceptor>();
         builder.Services.RegisterPaymentGateways(configuration);
+        builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         builder.Services.AddDbContext<KSProjectDbContext>((sp, options) =>
         {

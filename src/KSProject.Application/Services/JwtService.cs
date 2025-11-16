@@ -50,6 +50,12 @@ public sealed class JwtService : IJwtService
     {
         string securityStamp = user.UserSecurityStamps?
             .FirstOrDefault(x => x.ExpirationDate > DateTime.UtcNow)?.SecurityStamp ?? "";
+        
+        string isInternal = "false";
+        if (user.ApiKeys != null && user.ApiKeys.Any() && user.ApiKeys.FirstOrDefault(x => x.InternalStatus()) != null)
+        {
+            isInternal = "true";
+        }
 
         var claims = new List<Claim>
         {
@@ -57,7 +63,8 @@ public sealed class JwtService : IJwtService
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim("security_stamp", securityStamp),
-            new Claim("is_registered", user.IsSuperAdmin().ToString())
+            new Claim("is_SuperAdmin", user.IsSuperAdmin().ToString()),
+            new Claim("is_Internal", isInternal ?? "false")
         };
 
         foreach (var role in user.Roles)

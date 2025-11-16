@@ -10,23 +10,25 @@ public sealed class ApiKey : BaseEntity, ISoftDeletable
     public bool IsActive { get; private set; } = true;
     public DateTime? ExpirationDate { get; private set; }
     public string Scopes { get; private set; }
+    public bool IsInternal { get; private set; } = false;
     public Guid UserId { get; private set; }
     public User User { get; set; }
     public bool IsDeleted { get; set; }
     public DateTime? DeletedOnUtc { get; set; }
 
-    private ApiKey(Guid id, string key, bool isActive, DateTime? expirationDate, string scopes) : base(id)
+    private ApiKey(Guid id, string key, bool isActive, DateTime? expirationDate, string scopes, bool isInternal = false) : base(id)
     {
         Key = key ?? throw new ArgumentNullException(nameof(key));
         IsActive = isActive;
         ExpirationDate = expirationDate ?? DateTime.UtcNow.AddDays(7);
         Scopes = scopes ?? string.Empty;
+        IsInternal = isInternal;
     }
 
     // Factory
-    public static ApiKey Create(Guid id, Guid userId, string key, bool isActive = true, DateTime? expirationDate = null, string scopes = null)
+    public static ApiKey Create(Guid id, Guid userId, string key, bool isActive = true, DateTime? expirationDate = null, string scopes = null, bool isInternal = false)
     {
-        var apiKey = new ApiKey(id, key, isActive, expirationDate, scopes);
+        var apiKey = new ApiKey(id, key, isActive, expirationDate, scopes, isInternal);
         apiKey.SetUserId(userId);
         return apiKey;
     }
@@ -64,11 +66,22 @@ public sealed class ApiKey : BaseEntity, ISoftDeletable
         User = user;
     }
 
+    public bool IsValidWithUserId(Guid userId)
+    {
+        return UserId != Guid.Empty && UserId == userId && !IsExpired() && IsActive;
+    }
+    public bool IsValid()
+    {
+        return !IsExpired() && IsActive;
+    }
+
     // Added behavior for future: Check if expired
     public bool IsExpired()
     {
         return ExpirationDate.HasValue && ExpirationDate.Value < DateTime.UtcNow;
     }
+
+    public bool InternalStatus() => IsInternal;
 
     protected ApiKey()
     {

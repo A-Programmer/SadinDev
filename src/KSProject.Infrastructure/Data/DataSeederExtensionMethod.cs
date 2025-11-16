@@ -92,7 +92,7 @@ public static class DataSeederExtensionMethod
         superAdminApiKey.ModifiedBy = "System";
         superAdminApiKey.IncreaseVersion();
         
-        ApiKey adminApiKey = ApiKey.Create(AdminApiKeyId, AdminUserId, AdminApiKeyId.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete" );
+        ApiKey adminApiKey = ApiKey.Create(AdminApiKeyId, AdminUserId, AdminApiKeyId.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete", true );
         adminApiKey.CreatedAt = now;
         adminApiKey.ModifiedAt = now;
         adminApiKey.CreatedBy = "System";

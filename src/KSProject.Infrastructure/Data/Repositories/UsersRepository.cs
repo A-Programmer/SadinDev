@@ -17,6 +17,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 	public async Task<User?> FindUserWithRolesAsync(Guid id, CancellationToken cancellationToken = default)
 	{
 		return await _users
+            .Include(u => u.ApiKeys)
 			.Include(u => u.Roles)
 			.Include(u => u.UserTokens)
 			.Include(u => u.UserSecurityStamps)
@@ -27,6 +28,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 		CancellationToken cancellationToken = default)
 	{
 		return await _users
+            .Include(u => u.ApiKeys)
 			.Include(u => u.Roles)
 			.Include(u => u.UserTokens)
 			.Include(u => u.UserSecurityStamps)

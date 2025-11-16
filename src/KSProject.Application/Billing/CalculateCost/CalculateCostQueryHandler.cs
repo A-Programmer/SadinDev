@@ -2,6 +2,7 @@ using KSFramework.KSMessaging.Abstraction;
 using KSProject.Domain.Contracts;
 using KSFramework.Exceptions;
 using KSProject.Domain.Aggregates.Billings;
+using Microsoft.AspNetCore.Http;
 
 namespace KSProject.Application.Billing.CalculateCost;
 
@@ -9,15 +10,23 @@ public sealed class CalculateCostQueryHandler :
     IQueryHandler<CalculateCostQuery, CalculateCostQueryResponse>
 {
     private readonly IKSProjectUnitOfWork _uow;
+    private readonly ICurrentUserService _currentUser;
 
-    public CalculateCostQueryHandler(IKSProjectUnitOfWork uow)
+    public CalculateCostQueryHandler(IKSProjectUnitOfWork uow,
+        ICurrentUserService currentUser)
     {
         _uow = uow ?? throw new ArgumentNullException(nameof(uow));
+        _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
     }
 
     public async Task<CalculateCostQueryResponse> Handle(CalculateCostQuery request,
         CancellationToken cancellationToken)
     {
+        if (_currentUser.IsInternal)
+        {
+            return new CalculateCostQueryResponse(0, 0); // free
+        }
+        
         var rates = await _uow.ServiceRates.GetByServiceAndMetricAsync(request.Payload.ServiceType, request.Payload.MetricType, cancellationToken);
 
         ServiceRate? matchingRate = rates.FirstOrDefault(sr => sr.Variant == request.Payload.Variant) ?? rates.FirstOrDefault(sr => sr.Variant == "Default");
