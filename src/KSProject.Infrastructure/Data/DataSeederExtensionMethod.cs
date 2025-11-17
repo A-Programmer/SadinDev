@@ -64,10 +64,12 @@ public static class DataSeederExtensionMethod
     #endregion
     
     #region Service Rate Ids (جدید: برای تست pricing با variantها)
-    public static Guid BlogPostsDefaultRateId = Guid.Parse("11111111-2222-3333-4444-555555555555"); // Default for Blog Posts_Count
-    public static Guid BlogPostsPremiumRateId = Guid.Parse("22222222-3333-4444-5555-666666666666"); // Premium variant with discount rule
-    public static Guid NotificationSmsDefaultRateId = Guid.Parse("33333333-4444-5555-6666-777777777777"); // Default for Notification SMS_Count
-    public static Guid OnlineStoreTransactionsTier1RateId = Guid.Parse("44444444-5555-6666-7777-888888888888"); // Tier1 for OnlineStore Transactions_Count
+    public static Guid BlogPostsDefaultRateId = Guid.Parse("2c528162-70d2-4573-bedc-549b3c057910"); // Default for Blog Posts_Count
+    public static Guid BlogPostsPremiumRateId = Guid.Parse("f561965d-0d31-4285-b779-6a8c0461d64f"); // Premium variant with discount rule
+    public static Guid NotificationSmsDefaultRateId = Guid.Parse("0c9e9c5c-e3bf-4b32-a381-35d798fdd6d9"); // Default for Notification SMS_Count
+    public static Guid OnlineStoreTransactionsTier1RateId = Guid.Parse("4116373a-f4b2-419d-a75a-676ecddef4e6"); // Tier1 for OnlineStore Transactions_Count
+    public static Guid GetRolesServiceRateId = Guid.Parse("0f44e981-5eac-4625-b420-dd550d4ca78a");
+    public static Guid GetRoleByIdServiceRateId = Guid.Parse("a8b27fb5-19ef-4179-87fc-fbe75692a93e");
     #endregion
 
     #endregion
@@ -75,11 +77,11 @@ public static class DataSeederExtensionMethod
     {
        SeedRoles(modelBuilder);
        SeedUsers(modelBuilder);
-        SeedWallets(modelBuilder);
-        SeedTransactions(modelBuilder); // جدید: Seeder برای Transactionها
-        SeedProfiles(modelBuilder);
-        SeedApiKeys(modelBuilder);
-        SeedServiceRates(modelBuilder); // جدید: Seeder برای ServiceRateها
+       SeedWallets(modelBuilder);
+       SeedTransactions(modelBuilder); // جدید: Seeder برای Transactionها
+       SeedProfiles(modelBuilder);
+       SeedApiKeys(modelBuilder);
+       SeedServiceRates(modelBuilder); // جدید: Seeder برای ServiceRateها
     }
 
     private static void SeedApiKeys(this ModelBuilder modelBuilder)
@@ -325,17 +327,31 @@ public static class DataSeederExtensionMethod
         onlineStoreTransactionsTier1Rate.CreatedBy = "System";
         onlineStoreTransactionsTier1Rate.ModifiedBy = "System";
         onlineStoreTransactionsTier1Rate.IncreaseVersion();
+        
+        ServiceRate serviceRate3 = ServiceRate.Create(GetRolesServiceRateId, "Roles", "Get_All_Roles", "Default", 0.01m); 
+        serviceRate3.CreatedAt = now;
+        serviceRate3.ModifiedAt = now;
+        serviceRate3.CreatedBy = "System";
+        serviceRate3.ModifiedBy = "System";
+        serviceRate3.IncreaseVersion();
+        ServiceRate serviceRate4 = ServiceRate.Create(GetRoleByIdServiceRateId, "Roles", "Get_Role_By_Id", "Premium", 0.005m, "{\"minQuantity\":50,\"discountPercent\":10}"); 
+        serviceRate4.CreatedAt = now;
+        serviceRate4.ModifiedAt = now;
+        serviceRate4.CreatedBy = "System";
+        serviceRate4.ModifiedBy = "System";
+        serviceRate4.IncreaseVersion();
 
         modelBuilder.Entity<ServiceRate>()
             .HasData(
                 blogPostsDefaultRate,
                 blogPostsPremiumRate,
                 notificationSmsDefaultRate,
-                onlineStoreTransactionsTier1Rate
+                onlineStoreTransactionsTier1Rate,
+                serviceRate3,
+                serviceRate4
             );
     }
 
-    // Seeders
     private static void SeedRoles(this ModelBuilder modelBuilder)
     {
         var now = DateTime.SpecifyKind(new DateTime(2025, 11, 12, 10, 0, 0), DateTimeKind.Utc);

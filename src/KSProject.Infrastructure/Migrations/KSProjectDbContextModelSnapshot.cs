@@ -43,7 +43,8 @@ namespace KSProject.Infrastructure.Migrations
 
                     b.Property<string>("MetricType")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -52,18 +53,22 @@ namespace KSProject.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<decimal>("RatePerUnit")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,6)");
 
                     b.Property<string>("RulesJson")
                         .HasColumnType("jsonb");
 
                     b.Property<string>("ServiceType")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
 
                     b.Property<string>("Variant")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasDefaultValue("Default");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -73,14 +78,15 @@ namespace KSProject.Infrastructure.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("ServiceType", "MetricType", "Variant")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_ServiceRate_Unique_Combination");
 
                     b.ToTable("ServiceRates");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("11111111-2222-3333-4444-555555555555"),
+                            Id = new Guid("2c528162-70d2-4573-bedc-549b3c057910"),
                             CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
@@ -94,7 +100,7 @@ namespace KSProject.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("22222222-3333-4444-5555-666666666666"),
+                            Id = new Guid("f561965d-0d31-4285-b779-6a8c0461d64f"),
                             CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
@@ -109,7 +115,7 @@ namespace KSProject.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("33333333-4444-5555-6666-777777777777"),
+                            Id = new Guid("0c9e9c5c-e3bf-4b32-a381-35d798fdd6d9"),
                             CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
@@ -123,7 +129,7 @@ namespace KSProject.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("44444444-5555-6666-7777-888888888888"),
+                            Id = new Guid("4116373a-f4b2-419d-a75a-676ecddef4e6"),
                             CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
@@ -134,6 +140,35 @@ namespace KSProject.Infrastructure.Migrations
                             RulesJson = "{\"minQuantity\": 100, \"discountPercent\": 15}",
                             ServiceType = "OnlineStore",
                             Variant = "Tier1",
+                            Version = 1L
+                        },
+                        new
+                        {
+                            Id = new Guid("0f44e981-5eac-4625-b420-dd550d4ca78a"),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "Get_All_Roles",
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            ModifiedBy = "System",
+                            RatePerUnit = 0.01m,
+                            ServiceType = "Roles",
+                            Variant = "Default",
+                            Version = 1L
+                        },
+                        new
+                        {
+                            Id = new Guid("a8b27fb5-19ef-4179-87fc-fbe75692a93e"),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "Get_Role_By_Id",
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            ModifiedBy = "System",
+                            RatePerUnit = 0.005m,
+                            RulesJson = "{\"minQuantity\":50,\"discountPercent\":10}",
+                            ServiceType = "Roles",
+                            Variant = "Premium",
                             Version = 1L
                         });
                 });
@@ -351,6 +386,9 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsInternal")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Key")
                         .IsRequired()
                         .IsUnicode(true)
@@ -389,6 +427,7 @@ namespace KSProject.Infrastructure.Migrations
                             ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
+                            IsInternal = false,
                             Key = "c55fb3743d744aa3b576d144c49cd184",
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
@@ -404,6 +443,7 @@ namespace KSProject.Infrastructure.Migrations
                             ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
+                            IsInternal = true,
                             Key = "0acc9f7592014ea59a165be1c30d6f60",
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
@@ -419,6 +459,7 @@ namespace KSProject.Infrastructure.Migrations
                             ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
+                            IsInternal = false,
                             Key = "ed12b6798fd04a0cade5fa6aaccf42fd",
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
@@ -434,6 +475,7 @@ namespace KSProject.Infrastructure.Migrations
                             ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
+                            IsInternal = false,
                             Key = "17f9e83cb7634e3889021d0583adab05",
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
@@ -449,6 +491,7 @@ namespace KSProject.Infrastructure.Migrations
                             ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
+                            IsInternal = false,
                             Key = "2a5018f6c8db490a9707221469d20bb7",
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",

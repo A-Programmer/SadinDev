@@ -11,8 +11,8 @@ namespace KSProject.Domain.Aggregates.Billings;
 
 public sealed class ServiceRate : BaseEntity, IAggregateRoot, ISoftDeletable
 {
-    public string ServiceType { get; private set; }
-    public string MetricType { get; private set; }
+    public string ServiceType { get; private set; } = null!;
+    public string MetricType { get; private set; } = null!;
     public string Variant { get; private set; } = "Default";
     public decimal RatePerUnit { get; private set; }
     public string? RulesJson { get; private set; }
@@ -29,11 +29,18 @@ public sealed class ServiceRate : BaseEntity, IAggregateRoot, ISoftDeletable
     }
 
     // Factory method for creation
-    public static ServiceRate Create(Guid id, string serviceType, string metricType, string variant = "Default", decimal ratePerUnit = 0.0m, string? rulesJson = null)
+    public static ServiceRate Create(Guid id, string serviceType, string metricType, 
+        string variant = "Default", decimal ratePerUnit = 0m, string? rulesJson = null)
     {
-        var serviceRate = new ServiceRate(id, serviceType, metricType, variant, ratePerUnit, rulesJson);
-        // Optional: AddDomainEvent(new ServiceRateCreatedEvent { ... }); if needed for events
-        return serviceRate;
+        return new ServiceRate
+        {
+            Id = id,
+            ServiceType = serviceType.Trim(),
+            MetricType = metricType.Trim(),
+            Variant = (variant ?? "Default").Trim(),
+            RatePerUnit = ratePerUnit,
+            RulesJson = rulesJson
+        };
     }
 
     // Behavioral methods
@@ -88,8 +95,15 @@ public class ServiceRateConfiguration : IEntityTypeConfiguration<ServiceRate>
     public void Configure(EntityTypeBuilder<ServiceRate> builder)
     {
         builder.HasKey(sr => sr.Id);
-        builder.Property(sr => sr.IsDeleted);
-        builder.HasIndex(sr => new { sr.ServiceType, sr.MetricType, sr.Variant }).IsUnique();
-        builder.Property(sr => sr.RulesJson).HasColumnType("jsonb"); // اگر PostgreSQL, иначе nvarchar(max)
+
+        builder.Property(sr => sr.ServiceType).HasMaxLength(1000).IsRequired();
+        builder.Property(sr => sr.MetricType).HasMaxLength(500).IsRequired();
+        builder.Property(sr => sr.Variant).HasMaxLength(50).IsRequired().HasDefaultValue("Default");
+        builder.Property(sr => sr.RatePerUnit).HasColumnType("decimal(18,6)");
+        builder.Property(sr => sr.RulesJson).HasColumnType("jsonb");
+
+        builder.HasIndex(sr => new { sr.ServiceType, sr.MetricType, sr.Variant })
+            .IsUnique()
+            .HasDatabaseName("IX_ServiceRate_Unique_Combination");
     }
 }

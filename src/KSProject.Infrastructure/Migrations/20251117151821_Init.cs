@@ -54,10 +54,10 @@ namespace KSProject.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ServiceType = table.Column<string>(type: "text", nullable: false),
-                    MetricType = table.Column<string>(type: "text", nullable: false),
-                    Variant = table.Column<string>(type: "text", nullable: false),
-                    RatePerUnit = table.Column<decimal>(type: "numeric", nullable: false),
+                    ServiceType = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    MetricType = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    Variant = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false, defaultValue: "Default"),
+                    RatePerUnit = table.Column<decimal>(type: "numeric(18,6)", nullable: false),
                     RulesJson = table.Column<string>(type: "jsonb", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -231,6 +231,7 @@ namespace KSProject.Infrastructure.Migrations
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Scopes = table.Column<string>(type: "text", nullable: false),
+                    IsInternal = table.Column<bool>(type: "boolean", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -401,10 +402,12 @@ namespace KSProject.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedOnUtc", "IsDeleted", "MetricType", "ModifiedAt", "ModifiedBy", "RatePerUnit", "RulesJson", "ServiceType", "Variant", "Version" },
                 values: new object[,]
                 {
-                    { new Guid("11111111-2222-3333-4444-555555555555"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "Posts_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.01m, null, "Blog", "Default", 1L },
-                    { new Guid("22222222-3333-4444-5555-666666666666"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "Posts_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.005m, "{\"minQuantity\": 50, \"discountPercent\": 10}", "Blog", "Premium", 1L },
-                    { new Guid("33333333-4444-5555-6666-777777777777"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "SMS_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.02m, null, "Notification", "Default", 1L },
-                    { new Guid("44444444-5555-6666-7777-888888888888"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "Transactions_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.015m, "{\"minQuantity\": 100, \"discountPercent\": 15}", "OnlineStore", "Tier1", 1L }
+                    { new Guid("0c9e9c5c-e3bf-4b32-a381-35d798fdd6d9"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "SMS_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.02m, null, "Notification", "Default", 1L },
+                    { new Guid("0f44e981-5eac-4625-b420-dd550d4ca78a"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "Get_All_Roles", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.01m, null, "Roles", "Default", 1L },
+                    { new Guid("2c528162-70d2-4573-bedc-549b3c057910"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "Posts_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.01m, null, "Blog", "Default", 1L },
+                    { new Guid("4116373a-f4b2-419d-a75a-676ecddef4e6"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "Transactions_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.015m, "{\"minQuantity\": 100, \"discountPercent\": 15}", "OnlineStore", "Tier1", 1L },
+                    { new Guid("a8b27fb5-19ef-4179-87fc-fbe75692a93e"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "Get_Role_By_Id", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.005m, "{\"minQuantity\":50,\"discountPercent\":10}", "Roles", "Premium", 1L },
+                    { new Guid("f561965d-0d31-4285-b779-6a8c0461d64f"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, false, "Posts_Count", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", 0.005m, "{\"minQuantity\": 50, \"discountPercent\": 10}", "Blog", "Premium", 1L }
                 });
 
             migrationBuilder.InsertData(
@@ -433,14 +436,14 @@ namespace KSProject.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "ApiKeys",
-                columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedOnUtc", "ExpirationDate", "IsActive", "IsDeleted", "Key", "ModifiedAt", "ModifiedBy", "Scopes", "UserId", "Version" },
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "DeletedOnUtc", "ExpirationDate", "IsActive", "IsDeleted", "IsInternal", "Key", "ModifiedAt", "ModifiedBy", "Scopes", "UserId", "Version" },
                 values: new object[,]
                 {
-                    { new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "0acc9f7592014ea59a165be1c30d6f60", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete", new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), 1L },
-                    { new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "17f9e83cb7634e3889021d0583adab05", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 1L },
-                    { new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "2a5018f6c8db490a9707221469d20bb7", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all", new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"), 1L },
-                    { new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "c55fb3743d744aa3b576d144c49cd184", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete", new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), 1L },
-                    { new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, "ed12b6798fd04a0cade5fa6aaccf42fd", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.show-all", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 1L }
+                    { new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, true, "0acc9f7592014ea59a165be1c30d6f60", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete", new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"), 1L },
+                    { new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, false, "17f9e83cb7634e3889021d0583adab05", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 1L },
+                    { new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, false, "2a5018f6c8db490a9707221469d20bb7", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all", new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"), 1L },
+                    { new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, false, "c55fb3743d744aa3b576d144c49cd184", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete", new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"), 1L },
+                    { new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"), new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", null, new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), true, false, false, "ed12b6798fd04a0cade5fa6aaccf42fd", new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc), "System", "sliders.show-all", new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"), 1L }
                 });
 
             migrationBuilder.InsertData(
@@ -501,15 +504,15 @@ namespace KSProject.Infrastructure.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ServiceRates_IsDeleted",
-                table: "ServiceRates",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceRates_ServiceType_MetricType_Variant",
+                name: "IX_ServiceRate_Unique_Combination",
                 table: "ServiceRates",
                 columns: new[] { "ServiceType", "MetricType", "Variant" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceRates_IsDeleted",
+                table: "ServiceRates",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TestEntities_TestAggregateId",
