@@ -68,8 +68,6 @@ public static class DependencyInjection
         var context = serviceScope.ServiceProvider.GetRequiredService<KSProjectDbContext>();
         context.Database.Migrate();
         
-        app.UseApiKeyAuthentication();
-        
         return app;
     }
 }

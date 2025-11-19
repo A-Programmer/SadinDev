@@ -1,10 +1,13 @@
 ﻿using KSProject.Application.Contracts;
 using KSProject.Domain;
 using KSProject.Presentation.ExtensionMethods;
+using KSProject.Presentation.Filters;
 using KSProject.Presentation.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Routing;
 
 namespace KSProject.Presentation;
 
@@ -25,6 +28,7 @@ public static class DependencyInjection
                 .AllowAnyMethod();
             });
         });
+        services.AddUsageDebitFilter();
         services.AddScoped<IPermissionDiscoveryService, PermissionDiscoveryService>();
         services.AddEndpointsApiExplorer();
         services.AddGlobalExceptionHandling();
@@ -73,11 +77,6 @@ public static class DependencyInjection
         app.UseExceptionHandler();
 
         // app.UseHttpsRedirection();
-
-        app.UseAuthentication();
-        app.UseAuthorization();
-
-        app.MapControllers();
 
         return app;
     }

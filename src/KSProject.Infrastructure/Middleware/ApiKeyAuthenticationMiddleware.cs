@@ -1,5 +1,3 @@
-using System.Security.Claims;
-using KSProject.Domain.Aggregates.Users;
 using KSProject.Domain.Attributes;
 using KSProject.Domain.Contracts;
 using Microsoft.AspNetCore.Builder;

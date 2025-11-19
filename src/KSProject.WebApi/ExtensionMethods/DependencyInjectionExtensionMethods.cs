@@ -1,4 +1,7 @@
 ﻿using KSProject.Domain;
+using KSProject.Infrastructure.Middleware;
+using KSProject.Presentation.ExtensionMethods;
+using KSProject.Presentation.Filters;
 
 namespace KSProject.WebApi.ExtensionMethods;
 
@@ -17,6 +20,14 @@ public static class DependencyInjectionExtensionMethods
 	public static WebApplication RegisterGeneralPipelines(this WebApplication app)
 	{
 		// app.UseHttpsRedirection();
+        app.UseRouting();
+        app.UseApiKeyAuthentication();
+        app.UseBillingCheck();
+        
+        app.UseAuthentication();
+        app.UseAuthorization();
+        
+        app.MapControllers();
 		return app;
 	}
 }

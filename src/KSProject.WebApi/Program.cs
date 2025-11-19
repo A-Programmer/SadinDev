@@ -21,7 +21,7 @@ builder.Services.RegisterDomain();
 
 var app = builder.Build();
 
-app.MapDefaultEndpoints();
+// app.MapDefaultEndpoints();
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
@@ -32,6 +32,7 @@ app.UsePresentation();
 app.UseDomain();
 app.UseApplication();
 app.UseInfrastructureAsync();
+app.RegisterGeneralPipelines();
 app.UseWebApi();
 
 
