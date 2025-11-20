@@ -17,6 +17,7 @@ public sealed class ChargeWalletCommandHandler :
     private readonly IKSProjectUnitOfWork _uow;
     private readonly IServiceProvider _serviceProvider;
     private readonly IConfiguration _configuration;
+    private readonly IPaymentGatewayFactory _paymentGatewayFactory;
 
     public ChargeWalletCommandHandler(IKSProjectUnitOfWork uow,
         IServiceProvider serviceProvider,
@@ -30,19 +31,19 @@ public sealed class ChargeWalletCommandHandler :
     public async Task<ChargeWalletCommandResponse> Handle(ChargeWalletCommand request,
         CancellationToken cancellationToken)
     {
-        var factory = _serviceProvider.GetRequiredService<IPaymentGatewayFactory>();
-        var gateway = factory.GetGateway(request.Payload.PaymentGatewayType); // GatewayType مثل "ZarrinPal" در request اضافه کن
-
-        string callBackUrl = _configuration[$"PaymentGateways:{request.Payload.PaymentGatewayType.ToString()}:callBackUrl"]; // از config بگیر
-        var paymentResult = await gateway.ProcessPaymentAsync(request.Payload.Amount, request.UserId, callBackUrl);
-
-        if (!paymentResult.Success)
-            throw new KSPaymentFailedException(paymentResult.ErrorMessage);
-
-        // TODO: Move the following codes to the callback url or another CommandHandler which calls by another Endpoint like PaymentsController/Callback
-        // Redirect کاربر به paymentResult.RedirectUrl برای پرداخت
-        // برای verify, callback endpoint جدا بساز
-        
+        // var factory = _serviceProvider.GetRequiredService<IPaymentGatewayFactory>();
+        // var gateway = factory.GetGateway(request.Payload.PaymentGatewayType); // GatewayType مثل "ZarrinPal" در request اضافه کن
+        //
+        // string callBackUrl = _configuration[$"PaymentGateways:{request.Payload.PaymentGatewayType.ToString()}:callBackUrl"]; // از config بگیر
+        // var paymentResult = await gateway.ProcessPaymentAsync(request.Payload.Amount, request.UserId, callBackUrl);
+        //
+        // if (!paymentResult.Success)
+        //     throw new KSPaymentFailedException(paymentResult.ErrorMessage);
+        //
+        // // TODO: Move the following codes to the callback url or another CommandHandler which calls by another Endpoint like PaymentsController/Callback
+        // // Redirect کاربر به paymentResult.RedirectUrl برای پرداخت
+        // // برای verify, callback endpoint جدا بساز
+        //
         Wallet? wallet = await _uow.Wallets.GetByUserIdAsync(request.UserId, cancellationToken);
 
         if (wallet is null)
@@ -59,6 +60,6 @@ public sealed class ChargeWalletCommandHandler :
 
         await _uow.SaveChangesAsync(cancellationToken);
 
-        return new ChargeWalletCommandResponse(wallet.Balance);
+        return new ChargeWalletCommandResponse(transaction.Id);
     }
 }

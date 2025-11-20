@@ -118,4 +118,9 @@ public static class Routes
     {
         public const string GET_PAYMENT_GTEWAYS = "";
     }
+
+    public static class Payment
+    {
+        public const string CALLBACK_URL = "callBack";
+    }
 }

@@ -5,6 +5,6 @@ namespace KSProject.Application.Wallets.ChargeWallet;
 public record ChargeWalletCommandRequest
 (
     [property: JsonPropertyName("amount")] decimal Amount,
-    [property: JsonPropertyName("transactionType")] TransactionTypes TransactionType,
-    [property: JsonPropertyName("paymentGatewayType")] PaymentGatewayTypes PaymentGatewayType
+    [property: JsonPropertyName("paymentGatewayType")] PaymentGatewayTypes PaymentGatewayType,
+    [property: JsonPropertyName("callBackUrl")] string? CallBackUrl
 );

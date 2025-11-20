@@ -14,6 +14,7 @@
   <ItemGroup>
     <Folder Include="Otp\CreateOtpUser\" />
     <Folder Include="Otp\VerifyOtpCode\" />
+    <Folder Include="Payments\" />
   </ItemGroup>
 
 </Project>

@@ -1,3 +1,4 @@
+using KSFramework.Exceptions;
 using KSFramework.GenericRepository;
 using KSProject.Domain.Aggregates.Wallets;
 using Microsoft.EntityFrameworkCore;
@@ -41,5 +42,11 @@ public class WalletsRepository : GenericRepository<Wallet>, IWalletsRepository
     {
         Wallet wallet = await GetByIdAsync(walletId, cancellationToken);
         return wallet?.Transactions ?? new List<Transaction>();
+    }
+
+    public async Task<Transaction?> GetTransactionByIdAsync(Guid walletId, Guid transactionId, CancellationToken cancellationToken = default)
+    {
+        var wallet = await GetByIdAsync(walletId, cancellationToken);
+        return wallet?.Transactions.FirstOrDefault(t => t.Id == transactionId && !t.IsDeleted);
     }
 }

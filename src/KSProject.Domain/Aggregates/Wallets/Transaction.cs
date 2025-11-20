@@ -14,29 +14,20 @@ public sealed class Transaction : BaseEntity, ISoftDeletable
     public decimal MetricValue { get; private set; } // مقدار متریک مصرف‌شده: e.g., 5 برای 5 اسلاید
     public DateTime TransactionDateTime { get; private set; } // زمان تراکنش
     public string? MetricDetails { get; private set; }
+    public TransactionStatusTypes TransactionStatus { get; private set; }
     public Guid WalletId { get; private set; }
     public Wallet Wallet { get; set; }
     public bool IsDeleted { get; set; }
     public DateTime? DeletedOnUtc { get; set; }
-
+    
     private Transaction(Guid id,
+        Guid walletId,
         decimal amount,
-        TransactionTypes transactionType,
+        TransactionTypes type,
         string serviceType,
         string metricType,
         decimal metricValue,
-        string metricDetails
-        ) : base(id)
-    {
-        Amount = amount;
-        Type = transactionType;
-        ServiceType = serviceType;
-        MetricType = metricType;
-        MetricValue = metricValue;
-        MetricDetails = metricDetails;
-    }
-    
-    private Transaction(Guid id, Guid walletId, decimal amount, TransactionTypes type, string serviceType, string metricType, decimal metricValue) : base(id)
+        TransactionStatusTypes transactionStatus) : base(id)
     {
         if (walletId == Guid.Empty)
             throw new ArgumentException("WalletId cannot be empty.", nameof(walletId));
@@ -47,15 +38,28 @@ public sealed class Transaction : BaseEntity, ISoftDeletable
         ServiceType = serviceType ?? string.Empty;
         MetricType = metricType ?? string.Empty;
         MetricValue = metricValue >= 0 ? metricValue : throw new ArgumentException("MetricValue cannot be negative.");
+        TransactionDateTime = DateTime.UtcNow;
     }
 
     // Factory method
-    public static Transaction Create(Guid id, Guid walletId, decimal amount, TransactionTypes type, string serviceType = null, string metricType = null, decimal metricValue = 0)
+    public static Transaction Create(Guid id,
+        Guid walletId,
+        decimal amount,
+        TransactionTypes type,
+        string serviceType = null,
+        string metricType = null,
+        decimal metricValue = 0,
+        TransactionStatusTypes transactionStatus = TransactionStatusTypes.Started)
     {
-        return new Transaction(id, walletId, amount, type, serviceType, metricType, metricValue);
+        return new Transaction(id, walletId, amount, type, serviceType, metricType, metricValue, transactionStatus);
     }
 
     // Behavioral methods
+    public void ChangeStatus(TransactionStatusTypes status)
+    {
+        TransactionStatus = status;
+    }
+    
     public void UpdateAmount(decimal newAmount)
     {
         if (newAmount == 0)
@@ -74,5 +78,6 @@ public sealed class TransactionsConfiguration : IEntityTypeConfiguration<Transac
     public void Configure(EntityTypeBuilder<Transaction> builder)
     {
         builder.Property(t => t.Type).HasConversion<string>();
+        builder.Property(t => t.TransactionStatus).HasConversion<string>();
     }
 }
