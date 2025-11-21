@@ -1,6 +1,6 @@
 using KSFramework.KSMessaging.Abstraction;
-using KSProject.Application.Billing.CalculateCost;
-using KSProject.Application.Wallets.DebitWallet;
+using KSProject.Application.User.Billings.CalculateCost;
+using KSProject.Application.User.Wallets.DebitWallet;
 using KSProject.Common.Constants.Enums;
 using KSProject.Domain.Contracts;
 using KSProject.Presentation.Attributes;

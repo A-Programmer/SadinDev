@@ -836,6 +836,10 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<DateTime>("TransactionDateTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("TransactionStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text");
@@ -859,15 +863,16 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("a1b2c3d4-e5f6-4789-abc1-def234567890"),
                             Amount = 100.0m,
-                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "",
                             MetricValue = 0m,
-                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            ModifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "",
-                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionDateTime = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionStatus = "Started",
                             Type = "Charge",
                             Version = 1L,
                             WalletId = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184")
@@ -876,15 +881,16 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("b2c3d4e5-f678-9abc-1def-234567890abc"),
                             Amount = -5.0m,
-                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "Posts_Count",
                             MetricValue = 5.0m,
-                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            ModifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "Blog",
-                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionDateTime = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionStatus = "Started",
                             Type = "Usage",
                             Version = 1L,
                             WalletId = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184")
@@ -893,15 +899,16 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("c3d4e5f6-789a-bc1d-ef23-4567890abcde"),
                             Amount = 50.0m,
-                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "",
                             MetricValue = 0m,
-                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            ModifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "",
-                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionDateTime = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionStatus = "Started",
                             Type = "Charge",
                             Version = 1L,
                             WalletId = new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60")
@@ -910,15 +917,16 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("d4e5f678-9abc-1def-2345-67890abcde12"),
                             Amount = -2.0m,
-                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "SMS_Count",
                             MetricValue = 10.0m,
-                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            ModifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "Notification",
-                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionDateTime = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionStatus = "Started",
                             Type = "Usage",
                             Version = 1L,
                             WalletId = new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd")
@@ -927,15 +935,16 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("e5f6789a-bc1d-ef23-4567-890abcde1234"),
                             Amount = 10.0m,
-                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "Transactions_Count",
                             MetricValue = 1.0m,
-                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            ModifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "OnlineStore",
-                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionDateTime = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionStatus = "Started",
                             Type = "Refund",
                             Version = 1L,
                             WalletId = new Guid("17f9e83c-b763-4e38-8902-1d0583adab05")
@@ -944,15 +953,16 @@ namespace KSProject.Infrastructure.Migrations
                         {
                             Id = new Guid("f6789abc-1def-2345-6789-0abcde123456"),
                             Amount = -1.0m,
-                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
                             IsDeleted = false,
                             MetricType = "",
                             MetricValue = 0m,
-                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            ModifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
                             ServiceType = "",
-                            TransactionDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionDateTime = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            TransactionStatus = "Started",
                             Type = "Adjustment",
                             Version = 1L,
                             WalletId = new Guid("2a5018f6-c8db-490a-9707-221469d20bb7")

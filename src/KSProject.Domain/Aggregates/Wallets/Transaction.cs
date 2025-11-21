@@ -24,6 +24,7 @@ public sealed class Transaction : BaseEntity, ISoftDeletable
         Guid walletId,
         decimal amount,
         TransactionTypes type,
+        DateTime transactionDateTime,
         string serviceType,
         string metricType,
         decimal metricValue,
@@ -38,7 +39,7 @@ public sealed class Transaction : BaseEntity, ISoftDeletable
         ServiceType = serviceType ?? string.Empty;
         MetricType = metricType ?? string.Empty;
         MetricValue = metricValue >= 0 ? metricValue : throw new ArgumentException("MetricValue cannot be negative.");
-        TransactionDateTime = DateTime.UtcNow;
+        TransactionDateTime = transactionDateTime;
     }
 
     // Factory method
@@ -46,12 +47,13 @@ public sealed class Transaction : BaseEntity, ISoftDeletable
         Guid walletId,
         decimal amount,
         TransactionTypes type,
+        DateTime transactionDateTime,
         string serviceType = null,
         string metricType = null,
         decimal metricValue = 0,
         TransactionStatusTypes transactionStatus = TransactionStatusTypes.Started)
     {
-        return new Transaction(id, walletId, amount, type, serviceType, metricType, metricValue, transactionStatus);
+        return new Transaction(id, walletId, amount, type, transactionDateTime, serviceType, metricType, metricValue, transactionStatus);
     }
 
     // Behavioral methods

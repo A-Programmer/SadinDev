@@ -29,7 +29,7 @@ public class ApiKeyAuthenticationMiddleware
     public async Task InvokeAsync(HttpContext context, IKSProjectUnitOfWork uow)
     {
         var endpoint = context.GetEndpoint();
-        if (endpoint?.Metadata.GetMetadata<PublicEndpointAttribute>() != null)
+        if (endpoint?.Metadata.GetMetadata<FreeEndpoint>() != null)
         {
             await _next(context); // Skip for public endpoints
             return;
@@ -42,6 +42,7 @@ public class ApiKeyAuthenticationMiddleware
             var superAdminStatusClaim = context.User.Claims.FirstOrDefault(x => x.Type.Equals("is_SuperAdmin", StringComparison.CurrentCultureIgnoreCase));
             if (bool.Parse(superAdminStatusClaim.Value))
             {
+                await _next(context);
                 return;
             }
         }

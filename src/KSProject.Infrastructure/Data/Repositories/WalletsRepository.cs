@@ -1,5 +1,7 @@
+using System.Linq.Expressions;
 using KSFramework.Exceptions;
 using KSFramework.GenericRepository;
+using KSFramework.Pagination;
 using KSProject.Domain.Aggregates.Wallets;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,5 +50,24 @@ public class WalletsRepository : GenericRepository<Wallet>, IWalletsRepository
     {
         var wallet = await GetByIdAsync(walletId, cancellationToken);
         return wallet?.Transactions.FirstOrDefault(t => t.Id == transactionId && !t.IsDeleted);
+    }
+
+    public PaginatedList<Transaction> GetTransactionsByUserIdAsync(Guid userId, int pageIndex, int pageSize, Expression<Func<Transaction, bool>>? where = null,
+        string orderBy = "", bool desc = false)
+    {
+        Wallet wallet = _wallets.Include(u => u.Transactions)
+            .FirstOrDefault(u => u.UserId == userId);
+
+        if (wallet == null)
+            throw new KSNotFoundException("Wallet not found.");
+
+        return PaginatedList<Transaction>.Create(
+            wallet.Transactions.AsQueryable(),
+            pageIndex,
+            pageSize,
+            where,
+            orderBy,
+            desc
+        );
     }
 }

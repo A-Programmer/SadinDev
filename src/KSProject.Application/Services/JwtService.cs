@@ -19,7 +19,7 @@ public sealed class JwtService : IJwtService
                     throw new ArgumentNullException(nameof(settings));
     }
 
-    public string GenerateToken(User user, List<string> permissions)
+    public string GenerateToken(Domain.Aggregates.Users.User user, List<string> permissions)
     {
         var secretKey = Encoding.UTF8.GetBytes(_settings.JwtOptions.SecretKey);
 
@@ -46,13 +46,13 @@ public sealed class JwtService : IJwtService
         return tokenHandler.WriteToken(token);
     }
 
-    private IEnumerable<Claim> _getClaims(User user, List<string> permissions)
+    private IEnumerable<Claim> _getClaims(Domain.Aggregates.Users.User user, List<string> permissions)
     {
         string securityStamp = user.UserSecurityStamps?
             .FirstOrDefault(x => x.ExpirationDate > DateTime.UtcNow)?.SecurityStamp ?? "";
         
         string isInternal = "false";
-        if (user.ApiKeys != null && user.ApiKeys.Any() && user.ApiKeys.FirstOrDefault(x => x.InternalStatus()) != null)
+        if (user.ApiKeys != null && user.ApiKeys.Any() && user.ApiKeys.FirstOrDefault(x => x.InternalStatus()) != null && user.ApiKeys.FirstOrDefault(x => x.InternalStatus()).IsValid())
         {
             isInternal = "true";
         }

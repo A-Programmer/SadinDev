@@ -231,17 +231,17 @@ public static class DataSeederExtensionMethod
     // Seeder جدید برای Transactionها (child of Wallet)
     private static void SeedTransactions(ModelBuilder modelBuilder)
     {
-        var now = DateTime.SpecifyKind(new DateTime(2025, 11, 12, 10, 0, 0), DateTimeKind.Utc);
+        var now = new DateTime(2024, 01, 01);
 
         // Transaction برای SuperAdminWallet: Charge 100, Usage for Blog
-        Transaction superAdminTransaction1 = Transaction.Create(SuperAdminTransactionId1, SuperAdminWalletId, 100.0m, TransactionTypes.Charge, null, null, 0);
+        Transaction superAdminTransaction1 = Transaction.Create(SuperAdminTransactionId1, SuperAdminWalletId, 100.0m, TransactionTypes.Charge, now, null, null, 0, TransactionStatusTypes.Completed);
         superAdminTransaction1.CreatedAt = now;
         superAdminTransaction1.ModifiedAt = now;
         superAdminTransaction1.CreatedBy = "System";
         superAdminTransaction1.ModifiedBy = "System";
         superAdminTransaction1.IncreaseVersion();
 
-        Transaction superAdminTransaction2 = Transaction.Create(SuperAdminTransactionId2, SuperAdminWalletId, -5.0m, TransactionTypes.Usage, "Blog", "Posts_Count", 5.0m);
+        Transaction superAdminTransaction2 = Transaction.Create(SuperAdminTransactionId2, SuperAdminWalletId, -5.0m, TransactionTypes.Usage, now, "Blog", "Posts_Count", 5.0m, TransactionStatusTypes.Completed);
         superAdminTransaction2.CreatedAt = now;
         superAdminTransaction2.ModifiedAt = now;
         superAdminTransaction2.CreatedBy = "System";
@@ -249,7 +249,7 @@ public static class DataSeederExtensionMethod
         superAdminTransaction2.IncreaseVersion();
 
         // Transaction برای AdminWallet: Charge 50
-        Transaction adminTransaction1 = Transaction.Create(AdminTransactionId1, AdminWalletId, 50.0m, TransactionTypes.Charge, null, null, 0);
+        Transaction adminTransaction1 = Transaction.Create(AdminTransactionId1, AdminWalletId, 50.0m, TransactionTypes.Charge, now, null, null, 0, TransactionStatusTypes.Failed);
         adminTransaction1.CreatedAt = now;
         adminTransaction1.ModifiedAt = now;
         adminTransaction1.CreatedBy = "System";
@@ -257,7 +257,7 @@ public static class DataSeederExtensionMethod
         adminTransaction1.IncreaseVersion();
 
         // Transaction برای User1Wallet: Usage for Notification
-        Transaction user1Transaction1 = Transaction.Create(User1TransactionId1, User1WalletId, -2.0m, TransactionTypes.Usage, "Notification", "SMS_Count", 10.0m);
+        Transaction user1Transaction1 = Transaction.Create(User1TransactionId1, User1WalletId, -2.0m, TransactionTypes.Usage, now, "Notification", "SMS_Count", 10.0m, TransactionStatusTypes.Completed);
         user1Transaction1.CreatedAt = now;
         user1Transaction1.ModifiedAt = now;
         user1Transaction1.CreatedBy = "System";
@@ -265,7 +265,7 @@ public static class DataSeederExtensionMethod
         user1Transaction1.IncreaseVersion();
 
         // Transaction برای User2Wallet: Refund test
-        Transaction user2Transaction1 = Transaction.Create(User2TransactionId1, User2WalletId, 10.0m, TransactionTypes.Refund, "OnlineStore", "Transactions_Count", 1.0m);
+        Transaction user2Transaction1 = Transaction.Create(User2TransactionId1, User2WalletId, 10.0m, TransactionTypes.Refund, now, "OnlineStore", "Transactions_Count", 1.0m);
         user2Transaction1.CreatedAt = now;
         user2Transaction1.ModifiedAt = now;
         user2Transaction1.CreatedBy = "System";
@@ -273,7 +273,7 @@ public static class DataSeederExtensionMethod
         user2Transaction1.IncreaseVersion();
 
         // Transaction برای TestUserWallet: Adjustment
-        Transaction testUserTransaction1 = Transaction.Create(TestUserTransactionId1, TestUserWalletId, -1.0m, TransactionTypes.Adjustment, null, null, 0);
+        Transaction testUserTransaction1 = Transaction.Create(TestUserTransactionId1, TestUserWalletId, -1.0m, TransactionTypes.Adjustment, now, null, null, 0, TransactionStatusTypes.Failed);
         testUserTransaction1.CreatedAt = now;
         testUserTransaction1.ModifiedAt = now;
         testUserTransaction1.CreatedBy = "System";

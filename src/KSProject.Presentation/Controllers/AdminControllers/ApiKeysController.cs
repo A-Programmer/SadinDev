@@ -1,7 +1,7 @@
 using KSFramework.KSMessaging.Abstraction;
-using KSProject.Application.ApiKeys.GenerateApiKey;
-using KSProject.Application.ApiKeys.GetUserApiKeys;
-using KSProject.Application.ApiKeys.RevokeApiKey;
+using KSProject.Application.Admin.ApiKeys.GenerateApiKey;
+using KSProject.Application.Admin.ApiKeys.GetUserApiKeys;
+using KSProject.Application.Admin.ApiKeys.RevokeApiKey;
 using KSProject.Presentation.Attributes;
 using KSProject.Presentation.BaseControllers;
 using Microsoft.AspNetCore.Http;

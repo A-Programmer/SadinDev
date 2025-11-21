@@ -12,7 +12,7 @@ namespace KSProject.Presentation.Controllers.PublicControllers
     {
         public StaticDataController(ISender sender) : base(sender) { }
 
-        [PublicEndpoint]
+        [FreeEndpoint]
         [HttpGet]
         [Route(Routes.Static_Data.GET_PAYMENT_GTEWAYS)]
         [Produces(typeof(Dictionary<int, string>))]

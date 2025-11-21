@@ -1,5 +1,5 @@
 using KSFramework.KSMessaging.Abstraction;
-using KSProject.Application.Billing.CalculateCost;
+using KSProject.Application.User.Billings.CalculateCost;
 using KSProject.Presentation.BaseControllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

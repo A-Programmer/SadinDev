@@ -1,17 +1,16 @@
 using KSFramework.KSMessaging.Abstraction;
 using KSFramework.Pagination;
-using KSProject.Application.Roles.CreateRole;
-using KSProject.Application.Roles.DeleteRole;
-using KSProject.Application.Roles.GetAllRoles;
-using KSProject.Application.Roles.GetPaginatedRoles;
-using KSProject.Application.Roles.GetRoleById;
-using KSProject.Application.Roles.GetRolePermissionsByRoleId;
-using KSProject.Application.Roles.UpdateRole;
+using KSProject.Application.Admin.Roles.CreateRole;
+using KSProject.Application.Admin.Roles.DeleteRole;
+using KSProject.Application.Admin.Roles.GetAllRoles;
+using KSProject.Application.Admin.Roles.GetPaginatedRoles;
+using KSProject.Application.Admin.Roles.GetRoleById;
+using KSProject.Application.Admin.Roles.GetRolePermissionsByRoleId;
+using KSProject.Application.Admin.Roles.UpdateRole;
 using KSProject.Presentation.Attributes;
 using KSProject.Presentation.BaseControllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Sadin.Application.Roles.GetPaginatedRoles;
 
 namespace KSProject.Presentation.Controllers.AdminControllers;
 

@@ -50,7 +50,7 @@ public static class Routes
     public static class Users_Admin
     {
         public const string CREATE = "";
-        public const string UPDATE = "{id}";
+        public const string UPDATE_USER = "{id}/update";
         public const string GET_ALL = "";
         public const string GET_PAGED = "paged";
         public const string GET_BY_ID = "{id}";
@@ -58,13 +58,13 @@ public static class Routes
 
         public static class User_Roles
         {
-            public const string UPDATE = "{id}/roles";
+            public const string UPDATE_ROLES = "{id}/roles";
         }
 
         public static class User_Permissions
         {
             public const string GET_ALL = "{id}/permissions";
-            public const string UPDATE = "{id}/permissions";
+            public const string UPDATE_PERMISSIONS = "{id}/permissions";
         }
 
         public static class User_Profiles
@@ -92,14 +92,27 @@ public static class Routes
             public const string GENERATE = "{userId}/apikeys";
             public const string GET_USER_API_KEYS = "{userId}/apikeys";
             public const string REVOKE = "{userId}/apikeys/revoke/{apiKeyId}";
+            public const string EXTEND_USER_API_KEY = "{userId}/apikeys/{apiKeyId}/extend";
         }
+
+        public static class Wallets
+        {
+            public const string GET_User_TRANSACTIONS = "{userId}/transactions";
+            public const string GET_User_Wallet = "{userId}/wallet";
+            public const string GET_USER_Wallet_Transactions = "{userId}/wallet/{walletId}/transactions";
+        }
+    }
+
+    public static class Users_User
+    {
+        public const string GET_USER = "";
     }
     
     public static class Wallets_Admin
     {
         public const string CREATE = "";
-        public const string GET_BALANCE = "";
-        public const string CHARGE_WALLET = "";
+        public const string GET_BALANCE = "{userId}/balance";
+        public const string CHARGE_WALLET = "{userId}/charge";
     }
     
     public static class Billings_Admin

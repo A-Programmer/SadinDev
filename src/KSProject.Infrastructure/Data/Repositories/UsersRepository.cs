@@ -3,6 +3,8 @@ using KSFramework.Pagination;
 using KSProject.Domain.Aggregates.Users;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using KSFramework.Exceptions;
+using KSProject.Domain.Aggregates.Wallets;
 
 namespace KSProject.Infrastructure.Data.Repositories;
 
@@ -211,5 +213,31 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
         {
             apiKey.Revoke();
         }
+    }
+
+    public async Task<PaginatedList<Transaction>> GetUserWalletIncludingPagedTransactionsByUserId(Guid userId,
+        int pageIndex,
+        int pageSize,
+        Expression<Func<Transaction, bool>>? where = null,
+        string orderBy = "",
+        bool desc = false,
+        CancellationToken cancellationToken = default)
+    {
+        User user = await _users.Include(u => u.Wallet)
+            .ThenInclude(w => w.Transactions)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (user == null || user.Wallet == null || !user.Wallet.Transactions.Any())
+            throw new KSNotFoundException("Transaction not found.");
+
+        return await PaginatedList<Transaction>.CreateAsync(
+            user.Wallet.Transactions.AsQueryable(),
+            pageIndex,
+            pageSize,
+            where,
+            orderBy,
+            desc,
+            cancellationToken
+            );
     }
 }

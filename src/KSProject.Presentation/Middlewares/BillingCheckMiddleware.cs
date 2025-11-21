@@ -1,6 +1,6 @@
 using KSFramework.KSMessaging.Abstraction;
-using KSProject.Application.Billing.CalculateCost;
-using KSProject.Application.Wallets.GetWalletBalance;
+using KSProject.Application.Admin.Wallets.GetWalletBalance;
+using KSProject.Application.User.Billings.CalculateCost;
 using KSProject.Domain.Contracts;
 using KSProject.Presentation.Attributes;
 using Microsoft.AspNetCore.Http;

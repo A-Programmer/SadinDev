@@ -1,8 +1,8 @@
 using KSFramework.KSMessaging.Abstraction;
-using KSProject.Application.Users.CheckUserExistence;
-using KSProject.Application.Users.Login;
-using KSProject.Application.Users.Register;
-using KSProject.Application.Users.ValidateUser;
+using KSProject.Application.Shared.Users.ValidateUser;
+using KSProject.Application.User.Users.CheckUserExistence;
+using KSProject.Application.User.Users.Login;
+using KSProject.Application.User.Users.Register;
 using KSProject.Common.Exceptions;
 using KSProject.Domain.Attributes;
 using KSProject.Presentation.BaseControllers;
@@ -17,7 +17,7 @@ public class AuthController : BaseController
     {
     }
 
-    [PublicEndpoint]
+    [FreeEndpoint]
     [HttpPost]
     [Route(Routes.Auth.LOGIN)]
     [Produces(typeof(LoginResponse))]
@@ -71,7 +71,7 @@ public class AuthController : BaseController
     }
 
 
-    [PublicEndpoint]
+    [FreeEndpoint]
     [HttpPost]
     [Route(Routes.Auth.REGISTER)]
     [Produces(typeof(RegisterResponse))]

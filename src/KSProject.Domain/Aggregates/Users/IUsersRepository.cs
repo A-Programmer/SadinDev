@@ -1,6 +1,7 @@
 using KSFramework.GenericRepository;
 using KSFramework.Pagination;
 using System.Linq.Expressions;
+using KSProject.Domain.Aggregates.Wallets;
 
 namespace KSProject.Domain.Aggregates.Users;
 
@@ -56,4 +57,13 @@ public interface IUsersRepository : IRepository<User>
     Task AddApiKeyToUserAsync(Guid userId, ApiKey apiKey, CancellationToken cancellationToken = default);
     Task<IEnumerable<ApiKey>> GetApiKeysByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
     Task RevokeApiKeyAsync(Guid userId, Guid apiKeyId, CancellationToken cancellationToken = default);
+    
+    
+    Task<PaginatedList<Transaction>> GetUserWalletIncludingPagedTransactionsByUserId(Guid userId,
+        int pageIndex,
+        int pageSize,
+        Expression<Func<Transaction, bool>>? where = null,
+        string orderBy = "",
+        bool desc = false,
+        CancellationToken cancellationToken = default);
 }
