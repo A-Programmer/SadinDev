@@ -1,6 +1,4 @@
-using System;
-
-namespace KSProject.Presentation.Attributes;
+namespace KSProject.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class PaidServiceAttribute : Attribute

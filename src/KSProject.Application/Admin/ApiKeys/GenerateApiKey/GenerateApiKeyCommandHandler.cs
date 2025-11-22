@@ -26,7 +26,7 @@ public sealed class GenerateApiKeyCommandHandler :
             throw new KSNotFoundException("User not found.");
         }
         
-        var newApiKey = ApiKey.Create(Guid.NewGuid(), user.Id, Guid.NewGuid().ToString().Replace("-", ""), true, DateTime.UtcNow.AddMonths(6), request.Payload.Scopes);
+        var newApiKey = ApiKey.Create(Guid.NewGuid(), user.Id, Guid.NewGuid().ToString().Replace("-", ""), request.Payload.Domain, request.Payload.Variant , true, DateTime.UtcNow.AddMonths(6), request.Payload.Scopes);
         
         newApiKey.User = user;
         

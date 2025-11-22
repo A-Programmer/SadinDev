@@ -1,5 +1,6 @@
 using KSFramework.Exceptions;
 using KSFramework.KSMessaging.Abstraction;
+using KSProject.Common.Constants.Enums;
 using KSProject.Domain.Aggregates.Wallets;
 using KSProject.Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +20,12 @@ public sealed class DebitWalletCommandHandler :
     public async Task<DebitWalletCommandResponse> Handle(DebitWalletCommand request,
         CancellationToken cancellationToken)
     {
-        Wallet? wallet = await _uow.Wallets.GetByUserIdAsync(request.Payload.UserId, cancellationToken);
 
+        Wallet? wallet = await _uow.Wallets.GetByUserIdAsync(request.Payload.UserId, cancellationToken);
         if (wallet is null)
         {
             throw new KSNotFoundException("Wallet not found for the specified user.");
         }
-
         var transaction = Transaction.Create(Guid.NewGuid(), wallet.Id, request.Payload.Amount,
             request.Payload.TransactionType, DateTime.UtcNow, request.Payload.ServiceType, request.Payload.MetricType,
             request.Payload.MetricValue);
@@ -33,9 +33,29 @@ public sealed class DebitWalletCommandHandler :
         wallet.UpdateBalance(transaction);
         
         _uow.ChangeEntityState(transaction, EntityState.Added);
+        try
+        {
+            // Do the transaction and set the finished
+            transaction.ChangeStatus(TransactionStatusTypes.Completed);
+            await _uow.SaveChangesAsync(cancellationToken);
 
-        await _uow.SaveChangesAsync(cancellationToken);
-
-        return new DebitWalletCommandResponse(wallet.Balance);
+            return new DebitWalletCommandResponse(wallet.Balance);
+        }
+        catch (Exception ex)
+        {
+            // set failed transaction
+            transaction.ChangeStatus(TransactionStatusTypes.Failed);
+            transaction.ChangeStatus(TransactionStatusTypes.Completed);
+            await _uow.SaveChangesAsync(cancellationToken);
+            throw;
+        }
+        finally
+        {
+            // set failed transaction
+            // set failed transaction
+            transaction.ChangeStatus(TransactionStatusTypes.Failed);
+            transaction.ChangeStatus(TransactionStatusTypes.Completed);
+            await _uow.SaveChangesAsync(cancellationToken);
+        }
     }
 }

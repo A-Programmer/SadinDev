@@ -1,7 +1,10 @@
 using KSFramework.KSMessaging.Abstraction;
+using KSProject.Application.Admin.ApiKeys.GetUserIdByApiKey;
+using KSProject.Application.Admin.Users.GetUserByApiKey;
 using KSProject.Application.User.Billings.CalculateCost;
 using KSProject.Application.User.Wallets.DebitWallet;
 using KSProject.Common.Constants.Enums;
+using KSProject.Domain.Attributes;
 using KSProject.Domain.Contracts;
 using KSProject.Presentation.Attributes;
 using Microsoft.AspNetCore.Http;
@@ -30,23 +33,37 @@ public class UsageDebitFilter : IAsyncActionFilter
 
         var endpoint = context.HttpContext.GetEndpoint();
         var paidAttr = endpoint?.Metadata.GetMetadata<PaidServiceAttribute>();
+        var serviceTypeAttr = endpoint?.Metadata.GetMetadata<ServiceTypeAttribute>();
 
         if (paidAttr == null || _currentUser.IsInternal)
+            return;
+        context.HttpContext.Request.Headers.TryGetValue("X-Api-Key", out var apiKeyValue);
+        
+        var userQuery = new GetUserByApiKeyQuery(new(apiKeyValue));
+        var user = await _sender.Send(userQuery);
+        
+        if (user.IsInternal)
+            return;
+        if (user.IsSuperAdmin)
             return;
 
         var calculateRequest = new CalculateCostQueryRequest
         {
-            ServiceType = endpoint.DisplayName ?? "Unknown",
+            ServiceType = serviceTypeAttr?.ServiceType ?? "Unknown",
             MetricType = paidAttr.MetricType,
             MetricValue = GetMetricValueFromContext(context),
-            Variant = "Default"
+            Variant = user.Variant
         };
         var calculateQuery = new CalculateCostQuery(calculateRequest);
         var costResponse = await _sender.Send(calculateQuery);
+        
+        
+        // var getUserIdByApiKeyQuery = new GetUserIdByApiKeyQuery(apiKeyValue);
+        // var userIdResponse = await _sender.Send(getUserIdByApiKeyQuery);
 
         if (costResponse.TotalCost > 0)
         {
-            var debitRequest = new DebitWalletCommandRequest(_currentUser.UserId,
+            var debitRequest = new DebitWalletCommandRequest(user.Id,
                 -costResponse.TotalCost,
                 calculateRequest.MetricValue,
                 TransactionTypes.Usage,

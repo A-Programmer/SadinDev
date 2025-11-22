@@ -13,7 +13,7 @@ public class CurrentUserService : ICurrentUserService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public Guid UserId => Guid.Parse(_httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
+    public Guid UserId => GetClaimGuid("nameid");
     public bool IsInternal => _httpContextAccessor.HttpContext?.User.Claims.Any(c => c.Type == "is_Internal" && c.Value == "true") ?? false;
     public bool IsAuthenticated => _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true;
 

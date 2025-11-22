@@ -1,6 +1,10 @@
 using KSFramework.KSMessaging.Abstraction;
+using KSProject.Application.Admin.Users.GetUserByApiKey;
 using KSProject.Application.Admin.Wallets.GetWalletBalance;
+using KSProject.Application.Admin.Wallets.GetWalletBalanceByApiKey;
 using KSProject.Application.User.Billings.CalculateCost;
+using KSProject.Common.Extensions;
+using KSProject.Domain.Attributes;
 using KSProject.Domain.Contracts;
 using KSProject.Presentation.Attributes;
 using Microsoft.AspNetCore.Http;
@@ -23,10 +27,50 @@ public class BillingCheckMiddleware
     {
         var endpoint = context.GetEndpoint();
         var paidAttr = endpoint?.Metadata.GetMetadata<PaidServiceAttribute>();
+        var serviceTypeAttr = endpoint?.Metadata.GetMetadata<ServiceTypeAttribute>();
+        
+        if (!context.Request.Headers.TryGetValue("X-Api-Key", out var apiKeyValue))
+        {
+            _logger.LogWarning("Api Key missing from request to {Path}", context.Request.Path);
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsync("Api Key missing.");
+            return;
+        }
 
-        if (paidAttr == null || currentUser.IsInternal)
+        if (endpoint?.Metadata.GetMetadata<FreeEndpoint>() != null || endpoint?.Metadata.GetMetadata<PaidServiceAttribute>() == null)
         {
             await _next(context);
+            return;
+        }
+        
+        var userQuery = new GetUserByApiKeyQuery(new(apiKeyValue));
+        var user = await sender.Send(userQuery);
+        
+        if (user.IsInternal || user.IsSuperAdmin)
+        {
+            await _next(context);
+            return;
+        }
+        if (!user.IsUserActive)
+        {
+            _logger.LogWarning("The user is not active");
+            context.Response.StatusCode = 403;
+            await context.Response.WriteAsync("The user is not active");
+            return;
+        }
+        if (!user.IsApiKeyActive)
+        {
+            _logger.LogWarning("Your API Key is not active");
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync("Your API Key is not active");
+            return;
+        }
+
+        if (user.Domain.ToLower() != context.GetOnlyDomain().ToLower())
+        {
+            _logger.LogWarning("This API Key does not belong to this domain");
+            context.Response.StatusCode = 403;
+            await context.Response.WriteAsync("This API Key does not belong to this domain");
             return;
         }
 
@@ -34,10 +78,10 @@ public class BillingCheckMiddleware
 
         var calculateRequest = new CalculateCostQueryRequest
         {
-            ServiceType = endpoint.DisplayName ?? "Unknown",
+            ServiceType = serviceTypeAttr?.ServiceType ?? "Unknown",
             MetricType = paidAttr.MetricType,
             MetricValue = metricValue,
-            Variant = "Default" // or from user claim/role
+            Variant = user.Variant
         };
         var calculateQuery = new CalculateCostQuery(calculateRequest);
         var costResponse = await sender.Send(calculateQuery);
@@ -48,10 +92,10 @@ public class BillingCheckMiddleware
             return;
         }
 
-        var balanceQuery = new GetWalletBalanceQuery(currentUser.UserId);
-        var balanceResponse = await sender.Send(balanceQuery);
-
-        if (balanceResponse.Balance < costResponse.TotalCost)
+        var balanceQueryByApiKey = new GetWalletBalanceByApiKeyQuery(apiKeyValue);
+        var balanceResponseByApiKey = await sender.Send(balanceQueryByApiKey);
+        
+        if (balanceResponseByApiKey.Balance < costResponse.TotalCost)
         {
             _logger.LogWarning("Insufficient balance for user {UserId} on endpoint {Path}", currentUser.UserId, context.Request.Path);
             context.Response.StatusCode = 402;

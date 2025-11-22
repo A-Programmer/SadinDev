@@ -12,9 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Admin\ApiKeys\" />
     <Folder Include="Admin\Roles\" />
-    <Folder Include="Admin\Users\" />
     <Folder Include="Admin\Wallets\GetUserWallet\" />
     <Folder Include="Shared\Roles\" />
     <Folder Include="Shared\Users\" />

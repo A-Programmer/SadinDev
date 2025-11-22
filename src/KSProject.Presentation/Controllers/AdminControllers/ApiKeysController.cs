@@ -12,7 +12,7 @@ namespace KSProject.Presentation.Controllers.AdminControllers;
 public class ApiKeysController(ISender sender) : SecureBaseController(sender)
 {
     [HttpPost]
-    [Permission("GenerateApiKey")]
+    // [Permission("GenerateApiKey")]
     [Route(Routes.ApiKeys_Admin.GENERATE)]
     [Produces(typeof(GenerateApiKeyCommandResponse))]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -32,7 +32,7 @@ public class ApiKeysController(ISender sender) : SecureBaseController(sender)
     }
 
     [HttpGet]
-    [Permission("GetUserApiKeys")]
+    // [Permission("GetUserApiKeys")]
     [Route(Routes.ApiKeys_Admin.GET_USER_API_KEYS)]
     [Produces(typeof(GetUserApiKeysQueryResponse))]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -50,7 +50,7 @@ public class ApiKeysController(ISender sender) : SecureBaseController(sender)
     }
 
     [HttpPut]
-    [Permission("RevokeApiKey")]
+    // [Permission("RevokeApiKey")]
     [Route(Routes.ApiKeys_Admin.REVOKE)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

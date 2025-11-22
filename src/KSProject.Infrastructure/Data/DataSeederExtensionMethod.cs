@@ -70,6 +70,8 @@ public static class DataSeederExtensionMethod
     public static Guid OnlineStoreTransactionsTier1RateId = Guid.Parse("4116373a-f4b2-419d-a75a-676ecddef4e6"); // Tier1 for OnlineStore Transactions_Count
     public static Guid GetRolesServiceRateId = Guid.Parse("0f44e981-5eac-4625-b420-dd550d4ca78a");
     public static Guid GetRoleByIdServiceRateId = Guid.Parse("a8b27fb5-19ef-4179-87fc-fbe75692a93e");
+    public static Guid GetRolesServicePremiumRateId = Guid.Parse("17f9e83c-b763-4e38-8902-1d0583adab05");
+    
     #endregion
 
     #endregion
@@ -87,35 +89,35 @@ public static class DataSeederExtensionMethod
     private static void SeedApiKeys(this ModelBuilder modelBuilder)
     {
         var now = DateTime.SpecifyKind(new DateTime(2025, 11, 12, 10, 0, 0), DateTimeKind.Utc);
-        ApiKey superAdminApiKey = ApiKey.Create(SuperAdminApiKeyId, SuperAdminUserId, SuperAdminApiKeyId.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete" );
+        ApiKey superAdminApiKey = ApiKey.Create(SuperAdminApiKeyId, SuperAdminUserId, SuperAdminApiKeyId.ToString().Replace("-", ""),"localhost", "Default", true, now.AddYears(1),"sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete" );
         superAdminApiKey.CreatedAt = now;
         superAdminApiKey.ModifiedAt = now;
         superAdminApiKey.CreatedBy = "System";
         superAdminApiKey.ModifiedBy = "System";
         superAdminApiKey.IncreaseVersion();
         
-        ApiKey adminApiKey = ApiKey.Create(AdminApiKeyId, AdminUserId, AdminApiKeyId.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete", true );
+        ApiKey adminApiKey = ApiKey.Create(AdminApiKeyId, AdminUserId, AdminApiKeyId.ToString().Replace("-", ""),"localhost", "Default", true, now.AddYears(1),"sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete", true );
         adminApiKey.CreatedAt = now;
         adminApiKey.ModifiedAt = now;
         adminApiKey.CreatedBy = "System";
         adminApiKey.ModifiedBy = "System";
         adminApiKey.IncreaseVersion();
         
-        ApiKey user1ApiKey1 = ApiKey.Create(User1ApiKeyId1, UserId1, User1ApiKeyId1.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.show-all" );
+        ApiKey user1ApiKey1 = ApiKey.Create(User1ApiKeyId1, UserId1, User1ApiKeyId1.ToString().Replace("-", ""),"localhost", "Default", true, now.AddYears(1),"sliders.show-all" );
         user1ApiKey1.CreatedAt = now;
         user1ApiKey1.ModifiedAt = now;
         user1ApiKey1.CreatedBy = "System";
         user1ApiKey1.ModifiedBy = "System";
         user1ApiKey1.IncreaseVersion();
         
-        ApiKey user1ApiKey2 = ApiKey.Create(User1ApiKeyId2, UserId1, User1ApiKeyId2.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all" );
+        ApiKey user1ApiKey2 = ApiKey.Create(User1ApiKeyId2, UserId1, User1ApiKeyId2.ToString().Replace("-", ""),"localhost", "Premium", true, now.AddYears(1),"sliders.create,sliders.show-all" );
         user1ApiKey2.CreatedAt = now;
         user1ApiKey2.ModifiedAt = now;
         user1ApiKey2.CreatedBy = "System";
         user1ApiKey2.ModifiedBy = "System";
         user1ApiKey2.IncreaseVersion();
         
-        ApiKey testUserApiKey = ApiKey.Create(TestUserApiKeyId, TestUserId, TestUserApiKeyId.ToString().Replace("-", ""), true, now.AddYears(1),"sliders.create,sliders.show-all" );
+        ApiKey testUserApiKey = ApiKey.Create(TestUserApiKeyId, TestUserId, TestUserApiKeyId.ToString().Replace("-", ""),"localhost", "Default", true, now.AddYears(1),"sliders.create,sliders.show-all" );
         testUserApiKey.CreatedAt = now;
         testUserApiKey.ModifiedAt = now;
         testUserApiKey.CreatedBy = "System";
@@ -328,18 +330,26 @@ public static class DataSeederExtensionMethod
         onlineStoreTransactionsTier1Rate.ModifiedBy = "System";
         onlineStoreTransactionsTier1Rate.IncreaseVersion();
         
-        ServiceRate serviceRate3 = ServiceRate.Create(GetRolesServiceRateId, "Roles", "Get_All_Roles", "Default", 0.01m); 
+        ServiceRate serviceRate3 = ServiceRate.Create(GetRolesServiceRateId, "Roles", "Get_All_Roles", "Default", 1m); 
         serviceRate3.CreatedAt = now;
         serviceRate3.ModifiedAt = now;
         serviceRate3.CreatedBy = "System";
         serviceRate3.ModifiedBy = "System";
         serviceRate3.IncreaseVersion();
-        ServiceRate serviceRate4 = ServiceRate.Create(GetRoleByIdServiceRateId, "Roles", "Get_Role_By_Id", "Premium", 0.005m, "{\"minQuantity\":50,\"discountPercent\":10}"); 
+        
+        ServiceRate serviceRate4 = ServiceRate.Create(GetRoleByIdServiceRateId, "Roles", "Get_Role_By_Id", "Premium", 5m, "{\"minQuantity\":50,\"discountPercent\":10}"); 
         serviceRate4.CreatedAt = now;
         serviceRate4.ModifiedAt = now;
         serviceRate4.CreatedBy = "System";
         serviceRate4.ModifiedBy = "System";
         serviceRate4.IncreaseVersion();
+
+        ServiceRate serviceRate5 = ServiceRate.Create(GetRolesServicePremiumRateId, "Roles", "Get_All_Roles", "Premium", 0.5m); 
+        serviceRate5.CreatedAt = now;
+        serviceRate5.ModifiedAt = now;
+        serviceRate5.CreatedBy = "System";
+        serviceRate5.ModifiedBy = "System";
+        serviceRate5.IncreaseVersion();
 
         modelBuilder.Entity<ServiceRate>()
             .HasData(
@@ -348,7 +358,8 @@ public static class DataSeederExtensionMethod
                 notificationSmsDefaultRate,
                 onlineStoreTransactionsTier1Rate,
                 serviceRate3,
-                serviceRate4
+                serviceRate4,
+                serviceRate5
             );
     }
 
@@ -435,7 +446,7 @@ public static class DataSeederExtensionMethod
           adminUser,
           userUser1,
           userUser2,
-            testUser
+          testUser
        });
 
        modelBuilder.Entity<User>()

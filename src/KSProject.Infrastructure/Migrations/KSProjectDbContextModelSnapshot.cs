@@ -151,7 +151,7 @@ namespace KSProject.Infrastructure.Migrations
                             MetricType = "Get_All_Roles",
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
-                            RatePerUnit = 0.01m,
+                            RatePerUnit = 1m,
                             ServiceType = "Roles",
                             Variant = "Default",
                             Version = 1L
@@ -165,8 +165,22 @@ namespace KSProject.Infrastructure.Migrations
                             MetricType = "Get_Role_By_Id",
                             ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             ModifiedBy = "System",
-                            RatePerUnit = 0.005m,
+                            RatePerUnit = 5m,
                             RulesJson = "{\"minQuantity\":50,\"discountPercent\":10}",
+                            ServiceType = "Roles",
+                            Variant = "Premium",
+                            Version = 1L
+                        },
+                        new
+                        {
+                            Id = new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"),
+                            CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "System",
+                            IsDeleted = false,
+                            MetricType = "Get_All_Roles",
+                            ModifiedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
+                            ModifiedBy = "System",
+                            RatePerUnit = 0.5m,
                             ServiceType = "Roles",
                             Variant = "Premium",
                             Version = 1L
@@ -377,6 +391,10 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Domain")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -407,6 +425,9 @@ namespace KSProject.Infrastructure.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Variant")
+                        .HasColumnType("text");
+
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
 
@@ -424,6 +445,7 @@ namespace KSProject.Infrastructure.Migrations
                             Id = new Guid("c55fb374-3d74-4aa3-b576-d144c49cd184"),
                             CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
+                            Domain = "localhost",
                             ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
@@ -433,6 +455,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete",
                             UserId = new Guid("551de0bd-f8bf-4fa4-9523-f19b7c6dd95b"),
+                            Variant = "Default",
                             Version = 1L
                         },
                         new
@@ -440,6 +463,7 @@ namespace KSProject.Infrastructure.Migrations
                             Id = new Guid("0acc9f75-9201-4ea5-9a16-5be1c30d6f60"),
                             CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
+                            Domain = "localhost",
                             ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
@@ -449,6 +473,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all,sliders.update,users.show-all,users.create,users.update,users.delete",
                             UserId = new Guid("5d2b2a64-0fa7-46af-bf1c-aadf1d7fb120"),
+                            Variant = "Default",
                             Version = 1L
                         },
                         new
@@ -456,6 +481,7 @@ namespace KSProject.Infrastructure.Migrations
                             Id = new Guid("ed12b679-8fd0-4a0c-ade5-fa6aaccf42fd"),
                             CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
+                            Domain = "localhost",
                             ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
@@ -465,6 +491,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             Scopes = "sliders.show-all",
                             UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
+                            Variant = "Default",
                             Version = 1L
                         },
                         new
@@ -472,6 +499,7 @@ namespace KSProject.Infrastructure.Migrations
                             Id = new Guid("17f9e83c-b763-4e38-8902-1d0583adab05"),
                             CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
+                            Domain = "localhost",
                             ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
@@ -481,6 +509,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all",
                             UserId = new Guid("c75e1cf0-84c0-4f9e-a608-e9a9b0e7d62f"),
+                            Variant = "Premium",
                             Version = 1L
                         },
                         new
@@ -488,6 +517,7 @@ namespace KSProject.Infrastructure.Migrations
                             Id = new Guid("2a5018f6-c8db-490a-9707-221469d20bb7"),
                             CreatedAt = new DateTime(2025, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "System",
+                            Domain = "localhost",
                             ExpirationDate = new DateTime(2026, 11, 12, 10, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             IsDeleted = false,
@@ -497,6 +527,7 @@ namespace KSProject.Infrastructure.Migrations
                             ModifiedBy = "System",
                             Scopes = "sliders.create,sliders.show-all",
                             UserId = new Guid("2fd5d547-737a-45d3-b71f-c5e8f692d434"),
+                            Variant = "Default",
                             Version = 1L
                         });
                 });

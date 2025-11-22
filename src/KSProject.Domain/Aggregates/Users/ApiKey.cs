@@ -10,25 +10,29 @@ public sealed class ApiKey : BaseEntity, ISoftDeletable
     public bool IsActive { get; private set; } = true;
     public DateTime? ExpirationDate { get; private set; }
     public string Scopes { get; private set; }
-    public bool IsInternal { get; private set; } = false;
+    public bool IsInternal { get; private set; }
     public Guid UserId { get; private set; }
     public User User { get; set; }
+    public string? Variant { get; private set; }
+    public string Domain { get; private set; }
     public bool IsDeleted { get; set; }
     public DateTime? DeletedOnUtc { get; set; }
 
-    private ApiKey(Guid id, string key, bool isActive, DateTime? expirationDate, string scopes, bool isInternal = false) : base(id)
+    private ApiKey(Guid id, string key, bool isActive, string domain, DateTime? expirationDate, string scopes, string? variant, bool isInternal = false) : base(id)
     {
         Key = key ?? throw new ArgumentNullException(nameof(key));
+        Domain = domain ?? throw new ArgumentNullException(nameof(domain));
         IsActive = isActive;
         ExpirationDate = expirationDate ?? DateTime.UtcNow.AddDays(7);
         Scopes = scopes ?? string.Empty;
         IsInternal = isInternal;
+        Variant = variant ?? "Default";
     }
 
     // Factory
-    public static ApiKey Create(Guid id, Guid userId, string key, bool isActive = true, DateTime? expirationDate = null, string scopes = null, bool isInternal = false)
+    public static ApiKey Create(Guid id, Guid userId, string key, string domain, string? variant , bool isActive = true, DateTime? expirationDate = null, string scopes = null, bool isInternal = false)
     {
-        var apiKey = new ApiKey(id, key, isActive, expirationDate, scopes, isInternal);
+        var apiKey = new ApiKey(id, key, isActive, domain, expirationDate, scopes, variant, isInternal);
         apiKey.SetUserId(userId);
         return apiKey;
     }

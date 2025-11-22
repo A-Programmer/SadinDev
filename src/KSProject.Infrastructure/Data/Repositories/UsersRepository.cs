@@ -159,7 +159,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
             .FirstOrDefaultAsync(ak => ak.Key == key && ak.IsActive, cancellationToken);
     }
 
-    public async Task<ApiKey> GenerateApiKeyForUserAsync(Guid userId, string scopes = null, CancellationToken cancellationToken = default)
+    public async Task<ApiKey> GenerateApiKeyForUserAsync(Guid userId, string domain, string? variant, string scopes = null, CancellationToken cancellationToken = default)
     {
         User user = await _users
             .Include(u => u.ApiKeys)
@@ -169,7 +169,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
             throw new InvalidOperationException("User not found.");
         }
 
-        var newApiKey = ApiKey.Create(Guid.NewGuid(), userId, Guid.NewGuid().ToString("N"), true, null, scopes ?? "");
+        var newApiKey = ApiKey.Create(Guid.NewGuid(), userId, Guid.NewGuid().ToString("N"), domain, variant, true, null, scopes ?? "");
         user.AddApiKey(newApiKey);
         return newApiKey;
     }
@@ -239,5 +239,13 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
             desc,
             cancellationToken
             );
+    }
+
+    public async Task<User> GetUserByApiKey(string apiKey, CancellationToken cancellationToken = default)
+    {
+        return await  _users
+            .Include(u => u.ApiKeys)
+            .FirstOrDefaultAsync(x => x.ApiKeys.FirstOrDefault(ak => ak.Key == apiKey) != null, cancellationToken);
+            
     }
 }

@@ -11,7 +11,7 @@ namespace KSProject.Presentation.Controllers.AdminControllers;
 public class WalletsController(ISender sender) : SecureBaseController(sender)
 {
     [HttpPost]
-    [Permission("ChargeUserWallet")]
+    // [Permission("ChargeUserWallet")]
     [Route(Routes.Wallets_Admin.CHARGE_WALLET)]
     [Produces(typeof(ChargeWalletCommandResponse))]
     [ProducesResponseType(StatusCodes.Status200OK)]
