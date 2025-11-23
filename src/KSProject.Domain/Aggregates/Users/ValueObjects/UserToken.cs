@@ -11,7 +11,7 @@ public class UserToken : ValueObject, ISerializable
 	public UserToken(
 		TokenTypes type,
 		string token,
-		DateTimeOffset expirationDateTimeOffset)
+        DateTime expirationDateTimeOffset)
 	{
 		Type = type;
 
@@ -25,7 +25,7 @@ public class UserToken : ValueObject, ISerializable
 
 	public TokenTypes Type { get; private init; }
 	public string Token { get; private init; }
-	public DateTimeOffset ExpirationDateTime { get; private init; }
+	public DateTime ExpirationDateTime { get; private init; }
 
 	protected override IEnumerable<object> GetEqualityComponents()
 	{

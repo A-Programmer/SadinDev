@@ -1,8 +1,11 @@
 using KSFramework.GenericRepository;
+using KSProject.Domain.Aggregates.Billings;
 using KSProject.Domain.Aggregates.Roles;
 using KSProject.Domain.Aggregates.Users;
+using KSProject.Domain.Aggregates.Wallets;
 using KSProject.Domain.Contracts;
 using KSProject.Infrastructure.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace KSProject.Infrastructure.Data;
 
@@ -24,29 +27,39 @@ public class KSProjectUnitOfWork : IKSProjectUnitOfWork
 	/// Register Custom Repositories manually
 	/// </summary>
 	private RolesRepository? _roles;
-	public IRolesRepository Roles => _roles ??= new RolesRepository(_context);
 
-	private UsersRepository? _users;
-	public IUsersRepository Users => _users ??= new UsersRepository(_context);
+    public void ChangeEntityState<TEntity>(TEntity entity, EntityState entityState)  where TEntity : class
+    {
+        _context.Entry<TEntity>(entity).State = entityState;
+    }
+
+    public IRolesRepository Roles => _roles ??= new RolesRepository(_context);
+
+    private UsersRepository? _users;
+    public IUsersRepository Users => _users ??= new UsersRepository(_context);
+
+    private WalletsRepository? _wallets;
+    public IWalletsRepository Wallets => _wallets ??= new WalletsRepository(_context);
+
+    private ServiceRatesRepository? _serviceRates;
+    public IServiceRatesRepository ServiceRates => _serviceRates ??= new ServiceRatesRepository(_context);
+
+    // public void ChangeEntityState<TEntity>(TEntity entity, EntityState entityState) where TEntity : class
+    // {
+    //     _context.Entry<TEntity>(entity).State = entityState;
+    // }
 
 	/// <summary>
 	/// Saves all changes made in this unit of work to the underlying data store asynchronously.
 	/// </summary>
 	/// <returns>A task that represents the asynchronous save operation. The task result contains the number of state entries written to the database.</returns>
-	public async Task<int> SaveChangesAsync()
-	{
-        _context.FixYeke();
-        _context.SetDetailFields();
-		return await _context.SaveChangesAsync();
-	}
-
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         _context.FixYeke();
         _context.SetDetailFields();
         return await _context.SaveChangesAsync(cancellationToken);
     }
-
+    
     public async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
     {
         _context.FixYeke();
@@ -73,7 +86,7 @@ public class KSProjectUnitOfWork : IKSProjectUnitOfWork
 	/// </summary>
 	/// <typeparam name="TEntity">The type of the entity.</typeparam>
 	/// <returns>An instance of <see cref="IGenericRepository{TEntity}"/> for the specified entity type.</returns>
-	IGenericRepository<TEntity> IUnitOfWork.GetRepository<TEntity>() where TEntity : class
+	public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class
 	{
 		if (_repositories.TryGetValue(typeof(TEntity), out var repository))
 		{

@@ -2,13 +2,14 @@ using KSFramework.Exceptions;
 using KSFramework.GenericRepository;
 using KSFramework.KSMessaging;
 using KSFramework.KSMessaging.Abstraction;
+using KSProject.Domain.Contracts;
 
 namespace KSProject.Application.TestAggregate.DeleteTestAggregate;
 
-public sealed class DeleteTestAggregateCommandHandler(IUnitOfWork unitOfWork) : CqrsBase(unitOfWork),
+public sealed class DeleteTestAggregateCommandHandler(IKSProjectUnitOfWork unitOfWork) : 
     ICommandHandler<DeleteTestAggregateCommand, DeleteTestAggregateResponse>
 {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IKSProjectUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<DeleteTestAggregateResponse> Handle(DeleteTestAggregateCommand request, CancellationToken cancellationToken)
     {

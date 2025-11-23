@@ -1,17 +1,17 @@
 using KSFramework.KSMessaging.Abstraction;
 using KSFramework.Pagination;
-using KSProject.Application.Roles.CreateRole;
-using KSProject.Application.Roles.DeleteRole;
-using KSProject.Application.Roles.GetAllRoles;
-using KSProject.Application.Roles.GetPaginatedRoles;
-using KSProject.Application.Roles.GetRoleById;
-using KSProject.Application.Roles.GetRolePermissionsByRoleId;
-using KSProject.Application.Roles.UpdateRole;
+using KSProject.Application.Admin.Roles.CreateRole;
+using KSProject.Application.Admin.Roles.DeleteRole;
+using KSProject.Application.Admin.Roles.GetAllRoles;
+using KSProject.Application.Admin.Roles.GetPaginatedRoles;
+using KSProject.Application.Admin.Roles.GetRoleById;
+using KSProject.Application.Admin.Roles.GetRolePermissionsByRoleId;
+using KSProject.Application.Admin.Roles.UpdateRole;
+using KSProject.Domain.Attributes;
 using KSProject.Presentation.Attributes;
 using KSProject.Presentation.BaseControllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Sadin.Application.Roles.GetPaginatedRoles;
 
 namespace KSProject.Presentation.Controllers.AdminControllers;
 
@@ -36,7 +36,9 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
     }
 
     [HttpGet]
-    [Permission("GetAllRoles")]
+    [PaidService("Get_All_Roles")]
+    [ServiceType("Roles")]
+    // [Permission("GetAllRoles")]
     [Route(Routes.Roles_Admin.GET_ALL)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -54,7 +56,9 @@ public sealed class RolesController(ISender sender) : BaseController(sender)
     }
 
     [HttpGet]
-    [Permission("GetRoleById")]
+    // [Permission("GetRoleById")]
+    [ServiceType("Roles")]
+    [PaidService("Get_Role_By_Id")]
     [Route(Routes.Roles_Admin.GET_BY_ID)]
     [Produces(typeof(RoleItemResponse))]
     [ProducesResponseType(StatusCodes.Status200OK)]

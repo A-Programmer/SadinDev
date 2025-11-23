@@ -1,4 +1,4 @@
-using System.Runtime.Serialization;
+using KSFramework.Exceptions;
 using KSFramework.KSDomain;
 using KSFramework.KSDomain.AggregatesHelper;
 using KSFramework.Utilities;
@@ -9,10 +9,11 @@ using KSProject.Domain.Aggregates.Users.Events;
 using KSProject.Domain.Aggregates.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using KSProject.Domain.Aggregates.Wallets;
 
 namespace KSProject.Domain.Aggregates.Users;
 
-public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDeletable
+public sealed class User : BaseEntity, IAggregateRoot, ISoftDeletable
 {
     private User(Guid id,
         string userName,
@@ -59,18 +60,27 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDelet
     public Guid? UserProfileId { get; private set; }
     public UserProfile? Profile { get; private set; }
 
+    public Guid? WalletId { get; private set; }
+    public Wallet Wallet { get; private set; }
+
     private List<UserPermission> _permissions = new();
     public IReadOnlyCollection<UserPermission> Permissions => _permissions;
 
 
+    private List<ApiKey> _apiKeys = [];
+    public IReadOnlyCollection<ApiKey> ApiKeys => _apiKeys;
+
+
     private List<Role> _roles = new();
-    public IReadOnlyCollection<Role> Roles => _roles; private List<UserToken> _userTokens = new();
+    public IReadOnlyCollection<Role> Roles => _roles;
+    
+    private List<UserToken> _userTokens = [];
     public IReadOnlyCollection<UserToken> UserTokens => _userTokens;
 
-    private List<UserLoginDate> _loginDates = new();
+    private List<UserLoginDate> _loginDates = [];
     public IReadOnlyCollection<UserLoginDate> UserLoginDates => _loginDates;
 
-    private List<UserSecurityStamp> _securityStamps = new();
+    private List<UserSecurityStamp> _securityStamps = [];
     public IReadOnlyCollection<UserSecurityStamp> UserSecurityStamps => _securityStamps;
 
 
@@ -166,6 +176,7 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDelet
         return SuperAdmin;
     }
 
+    #region Roles
     public void AssignRoles(IEnumerable<Role> roles,
         UserSecurityStamp? securityStamp = null)
     {
@@ -209,6 +220,7 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDelet
         }
     }
 
+    #endregion
     public static User Create(Guid id,
         string userName,
         string hashedPassword,
@@ -385,7 +397,7 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDelet
     }
     #endregion
 
-    #region Secrity Stamps and Tokens
+    #region Security Stamps and Tokens
 
     public void AddSecurityStamp(UserSecurityStamp securityStamp)
     {
@@ -470,23 +482,52 @@ public sealed class User : BaseEntity, IAggregateRoot, ISerializable, ISoftDelet
     }
 
     #endregion
-
-    public void GetObjectData(SerializationInfo info, StreamingContext context)
+    
+    #region Wallet
+    public void AddWallet(Wallet wallet)
     {
-        info.AddValue(nameof(Id), Id);
-        info.AddValue(nameof(UserName), UserName);
-        info.AddValue(nameof(HashedPassword), HashedPassword);
-        info.AddValue(nameof(Email), Email);
-        info.AddValue(nameof(PhoneNumber), PhoneNumber);
-        info.AddValue(nameof(SuperAdmin), SuperAdmin);
-        info.AddValue(nameof(Active), Active);
-        info.AddValue(nameof(UserProfileId), UserProfileId);
-        info.AddValue(nameof(Profile), Profile);
-        info.AddValue(nameof(Permissions), Permissions);
-        info.AddValue(nameof(UserTokens), UserTokens);
-        info.AddValue(nameof(UserSecurityStamps), UserSecurityStamps);
-        info.AddValue(nameof(UserLoginDates), UserLoginDates);
+        if (wallet == null)
+            throw new ArgumentNullException(nameof(wallet));
+        if (wallet.UserId != Id)
+            throw new InvalidOperationException("Wallet must belong to this user.");
+
+        Wallet = wallet;
+        WalletId = wallet.Id;
     }
+    #endregion
+    
+    #region Api Keys
+
+    public void AddApiKey(ApiKey apiKey)
+    {
+        _apiKeys.Add(apiKey);
+    }
+
+    public void AddApiKeys(IEnumerable<ApiKey> apiKeys)
+    {
+        _apiKeys.AddRange(apiKeys);
+    }
+    
+    public void RevokeApiKey(Guid apiKeyId)
+    {
+        var apiKey = _apiKeys.FirstOrDefault(ak => ak.Id == apiKeyId);
+        if (apiKey == null)
+            throw new KSNotFoundException("ApiKey not found.");
+
+        apiKey.Revoke();
+    }
+
+    public void RemoveApiKey(ApiKey apiKey)
+    {
+        _apiKeys.Remove(apiKey);
+    }
+
+    public void ClearApiKeys()
+    {
+        _apiKeys.Clear();
+    }
+    #endregion
+
 }
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
@@ -495,13 +536,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(u => u.Id);
         
-        builder.Property(u => u.IsDeleted).HasDefaultValue(false);
+        builder.Property(x => x.Active);
 
-        builder.Property(x => x.Active)
-            .HasDefaultValue(true);
-
-        builder.Property(x => x.SuperAdmin)
-            .HasDefaultValue(false);
+        builder.Property(x => x.SuperAdmin);
 
         builder.HasMany(u => u.Roles)
             .WithMany(r => r.Users)
@@ -520,6 +557,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne(up => up.User)
             .HasForeignKey<UserProfile>(up => up.UserId)
             .IsRequired(false)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasMany(u => u.ApiKeys)
+            .WithOne(u => u.User)
+            .HasForeignKey(u => u.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasOne(u => u.Wallet)
+            .WithOne()
+            .HasForeignKey<User>(u => u.WalletId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.OwnsMany(u => u.UserTokens, c =>
