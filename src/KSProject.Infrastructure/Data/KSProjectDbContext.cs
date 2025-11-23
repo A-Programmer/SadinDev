@@ -5,6 +5,8 @@ using KSFramework.Utilities;
 using KSProject.Infrastructure.Outbox;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace KSProject.Infrastructure.Data;
 
@@ -19,6 +21,71 @@ public class KSProjectDbContext : DbContext
     }
 
     public DbSet<OutboxMessage> OutboxMessages { get; set; }
+    
+    
+    /// <summary>
+    /// Saves all changes made in this unit of work to the underlying data store asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous save operation. The task result contains the number of state entries written to the database.</returns>
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        try
+        {
+            FixYeke();
+            SetDetailFields();
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+    }
+    
+    public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+    {
+        try
+        {
+            FixYeke();
+            SetDetailFields();
+            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+    }
+
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        try
+        {
+            FixYeke();
+            SetDetailFields();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+    }
+
+    public override int SaveChanges()
+    {
+        try
+        {
+            FixYeke();
+            SetDetailFields();
+            return base.SaveChanges();
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -35,6 +102,62 @@ public class KSProjectDbContext : DbContext
         #region Apply Entities Configuration
         modelBuilder.RegisterEntityTypeConfiguration(entitiesAssembly);
         #endregion
+        
+        
+        
+        
+        
+        var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
+            v => v.Kind == DateTimeKind.Utc ? v : DateTime.SpecifyKind(v, DateTimeKind.Utc),
+            v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+        );
+
+        var nullableDateTimeConverter = new ValueConverter<DateTime?, DateTime?>(
+            v => v.HasValue
+                ? (v.Value.Kind == DateTimeKind.Utc ? v : DateTime.SpecifyKind(v.Value, DateTimeKind.Utc))
+                : v,
+            v => v.HasValue
+                ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc)
+                : v
+        );
+
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (entityType.IsOwned())
+                continue;
+            
+            var rowVersionProps = entityType.ClrType
+                .GetProperties()
+                .Where(p => p.Name == "RowVersion");
+
+            foreach (var prop in rowVersionProps)
+            {
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property<uint>("Version")
+                    .HasColumnName("xmin")
+                    .IsRowVersion() // ✅ این کلید اصلیه: EF PostgreSQL رو مجبور می‌کنه از xmin استفاده کنه
+                    .ValueGeneratedOnAddOrUpdate();
+            }
+            
+            var dateTimeProps = entityType.ClrType
+                .GetProperties()
+                .Where(p => p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
+
+            foreach (var prop in dateTimeProps)
+            {
+                var propertyBuilder = modelBuilder.Entity(entityType.ClrType).Property(prop.Name);
+
+                if (prop.PropertyType == typeof(DateTime))
+                    propertyBuilder.HasConversion(dateTimeConverter);
+                else
+                    propertyBuilder.HasConversion(nullableDateTimeConverter);
+            }
+        }
+        
+        
+        
+        
+        
         
         #region Apply Soft Delete Global Query Filter
         modelBuilder.ApplyGlobalSoftDeleteFilter();
@@ -96,14 +219,14 @@ public class KSProjectDbContext : DbContext
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedAt = DateTimeOffset.UtcNow;
-                entry.Entity.ModifiedAt = DateTimeOffset.UtcNow;
+                entry.Entity.CreatedAt = DateTime.UtcNow;
+                entry.Entity.ModifiedAt = DateTime.UtcNow;
                 entry.Entity.CreatedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "System";
             }
 
             if (entry.State == EntityState.Modified)
             {
-                entry.Entity.ModifiedAt = DateTimeOffset.UtcNow;
+                entry.Entity.ModifiedAt = DateTime.UtcNow;
                 entry.Entity.ModifiedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "System";
             }
         }

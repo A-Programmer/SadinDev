@@ -20,17 +20,17 @@ public class PermissionAttribute : Attribute, IAsyncAuthorizationFilter
             context.Result = new UnauthorizedResult();
             return;
         }
-        var superAdminStatusClaim = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("is_registered", StringComparison.CurrentCultureIgnoreCase));
+        var superAdminStatusClaimExistence = context.HttpContext.User.Claims.Any(x => x.Type.Equals("is_SuperAdmin", StringComparison.CurrentCultureIgnoreCase));
 
-        if (superAdminStatusClaim == null)
+        if (superAdminStatusClaimExistence)
         {
-            Console.WriteLine("\n\n\n\n\n\n The UserId Claim could not be found. \n\n\n\n\n\n\n");
+            var superAdminStatusClaim = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("is_SuperAdmin", StringComparison.CurrentCultureIgnoreCase));
+            if (bool.Parse(superAdminStatusClaim.Value))
+            {
+                return;
+            }
         }
-        if (bool.Parse(superAdminStatusClaim.Value))
-        {
-            return;
-        }
-
+        
         var userPermissions = context.HttpContext.User.Claims
             .Where(c => c.Type.ToLower() == "permission")
             .Select(c => c.Value)

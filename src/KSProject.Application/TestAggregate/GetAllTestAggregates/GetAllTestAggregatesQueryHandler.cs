@@ -1,14 +1,15 @@
 using KSFramework.GenericRepository;
 using KSFramework.KSMessaging;
 using KSFramework.KSMessaging.Abstraction;
+using KSProject.Domain.Contracts;
 
 namespace KSProject.Application.TestAggregate.GetAllTestAggregates;
 
-public sealed class GetAllTestAggregatesQueryHandler : CqrsBase, IQueryHandler<GetAllTestAggregatesQuery, List<GetAllTestAggregatesResponse>>
+public sealed class GetAllTestAggregatesQueryHandler : IQueryHandler<GetAllTestAggregatesQuery, List<GetAllTestAggregatesResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IKSProjectUnitOfWork _unitOfWork;
     
-    public GetAllTestAggregatesQueryHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+    public GetAllTestAggregatesQueryHandler(IKSProjectUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

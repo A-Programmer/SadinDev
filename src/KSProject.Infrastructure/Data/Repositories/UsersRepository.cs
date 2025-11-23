@@ -3,13 +3,15 @@ using KSFramework.Pagination;
 using KSProject.Domain.Aggregates.Users;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using KSFramework.Exceptions;
+using KSProject.Domain.Aggregates.Wallets;
 
 namespace KSProject.Infrastructure.Data.Repositories;
 
 public class UsersRepository : GenericRepository<User>, IUsersRepository
 {
 	private readonly DbSet<User> _users;
-	public UsersRepository(DbContext context) : base(context)
+	public UsersRepository(KSProjectDbContext context) : base(context)
 	{
 		_users = context.Set<User>();
 	}
@@ -17,6 +19,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 	public async Task<User?> FindUserWithRolesAsync(Guid id, CancellationToken cancellationToken = default)
 	{
 		return await _users
+            .Include(u => u.ApiKeys)
 			.Include(u => u.Roles)
 			.Include(u => u.UserTokens)
 			.Include(u => u.UserSecurityStamps)
@@ -27,10 +30,11 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 		CancellationToken cancellationToken = default)
 	{
 		return await _users
+            .Include(u => u.ApiKeys)
 			.Include(u => u.Roles)
 			.Include(u => u.UserTokens)
 			.Include(u => u.UserSecurityStamps)
-			.FirstOrDefaultAsync(x => x.UserName.ToLower() == userName, cancellationToken);
+			.FirstOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower(), cancellationToken);
 	}
 
 	public async Task<User?> FindUserByEmailAsync(string email,
@@ -40,7 +44,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 			.Include(u => u.Roles)
 			.Include(u => u.UserTokens)
 			.Include(u => u.UserSecurityStamps)
-			.FirstOrDefaultAsync(x => x.Email.ToLower() == email, cancellationToken);
+			.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower(), cancellationToken);
 	}
 
 	public async Task<User?> FindUserByPhoneNumberAsync(string phoneNumber,
@@ -50,7 +54,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 			.Include(u => u.Roles)
 			.Include(u => u.UserTokens)
 			.Include(u => u.UserSecurityStamps)
-			.FirstOrDefaultAsync(x => x.PhoneNumber.ToLower() == phoneNumber, cancellationToken);
+			.FirstOrDefaultAsync(x => x.PhoneNumber.ToLower() == phoneNumber.ToLower(), cancellationToken);
 	}
 
 	public async Task<bool> IsUserNameInUseAsync(Guid id,
@@ -59,7 +63,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 	{
 		return await _users
 			.FirstOrDefaultAsync(x => x.Id != id &&
-									  x.UserName.ToLower() == userName,
+									  x.UserName.ToLower() == userName.ToLower(),
 				cancellationToken) is not null;
 	}
 
@@ -69,7 +73,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 	{
 		return await _users
 			.FirstOrDefaultAsync(x => x.Id != id &&
-									  x.Email.ToLower() == email,
+									  x.Email.ToLower() == email.ToLower(),
 				cancellationToken) is not null;
 	}
 
@@ -79,7 +83,7 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 	{
 		return await _users
 			.FirstOrDefaultAsync(x => x.Id != id &&
-									  x.PhoneNumber.ToLower() == phoneNumber,
+									  x.PhoneNumber.ToLower() == phoneNumber.ToLower(),
 				cancellationToken) is not null;
 	}
 
@@ -137,4 +141,111 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
 			.Include(u => u.Permissions)
 			.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 	}
+
+
+
+
+    public async Task<User> GetUserByIdIncludingApiKeysAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _users
+            .Include(u => u.ApiKeys)
+            .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+    }
+    
+    public async Task<ApiKey?> GetApiKeyByKeyAsync(string key, CancellationToken cancellationToken = default)
+    {
+        return await _users
+            .SelectMany(u => u.ApiKeys)
+            .FirstOrDefaultAsync(ak => ak.Key == key && ak.IsActive, cancellationToken);
+    }
+
+    public async Task<ApiKey> GenerateApiKeyForUserAsync(Guid userId, string domain, string? variant, string scopes = null, CancellationToken cancellationToken = default)
+    {
+        User user = await _users
+            .Include(u => u.ApiKeys)
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found.");
+        }
+
+        var newApiKey = ApiKey.Create(Guid.NewGuid(), userId, Guid.NewGuid().ToString("N"), domain, variant, true, null, scopes ?? "");
+        user.AddApiKey(newApiKey);
+        return newApiKey;
+    }
+
+    public async Task AddApiKeyToUserAsync(Guid userId, ApiKey apiKey, CancellationToken cancellationToken = default)
+    {
+        User user = await _users
+            .Include(u => u.ApiKeys)
+            .FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted, cancellationToken);
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found.");
+        }
+        user.AddApiKey(apiKey);
+    }
+
+    public async Task<IEnumerable<ApiKey>> GetApiKeysByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        User user = await _users
+            .Include(u => u.ApiKeys) // load collection
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found.");
+        }
+        return user.ApiKeys.Where(ak => !ak.IsDeleted);
+    }
+
+    public async Task RevokeApiKeyAsync(Guid userId, Guid apiKeyId, CancellationToken cancellationToken = default)
+    {
+        User user = await _users
+            .Include(u => u.ApiKeys)
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found.");
+        }
+
+        var apiKey = user.ApiKeys.FirstOrDefault(ak => ak.Id == apiKeyId && !ak.IsDeleted);
+        if (apiKey != null)
+        {
+            apiKey.Revoke();
+        }
+    }
+
+    public async Task<PaginatedList<Transaction>> GetUserWalletIncludingPagedTransactionsByUserId(Guid userId,
+        int pageIndex,
+        int pageSize,
+        Expression<Func<Transaction, bool>>? where = null,
+        string orderBy = "",
+        bool desc = false,
+        CancellationToken cancellationToken = default)
+    {
+        User user = await _users.Include(u => u.Wallet)
+            .ThenInclude(w => w.Transactions)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (user == null || user.Wallet == null || !user.Wallet.Transactions.Any())
+            throw new KSNotFoundException("Transaction not found.");
+
+        return await PaginatedList<Transaction>.CreateAsync(
+            user.Wallet.Transactions.AsQueryable(),
+            pageIndex,
+            pageSize,
+            where,
+            orderBy,
+            desc,
+            cancellationToken
+            );
+    }
+
+    public async Task<User> GetUserByApiKey(string apiKey, CancellationToken cancellationToken = default)
+    {
+        return await  _users
+            .Include(u => u.ApiKeys)
+            .FirstOrDefaultAsync(x => x.ApiKeys.FirstOrDefault(ak => ak.Key == apiKey) != null, cancellationToken);
+            
+    }
 }

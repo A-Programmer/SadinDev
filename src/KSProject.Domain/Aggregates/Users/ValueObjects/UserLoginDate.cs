@@ -7,14 +7,14 @@ namespace KSProject.Domain.Aggregates.Users.ValueObjects;
 public sealed class UserLoginDate : ValueObject, ISerializable
 {
 	public UserLoginDate(
-		DateTimeOffset loginDate,
+        DateTime loginDate,
 		string ipAddress = "")
 	{
 		LoginDate = loginDate;
 		IpAddress = ipAddress;
 	}
 
-	public DateTimeOffset LoginDate { get; private init; }
+	public DateTime LoginDate { get; private init; }
 	public string IpAddress { get; private init; }
 	protected override IEnumerable<object> GetEqualityComponents()
 	{

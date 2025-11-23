@@ -2,7 +2,6 @@
 using KSFramework.KSMessaging.Abstraction;
 using KSFramework.KSMessaging.Extensions;
 using KSProject.Application.Services;
-using KSProject.Application.Users.UpdateUser.EventHandlers;
 using KSProject.Domain.Aggregates.Users.Events;
 using KSProject.Domain.Contracts;
 using Microsoft.AspNetCore.Builder;

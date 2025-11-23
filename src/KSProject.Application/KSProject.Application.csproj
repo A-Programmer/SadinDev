@@ -12,8 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Otp\CreateOtpUser\" />
-    <Folder Include="Otp\VerifyOtpCode\" />
+    <Folder Include="Admin\Roles\" />
+    <Folder Include="Admin\Wallets\GetUserWallet\" />
+    <Folder Include="Shared\Roles\" />
+    <Folder Include="Shared\Users\" />
+    <Folder Include="User\Users\" />
   </ItemGroup>
 
 </Project>

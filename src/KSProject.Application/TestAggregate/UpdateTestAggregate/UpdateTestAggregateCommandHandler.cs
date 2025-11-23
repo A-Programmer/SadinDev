@@ -2,13 +2,14 @@ using KSFramework.Exceptions;
 using KSFramework.GenericRepository;
 using KSFramework.KSMessaging;
 using KSFramework.KSMessaging.Abstraction;
+using KSProject.Domain.Contracts;
 
 namespace KSProject.Application.TestAggregate.UpdateTestAggregate;
 
-public sealed class UpdateTestAggregateCommandHandler : CqrsBase, ICommandHandler<UpdateTestAggregateCommand, UpdateTestAggregateResponse>
+public sealed class UpdateTestAggregateCommandHandler : ICommandHandler<UpdateTestAggregateCommand, UpdateTestAggregateResponse>
 {
-    private readonly IUnitOfWork _unitOfWork;
-    public UpdateTestAggregateCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+    private readonly IKSProjectUnitOfWork _unitOfWork;
+    public UpdateTestAggregateCommandHandler(IKSProjectUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

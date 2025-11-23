@@ -1,13 +1,18 @@
 using KSFramework.KSMessaging.Abstraction;
 using KSFramework.Pagination;
-using KSProject.Application.Users.CreateUser;
-using KSProject.Application.Users.DeleteUser;
-using KSProject.Application.Users.GetPaginatedUsers;
-using KSProject.Application.Users.GetUserById;
-using KSProject.Application.Users.GetUserPermissionsByUserId;
-using KSProject.Application.Users.UpdateUser;
-using KSProject.Application.Users.UpdateUserPermissions;
-using KSProject.Application.Users.UpdateUserRoles;
+using KSProject.Application.Admin.ApiKeys.GenerateApiKey;
+using KSProject.Application.Admin.ApiKeys.GetUserApiKeys;
+using KSProject.Application.Admin.ApiKeys.RevokeApiKey;
+using KSProject.Application.Admin.Users.CreateUser;
+using KSProject.Application.Admin.Users.DeleteUser;
+using KSProject.Application.Admin.Users.GetPaginatedUsers;
+using KSProject.Application.Admin.Users.GetUserById;
+using KSProject.Application.Admin.Users.GetUserPermissionsByUserId;
+using KSProject.Application.Admin.Users.UpdateUser;
+using KSProject.Application.Admin.Users.UpdateUserPermissions;
+using KSProject.Application.Admin.Users.UpdateUserRoles;
+using KSProject.Application.User.Users.UserTransactions;
+using KSProject.Domain.Attributes;
 using KSProject.Presentation.Attributes;
 using KSProject.Presentation.BaseControllers;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KSProject.Presentation.Controllers.AdminControllers;
 
-public sealed class UsersController(ISender sender) : BaseController(sender)
+public sealed class UsersController(ISender sender) : SecureBaseController(sender)
 {
     [HttpGet]
     [Route(Routes.Users_Admin.GET_PAGED)]
@@ -41,12 +46,12 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<UserResponse>> GetAsync(
-        [FromRoute] GetUserByIdRequest request,
+        [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
-        GetUserByIdQuery query = new(request);
+        GetUserByIdQuery queryByIdQuery = new(id);
 
-        UserResponse result = await Sender.Send(query, cancellationToken);
+        UserResponse result = await Sender.Send(queryByIdQuery, cancellationToken);
 
         return Ok(result);
     }
@@ -88,13 +93,13 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 
     [HttpPut]
     [Permission("UpdateUser")]
-    [Route(Routes.Users_Admin.UPDATE)]
+    [Route(Routes.Users_Admin.UPDATE_USER, Name = "UpdateUser")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(UpdateUserResponse), StatusCodes.Status200OK)]
     public async Task<ActionResult<UpdateUserResponse>> PutAsync(
-        Guid id,
+        [FromRoute] Guid id,
         [FromBody] UpdateUserRequest request,
         CancellationToken cancellationToken)
     {
@@ -112,12 +117,12 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 
     [HttpPut]
     [Permission("UpdateUserRoles")]
-    [Route(Routes.Users_Admin.User_Roles.UPDATE)]
+    [Route(Routes.Users_Admin.User_Roles.UPDATE_ROLES, Name = "UpdateUserRoles")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<UpdateUserRolesResponse>> PutAsync(
-        Guid id,
+    public async Task<ActionResult<UpdateUserRolesResponse>> PutUserRolesAsync(
+        [FromRoute] Guid id,
         [FromBody] UpdateUserRolesRequest request,
         CancellationToken cancellationToken)
     {
@@ -133,12 +138,12 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 
     [HttpPut]
     [Permission("UpdateUserPermissions")]
-    [Route(Routes.Users_Admin.User_Permissions.UPDATE)]
+    [Route(Routes.Users_Admin.User_Permissions.UPDATE_PERMISSIONS, Name = "UpdateUserPermissions")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<UpdateUserResponse>> PutUserPermissionsAsync(
-        Guid id,
+        [FromRoute] Guid id,
         [FromBody] UpdateUserPermissionsRequest request,
         CancellationToken cancellationToken)
     {
@@ -168,4 +173,119 @@ public sealed class UsersController(ISender sender) : BaseController(sender)
 
         return NoContent();
     }
+    
+    #region API Keys
+    [HttpPost]
+    [Permission("GenerateApiKey")]
+    [Route(Routes.Users_Admin.ApiKeys_Admin.GENERATE)]
+    [Produces(typeof(GenerateApiKeyCommandResponse))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<GenerateApiKeyCommandResponse>> GenerateAsync(
+        [FromQuery] Guid userId,
+        [FromBody] GenerateApiKeyCommandRequest payload, // e.g., { Scopes = "blog,notification" }
+        CancellationToken cancellationToken = default)
+    {
+        var currentUserId = Guid.Parse(UserId);
+        if (currentUserId != userId)
+        {
+            return BadRequest("The userId does not match the request.");
+        }
+
+        var newPayload = payload with { UserId = userId }; // Set in request if needed
+
+        GenerateApiKeyCommand command = new(newPayload);
+        GenerateApiKeyCommandResponse result = await Sender.Send(command, cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Permission("GetUserApiKeys")]
+    [Route(Routes.Users_Admin.ApiKeys_Admin.GET_USER_API_KEYS)]
+    [Produces(typeof(GetUserApiKeysQueryResponse))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<GetUserApiKeysQueryResponse>> GetUserApiKeysAsync(
+        [FromQuery] Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        var currentUserId = Guid.Parse(UserId);
+        if (currentUserId != userId)
+        {
+            return BadRequest("The userId does not match the request.");
+        }
+        
+        GetUserApiKeysQueryRequest request = new(userId);
+        GetUserApiKeysQuery query = new(request);
+        GetUserApiKeysQueryResponse result = await Sender.Send(query, cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpPut]
+    [Permission("RevokeApiKey")]
+    [Route(Routes.Users_Admin.ApiKeys_Admin.REVOKE)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> RevokeAsync(
+        [FromQuery] Guid userId,
+        Guid apiKeyId,
+        CancellationToken cancellationToken = default)
+    {
+        var currentUserId = Guid.Parse(UserId);
+        if (currentUserId != userId)
+        {
+            return BadRequest("The userId does not match the request.");
+        }
+
+        RevokeApiKeyCommandRequest request = new(userId, apiKeyId);
+        RevokeApiKeyCommand command = new(request);
+        await Sender.Send(command, cancellationToken);
+
+        return NoContent();
+    }
+    
+    [HttpPut]
+    [Permission("ExtendUserApiKey")]
+    [Route(Routes.Users_Admin.ApiKeys_Admin.EXTEND_USER_API_KEY)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> ExtendUserApisync(
+        [FromQuery] Guid userId,
+        Guid apiKeyId,
+        CancellationToken cancellationToken = default)
+    {
+        var currentUserId = Guid.Parse(UserId);
+        if (currentUserId != userId)
+        {
+            return BadRequest("The userId does not match the request.");
+        }
+        // TODO: I should implement the Extend API time 
+        RevokeApiKeyCommandRequest request = new(userId, apiKeyId);
+        RevokeApiKeyCommand command = new(request);
+        await Sender.Send(command, cancellationToken);
+
+        return NoContent();
+    }
+    #endregion
+    
+    #region Transations
+    [HttpGet]
+    [FreeEndpoint]
+    [Permission("ViewUserTransactions")]
+    [Route(Routes.Users_Admin.Wallets.GET_User_TRANSACTIONS)]
+    [ProducesResponseType(typeof(PaginatedList<UserTransactionListItemResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<PaginatedList<UserTransactionListItemResponse>>> GetPagedTransactionsAsync(
+        Guid userId,
+        [FromQuery] GetUserTransactionsQueryRequest options, // e.g., page, size
+        CancellationToken ct = default)
+    {
+        var query = new GetUserTransactionsQuery(userId, options);
+        var result = await Sender.Send(query, ct);
+        return Ok(result);
+    }
+    #endregion
 }

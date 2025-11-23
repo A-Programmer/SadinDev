@@ -1,13 +1,14 @@
 using KSFramework.GenericRepository;
 using KSFramework.KSMessaging;
 using KSFramework.KSMessaging.Abstraction;
+using KSProject.Domain.Contracts;
 
 namespace KSProject.Application.TestAggregate.CreateTestAggregate;
 
-public class CreateTestAggregateCommandHandler(IUnitOfWork unitOfWork) : CqrsBase(unitOfWork),
+public class CreateTestAggregateCommandHandler(IKSProjectUnitOfWork unitOfWork) :
     ICommandHandler<CreateTestAggregateCommand, CreateTestAggregateResponse>
 {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IKSProjectUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<CreateTestAggregateResponse> Handle(CreateTestAggregateCommand request, CancellationToken cancellationToken)
     {
